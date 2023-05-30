@@ -1,20 +1,46 @@
-IMAGE_DIMENSIONS = (50, 50)
-TREE_CATEGORIES_GIAPANESE = ('Buna', 'Hauchiwakaede', 'Inutsuge', 'Koshiabura',
-                             'Kyaraboku', 'Matsu', 'Minekaede', 'Mizuki', 'Mizunara', 'Nanakamado')
+DATA_PATH = 'data/'
+ONE_LEVEL_UP = '../'
+PREPROCESSED_DATA_PATH = 'preprocessed_data/'
+
+TREE_CATEGORIES_JAPANESE = ('buna', 'matsu', 'minekaede', 'mizunara', 'nanakamado')
+
+DECIDUOUS = 'deciduous'
+EVERGREEN = 'evergreen'
 TREE_INFORMATION = {
     0: {
         'japanese_reading': 'buna',
-        'scientific_name': 'fagus crenata',
         'common_name': 'beech',
+        'scientific_name': 'fagus crenata',
         'japanese_name': 'ブナ',
-        'type': 'deciduous',
+        'type': DECIDUOUS,
     },
     1: {
-        'japanese_reading': '',
-        'scientific_name': '',
-        'common_name': '',
-        'japanese_name': '',
-        'type': '',
+        'japanese_reading': 'matsu',
+        'common_name': 'pine',
+        'scientific_name': 'pinus spp.',
+        'japanese_name': 'マツ',
+        'type': EVERGREEN,
     },
-
+    2: {
+        'japanese_reading': 'minekaede',
+        'common_name': 'butterfly maple',
+        'scientific_name': 'acer tschonoskii',
+        'japanese_name': 'ミネカエデ',
+        'type': DECIDUOUS,
+    },
+    3: {
+        'japanese_reading': 'mizunara',
+        'common_name': 'oak',
+        'scientific_name': 'quescus crispula',
+        'japanese_name': 'ミズナラ',
+        'type': DECIDUOUS,
+    },
+    4: {
+        'japanese_reading': 'nanakamado',
+        'common_name': 'japanese rowan',
+        'scientific_name': 'sorbus commixta',
+        'japanese_name': 'ナナカマド',
+        'type': DECIDUOUS,
+    },
 }
+
