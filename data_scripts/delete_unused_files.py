@@ -30,9 +30,11 @@ for dir_path in pure_path.iterdir():
         tif_list.extend(folder_list)
 
 # save images to the data folder (up one level)
-save_path = pure_path.parent
-print(f'save_path: {save_path}')
+save_folder_path = Path(global_constants.ONE_LEVEL_UP + global_constants.INTERMEDIATE_DATA_PATH)
+if not save_folder_path.exists():
+    save_folder_path.mkdir(parents=False)
+print(f'save_folder_path: {save_folder_path}')
 for tif_path in tif_list:
-    img_new_path = str(save_path) + '/' + tif_path.name
+    img_new_path = str(save_folder_path) + '/' + tif_path.name
     # print(f'img_new_path: {save_path}')
     cv2.imwrite(img_new_path, cv2.imread(str(tif_path)))

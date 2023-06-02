@@ -1,4 +1,5 @@
 import cv2
+from pathlib import Path
 
 import global_constants
 
@@ -26,6 +27,11 @@ def get_min_dimensions(img_list: list) -> (int, int):
 
 
 def resize_img(img_path, min_width: int, min_height: int) -> None:
+    save_folder_path = Path(global_constants.PREPROCESSED_DATA_PATH)
+    if not save_folder_path.exists():
+        save_folder_path.mkdir(parents=False)
+
+    img_name = img_path.name
     img_path = str(img_path)
     try:
         img = cv2.imread(img_path)
@@ -38,7 +44,8 @@ def resize_img(img_path, min_width: int, min_height: int) -> None:
         print(f'ERROR: could not resize image {img_path}. Exception: {e}')
         return
     # the [:-1] is used to remove due "\", that causes problems
-    img_path = img_path.replace(global_constants.DATA_PATH[:-1], global_constants.PREPROCESSED_DATA_PATH[:-1])
+    img_path = f'{save_folder_path}\{img_name}'
+    # print(f'Saving image to "{img_path}".')
     try:
         cv2.imwrite(img_path, img)
     except Exception as e:

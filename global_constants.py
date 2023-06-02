@@ -1,6 +1,7 @@
 DATA_PATH = 'data/'
 ONE_LEVEL_UP = '../'
-PREPROCESSED_DATA_PATH = 'preprocessed_data/'
+PREPROCESSED_DATA_PATH = DATA_PATH + 'preprocessed_data/'
+INTERMEDIATE_DATA_PATH = DATA_PATH + 'intermediate_data/'
 
 TREE_CATEGORIES_JAPANESE = ('buna', 'matsu', 'minekaede', 'mizunara', 'nanakamado')
 
