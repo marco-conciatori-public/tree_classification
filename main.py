@@ -1,6 +1,6 @@
 import config
 import global_constants
-from data_preprocessing import data_loading, standardize_img
+from data_preprocessing import data_loading, standardize_img, get_class
 
 
 verbose = config.VERBOSE
@@ -14,3 +14,7 @@ for img_path in img_list:
     # resize images to the smallest width and height found in the dataset
     # also save results in preprocessed data folder
     standardize_img.resize_img(img_path, min_width, min_height)
+
+test_class = get_class.from_name(img_list[1600].name)
+print(f'Image {img_path.name} is of class {test_class}.')
+exit()
