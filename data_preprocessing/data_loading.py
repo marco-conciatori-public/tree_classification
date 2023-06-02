@@ -8,8 +8,8 @@ def load_img(data_path, verbose: int = 0) -> list:
 
     img_list = []
     for img_path in pure_path.iterdir():
-        assert img_path.is_file(), f'Path {img_path} is not a file.'
-        img_list.append(img_path)
+        if img_path.is_file():
+            img_list.append(img_path)
 
     if verbose >= 2:
         print(f'Loaded {len(img_list)} images from {data_path}.')
