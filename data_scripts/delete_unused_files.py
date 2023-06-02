@@ -1,24 +1,38 @@
 from pathlib import Path
+import cv2
+
 
 import global_constants
 
 # DELETE FILSE BY EXTENTION
-data_path = global_constants.DATA_PATH
-pure_path = Path(global_constants.ONE_LEVEL_UP + data_path)
-# print(f'pure_path: {pure_path}')
-assert pure_path.exists(), f'Path {data_path} does not exist.'
+original_data_path = global_constants.DATA_PATH + 'original_data/'
+pure_path = Path(global_constants.ONE_LEVEL_UP + original_data_path)
+print(f'pure_path: {pure_path}')
+assert pure_path.exists(), f'Path {original_data_path} does not exist.'
+tif_list = []
 for dir_path in pure_path.iterdir():
+    # correct wrong 's1' to 's2' naming for Minekaede_s2 folder
+    # also correct wrong '＿' to '_' in file names
+    # if dir_path.is_dir():
+    #     if 'Minekaede_s2' in str(dir_path):
+    #         for file_path in dir_path.iterdir():
+    #             if file_path.is_file():
+    #                 print(f'file_path: {file_path}')
+    #                 new_file_name = str(file_path.name).replace('_s1＿', '_s2_')
+    #                 print(f'new_file_name: {new_file_name}')
+    #                 new_file_path = f'{file_path.parent}\\{new_file_name}'
+    #                 print(f'new_file_path: {new_file_path}')
+    #                 file_path.rename(new_file_path)
+
+    # select only .TIF files
     if dir_path.is_dir():
-        ovr_list = list(dir_path.glob('*.ovr'))
-        for ovr_path in ovr_list:
-            ovr_path.unlink()
+        folder_list = list(dir_path.glob('*.TIF'))
+        tif_list.extend(folder_list)
 
-        tfw_list = list(dir_path.glob('*.tfw'))
-        for tfw_path in tfw_list:
-            tfw_path.unlink()
-
-        xml_list = list(dir_path.glob('*.xml'))
-        for xml_path in xml_list:
-            xml_path.unlink()
-
-
+# save images to the data folder (up one level)
+save_path = pure_path.parent
+print(f'save_path: {save_path}')
+for tif_path in tif_list:
+    img_new_path = str(save_path) + '/' + tif_path.name
+    # print(f'img_new_path: {save_path}')
+    cv2.imwrite(img_new_path, cv2.imread(str(tif_path)))
