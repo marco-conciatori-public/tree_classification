@@ -1,6 +1,7 @@
+import cv2
 import config
 import global_constants
-from data_preprocessing import data_loading, standardize_img
+from data_preprocessing import data_loading, standardize_img, data_augmentation
 
 
 verbose = config.VERBOSE
@@ -16,7 +17,6 @@ for img_path in img_list:
     standardize_img.resize_img(img_path, min_width, min_height)
 
 data_list = data_loading.load_data(img_path_list=img_list, verbose=verbose)
-
 print(f'Found {len(data_list)} images.')
-print(f'Example: {data_list[0]}')
-exit()
+
+transformed_data_list = data_augmentation.random_transform_img_list(data_list, apply_probability=0.6)
