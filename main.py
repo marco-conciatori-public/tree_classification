@@ -1,6 +1,6 @@
 import config
 import global_constants
-from data_preprocessing import data_loading, standardize_img, get_class
+from data_preprocessing import data_loading, standardize_img
 
 
 verbose = config.VERBOSE
@@ -15,6 +15,8 @@ for img_path in img_list:
     # also save results in preprocessed data folder
     standardize_img.resize_img(img_path, min_width, min_height)
 
-test_class = get_class.from_name(img_list[1600].name)
-print(f'Image {img_list[1600].name} is of class {test_class}.')
+data_list = data_loading.load_data(img_path_list=img_list, verbose=verbose)
+
+print(f'Found {len(data_list)} images.')
+print(f'Example: {data_list[0]}')
 exit()
