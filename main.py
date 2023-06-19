@@ -16,5 +16,5 @@ for img_path in img_list:
     standardize_img.resize_img(img_path, min_width, min_height)
 
 test_class = get_class.from_name(img_list[1600].name)
-print(f'Image {img_path.name} is of class {test_class}.')
+print(f'Image {img_list[1600].name} is of class {test_class}.')
 exit()

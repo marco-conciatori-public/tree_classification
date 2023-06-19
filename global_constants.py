@@ -38,6 +38,7 @@ TREE_INFORMATION = {
     },
     4: {
         'japanese_reading': 'nanakamado',
+        'abbreviated_japanese_reading': 'nana',
         'common_name': 'japanese rowan',
         'scientific_name': 'sorbus commixta',
         'japanese_name': 'ナナカマド',
