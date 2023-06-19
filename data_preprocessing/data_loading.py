@@ -23,8 +23,8 @@ def load_data(img_path_list: list, verbose: int = 0) -> list:
     data_list = []
     for img_path in img_path_list:
         # get class of each image
-        img_class = get_class.from_name(img_path.name)
-        img_path = str(img_path)
+        img_class = get_class.from_name(Path(img_path).name)
+
         try:
             img = cv2.imread(img_path)
             data_list.append((img_class, img))
