@@ -6,7 +6,7 @@ class Conv_2d(nn.Module):
     def __init__(
             self,
             input_shape,
-            output_shape,
+            num_output: int,
             num_conv_layers: int,
             dense_layers: list,
             convolution_parameters: dict,
@@ -17,54 +17,23 @@ class Conv_2d(nn.Module):
     ):
         super(Conv_2d, self).__init__()
         self.input_shape = input_shape
-        self.output_shape = output_shape
+        self.num_output = num_output
         self.pooling_operation = pooling_operation
-
-        self.features_position = -1
-        self.num_day_position = -2
-
-        convolution_dimension = input_shape[self.num_day_position]
-        # calculate the dimension of the intermediate dense layer between the last convolution (and a flattening)
-        # and the other dense layers.
-        # it is the product of all the dimensions of the input except the convolution dimension, which is the number
-        # of days. Then, it is multiplied by the convolution dimension, AFTER accounting for its transformation by
-        # the convolutional layers.
-        self.num_input = 1
-        for dimension in input_shape:
-            self.num_input *= dimension
-        self.num_input //= convolution_dimension
-        self.num_output = 1
-        for dimension in self.output_shape:
-            self.num_output *= dimension
-
-        # TODO: sostituire con formula esatta che comprende anche kernel size?
-        if convolution_parameters['padding'] == 0:
-            convolution_dimension -= 2 * num_conv_layers
-        if self.pooling_operation is not None:
-            if pooling_parameters['padding'] == 0:
-                convolution_dimension -= 2 * num_conv_layers
-        assert convolution_dimension >= 1, f'ERROR: the convolution dimension does not contain enough data for' \
-                                           f' convolutions without padding. Shape = {input_shape}, the convolution' \
-                                           f' dimension is the last value {input_shape[self.num_day_position]}.'
-        self.num_input *= convolution_dimension
-
         self.name = name
         self.id = model_id
 
         layers_dimension = []
-        layers_dimension.append(self.num_input)
+        layers_dimension.append(2)
         layers_dimension.extend(dense_layers)
         layers_dimension.append(self.num_output)
-        # print(f'layers_dimension: {layers_dimension}')
 
-        self.generic_relu = nn.ReLU()
         # convolution_parameters contains:
         #   - kernel_size: int,
         #   - stride: int,
         #   - padding: int,
-        convolution_parameters['in_channels'] = self.input_shape[self.features_position]  # number of features
+        convolution_parameters['in_channels'] =
         convolution_parameters['out_channels'] = self.input_shape[self.features_position]  # number of features
-        convolution_parameters['groups'] = self.input_shape[self.features_position]  # number of features
+        convolution_parameters['groups'] = 1
         # pooling_parameters contains:
         #   - kernel_size: int,
         #   - stride: int,
@@ -132,6 +101,6 @@ class Conv_2d(nn.Module):
 
         # Add back the time dimension
         # Shape: (outputs) => (num_days, outputs)
-        x = torch.reshape(x, (-1, *self.output_shape))
+        x = torch.reshape(x, (-1, *self.num_output))
         # print(f'reshape: {x.shape}')
         return x

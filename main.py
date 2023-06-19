@@ -1,5 +1,7 @@
-import cv2
+import numpy as np
+
 import config
+import models
 import global_constants
 from data_preprocessing import data_loading, standardize_img, data_augmentation
 
@@ -18,5 +20,14 @@ for img_path in img_list:
 
 data_list = data_loading.load_data(img_path_list=img_list, verbose=verbose)
 print(f'Found {len(data_list)} images.')
+print(f'First image: {np.array(data_list[0][1]).shape}')
 
-transformed_data_list = data_augmentation.random_transform_img_list(data_list, apply_probability=0.6)
+# # apply data augmentation
+# can be repeated multiple times
+# transformed_data_list = data_augmentation.random_transform_img_list(data_list, apply_probability=0.6)
+# data_list.extend(transformed_data_list)
+
+# model = models.Conv_2d(
+#     input_shape=(min_width, min_height, 3),
+#
+# )
