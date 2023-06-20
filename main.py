@@ -41,6 +41,7 @@ model = conv_2d.Conv_2d(
     dense_layers=config.DENSE_LAYERS,
     convolution_parameters=config.CONVOLUTION_PARAMETERS,
     pooling_operation=config.POOLING_OPERATION,
+    pooling_parameters=config.POOLING_PARAMETERS,
     name='test_conv_2d',
     model_id=0,
 
