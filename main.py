@@ -47,3 +47,13 @@ model = conv_2d.Conv_2d(
 
 )
 print(model)
+temp_tensor = torch.Tensor(data_list[0][1])
+# add batch dimension
+print(f'main tensor shape: {temp_tensor.shape}')
+temp_tensor = temp_tensor.unsqueeze(0)
+print(f'main tensor shape: {temp_tensor.shape}')
+# switch from HWC to CHW
+temp_tensor = temp_tensor.permute(0, 3, 1, 2)
+print(f'main tensor shape: {temp_tensor.shape}')
+result = model(temp_tensor)
+print(result)
