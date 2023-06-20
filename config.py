@@ -11,7 +11,7 @@ CONVOLUTION_PARAMETERS = {
     'stride': 1,
     'padding': 0,
 }
-POOLING_OPERATION = 'MaxPool1d'
+POOLING_OPERATION = 'MaxPool2d'
 POOLING_PARAMETERS = {
     'kernel_size': 2,
     'stride': 2,
