@@ -17,3 +17,10 @@ POOLING_PARAMETERS = {
     'stride': 2,
     'padding': 0,
 }
+MODEL_PARAMETERS = {
+    'num_conv_layers': NUM_CONV_LAYERS,
+    'dense_layers': DENSE_LAYERS,
+    'convolution_parameters': CONVOLUTION_PARAMETERS,
+    'pooling_operation': POOLING_OPERATION,
+    'pooling_parameters': POOLING_PARAMETERS,
+}
