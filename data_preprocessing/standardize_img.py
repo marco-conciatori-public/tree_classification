@@ -26,7 +26,7 @@ def get_min_dimensions(img_list: list) -> (int, int):
     return min_width, min_height
 
 
-def resize_img(img_path, min_width: int, min_height: int) -> str:
+def resize_img(img_path, min_width: int, min_height: int):
     save_folder_path = Path(global_constants.PREPROCESSED_DATA_PATH)
     if not save_folder_path.exists():
         save_folder_path.mkdir(parents=False)
@@ -37,12 +37,12 @@ def resize_img(img_path, min_width: int, min_height: int) -> str:
         img = cv2.imread(img_path)
     except Exception as e:
         print(f'ERROR: could not load image {img_path}. Exception: {e}')
-        return ''
+        return
     try:
         img = cv2.resize(img, (min_width, min_height))
     except Exception as e:
         print(f'ERROR: could not resize image {img_path}. Exception: {e}')
-        return ''
+        return
     # the [:-1] is used to remove due "\", that causes problems
     img_path = f'{save_folder_path}\{img_name}'
     # print(f'Saving image to "{img_path}".')
@@ -50,6 +50,6 @@ def resize_img(img_path, min_width: int, min_height: int) -> str:
         cv2.imwrite(img_path, img)
     except Exception as e:
         print(f'ERROR: could not save image {img_path}. Exception: {e}')
-        return ''
+        return
 
-    return img_path
+    return

@@ -19,16 +19,20 @@ def load_img(data_path: str, verbose: int = 0) -> list:
     return img_list
 
 
-def load_data(img_path_list: list, verbose: int = 0) -> list:
+def load_data(img_folder_path: str, verbose: int = 0) -> list:
+    pure_path = Path(img_folder_path)
+    assert pure_path.exists(), f'Path "{img_folder_path}" does not exist.'
+    assert pure_path.is_dir(), f'Path "{img_folder_path}" is not a directory.'
+
     data_list = []
-    for img_path in img_path_list:
+    for img_path in pure_path.iterdir():
         # get class of each image
-        img_class = get_class.from_name(Path(img_path).name)
+        img_class = get_class.from_name(img_path.name)
 
         try:
-            img = cv2.imread(img_path)
+            img = cv2.imread(str(img_path))
             data_list.append((img_class, img))
         except Exception as e:
-            print(f'ERROR: could not load image {img_path}. Exception: {e}')
+            print(f'ERROR: could not load image "{img_path}". Exception: {e}')
 
     return data_list
