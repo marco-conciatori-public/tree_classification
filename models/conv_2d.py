@@ -47,7 +47,7 @@ class Conv_2d(nn.Module):
 
         layers_dimension = []
         # TODO: substitute 10 with the correct number
-        layers_dimension.append(10)
+        layers_dimension.append(6400)
         layers_dimension.extend(dense_layers)
         layers_dimension.append(self.num_output)
         dense_layer_list = []
@@ -65,7 +65,8 @@ class Conv_2d(nn.Module):
         self.layers = nn.ModuleList(convolutional_layer_list)
         self.layers.append(nn.Flatten())
         self.layers.extend(dense_layer_list)
-        self.layers.append(nn.Softmax(dim=1))
+        # substitute the last ReLU layer with a Softmax
+        self.layers[-1] = nn.Softmax(dim=1)
 
     def forward(self, x: torch.Tensor):
         print(f'start: {x.shape}')
