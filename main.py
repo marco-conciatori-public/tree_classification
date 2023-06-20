@@ -1,8 +1,6 @@
-import numpy as np
-
 import config
-import models
 import global_constants
+from models import conv_2d
 from data_preprocessing import data_loading, standardize_img, data_augmentation
 
 
@@ -35,7 +33,16 @@ print(f'Found {len(data_list)} images.')
 # transformed_data_list = data_augmentation.random_transform_img_list(data_list, apply_probability=0.6)
 # data_list.extend(transformed_data_list)
 
-# model = models.Conv_2d(
-#     input_shape=(min_width, min_height, 3),
-#
-# )
+print(len(global_constants.TREE_INFORMATION))
+model = conv_2d.Conv_2d(
+    input_shape=(min_width, min_height, 3),
+    num_output=len(global_constants.TREE_INFORMATION),
+    num_conv_layers=config.NUM_CONV_LAYERS,
+    dense_layers=config.DENSE_LAYERS,
+    convolution_parameters=config.CONVOLUTION_PARAMETERS,
+    pooling_operation=config.POOLING_OPERATION,
+    name='test_conv_2d',
+    model_id=0,
+
+)
+print(model)
