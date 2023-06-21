@@ -39,6 +39,13 @@ print(f'Found {len(img_list)} images.')
 # tag_list.extend(new_tag_list)
 
 print(len(global_constants.TREE_INFORMATION))
+model = model_utils.create_model(
+    model_class_name='Conv_2d',
+    input_shape=img_list[0].shape,
+    num_output=len(global_constants.TREE_INFORMATION),
+    model_parameters=config.MODEL_PARAMETERS,
+    device=device,
+)
 model = conv_2d.Conv_2d(
     input_shape=img_list[0].shape,
     num_output=len(global_constants.TREE_INFORMATION),
