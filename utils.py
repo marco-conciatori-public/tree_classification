@@ -31,7 +31,7 @@ def get_available_id(partial_name: str, folder_path: str) -> int:
     return 0
 
 
-def find_available_device(verbose: int = 0) -> torch.device:
+def get_available_device(verbose: int = 0) -> torch.device:
     if not torch.cuda.is_available():
         print('WARNING: GPU not found, using CPU.')
         device = torch.device('cpu')

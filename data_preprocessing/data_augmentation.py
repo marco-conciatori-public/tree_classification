@@ -36,8 +36,9 @@ def random_transform_img(img, apply_probability: float = 0.5):
     return temp_img
 
 
-def random_transform_img_list(data_list: list, apply_probability: float = 0.5):
-    transformed_data_list = []
+def random_transform_img_list(img_list: list, tag_list:list, apply_probability: float = 0.5) -> (list, list):
+    transformed_img_list = []
+    corresponding_tag_list = []
     partial_transform = ab.Compose([
         ab_transforms.HueSaturationValue(
             hue_shift_limit=3,
@@ -52,8 +53,8 @@ def random_transform_img_list(data_list: list, apply_probability: float = 0.5):
         ),
     ])
 
-    for data in data_list:
-        img = data[1]
+    for index in range(len(img_list)):
+        img = img_list[index]
         temp_img = copy.deepcopy(img)
         # not clear if this is necessary
         # temp_img = cv2.cvtColor(temp_img, cv2.COLOR_BGR2RGB)
@@ -68,6 +69,7 @@ def random_transform_img_list(data_list: list, apply_probability: float = 0.5):
         if random.uniform(0, 1) < apply_probability:
             temp_img = cv2.rotate(temp_img, cv2.ROTATE_90_COUNTERCLOCKWISE)
         temp_img = partial_transform(image=temp_img)['image']
-        transformed_data_list.append((data[0], temp_img))
+        transformed_img_list.append(temp_img)
+        corresponding_tag_list.append(tag_list[index])
 
-    return transformed_data_list
+    return transformed_img_list, corresponding_tag_list

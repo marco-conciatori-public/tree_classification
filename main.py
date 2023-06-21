@@ -25,17 +25,22 @@ min_width, min_height = standardize_img.get_min_dimensions(img_path_list)
 #     verbose = 0
 # verbose = config.VERBOSE
 
-data_list = data_loading.load_data(img_folder_path=global_constants.PREPROCESSED_DATA_PATH, verbose=verbose)
-print(f'Found {len(data_list)} images.')
+img_list, tag_list = data_loading.load_data(img_folder_path=global_constants.PREPROCESSED_DATA_PATH, verbose=verbose)
+print(f'Found {len(img_list)} images.')
 
 # # apply data augmentation
 # can be repeated multiple times
-# transformed_data_list = data_augmentation.random_transform_img_list(data_list, apply_probability=0.6)
-# data_list.extend(transformed_data_list)
+# new_img_list, new_tag_list = data_augmentation.random_transform_img_list(
+#     img_list=img_list,
+#     tag_list=tag_list,
+#     # apply_probability=0.6,
+# )
+# img_list.extend(new_img_list)
+# tag_list.extend(new_tag_list)
 
 print(len(global_constants.TREE_INFORMATION))
 model = conv_2d.Conv_2d(
-    input_shape=(min_width, min_height, 3),
+    input_shape=img_list[0].shape,
     num_output=len(global_constants.TREE_INFORMATION),
     num_conv_layers=config.NUM_CONV_LAYERS,
     dense_layers=config.DENSE_LAYERS,
@@ -47,7 +52,7 @@ model = conv_2d.Conv_2d(
 
 )
 print(model)
-temp_tensor = torch.Tensor(data_list[0][1])
+temp_tensor = torch.Tensor(img_list[0])
 # add batch dimension
 print(f'main tensor shape: {temp_tensor.shape}')
 temp_tensor = temp_tensor.unsqueeze(0)

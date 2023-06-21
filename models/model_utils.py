@@ -93,7 +93,7 @@ def load_model(model_path: str,
                verbose: int = 0,
                ) -> (torch.nn.Module, dict):
     if device is None:
-        device = utils.find_available_device(verbose=verbose)
+        device = utils.get_available_device(verbose=verbose)
     model = torch.load(model_path, map_location=device)
     # normally, we save trained model, so we want to test or use them, not train them again
     if not training_mode:
