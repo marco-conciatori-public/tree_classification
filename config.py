@@ -24,3 +24,11 @@ MODEL_PARAMETERS = {
     'pooling_operation': POOLING_OPERATION,
     'pooling_parameters': POOLING_PARAMETERS,
 }
+
+# TRAINING HYPERPARAMETERS
+BATCH_SIZE = 8
+NUM_EPOCHS = 8
+LEARNING_RATE = 0.001
+OPTIMIZER = 'Adam'
+# LOSS_FUNCTION = 'CrossEntropyLoss'
+SHUFFLE = False
