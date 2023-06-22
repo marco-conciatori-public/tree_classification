@@ -30,7 +30,6 @@ class Conv_2d(nn.Module):
             #   - kernel_size: int,
             #   - stride: int,
             #   - padding: int,
-
             convolutional_layer_list.append(
                 nn.Conv2d(**convolution_parameters)
             )
@@ -69,11 +68,11 @@ class Conv_2d(nn.Module):
         self.layers[-1] = nn.Softmax(dim=1)
 
     def forward(self, x: torch.Tensor):
-        print(f'start: {x.shape}')
+        # print(f'start: {x.shape}')
         counter = 0
         for layer in self.layers:
             x = layer(x)
-            print(f'{counter}° layer: {x.shape}')
+            # print(f'{counter}° layer: {x.shape}')
             counter += 1
 
         return x

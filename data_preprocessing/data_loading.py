@@ -37,4 +37,6 @@ def load_data(img_folder_path: str, verbose: int = 0) -> (list, list):
         except Exception as e:
             print(f'ERROR: could not load image "{img_path}". Exception: {e}')
 
+    if verbose >= 2:
+        print(f'Loaded {len(img_list)} images.')
     return img_list, tag_list
