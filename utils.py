@@ -42,3 +42,10 @@ def get_available_device(verbose: int = 0) -> torch.device:
         print(f'Device: {device}.')
 
     return device
+
+
+def check_split_proportions(train_val_test_proportions: list, tolerance: float):
+    # check that proportions adds up to 1, except for rounding errors
+    assert 1 - tolerance < sum(train_val_test_proportions) < 1 + tolerance, \
+        f'The values of train_val_test_proportions must add up to 1 +/- {tolerance}.' \
+        f' They add up to {sum(train_val_test_proportions)}.'

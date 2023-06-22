@@ -32,3 +32,6 @@ LEARNING_RATE = 0.001
 OPTIMIZER = 'Adam'
 # LOSS_FUNCTION = 'CrossEntropyLoss'
 SHUFFLE = False
+METRICS = ['accuracy', 'precision', 'recall', 'f1']
+TRAIN_VAL_TEST_SPLIT = [0.8, 0.1, 0.1]
+TOLERANCE = 0.01
