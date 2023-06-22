@@ -13,14 +13,12 @@ def create_model(model_class_name: str,
                  num_output: int,
                  model_parameters: dict,
                  device: torch.device,
+                 name: str = None,
+                 verbose: int = 0,
                  ) -> torch.nn.Module:
     assert device is not None, f'ERROR: torch could not find suitable cpu or gpu to use (device: {device})'
 
-    try:
-        name = model_parameters['name']
-        if name is None:
-            name = model_class_name
-    except KeyError:
+    if name is None:
         name = model_class_name
 
     model_id = utils.get_available_id(partial_name=name, folder_path=global_constants.MODEL_OUTPUT_DIR)
