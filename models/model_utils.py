@@ -27,6 +27,12 @@ def create_model(model_class_name: str,
     # warning: parallel or concurrent model instances it is possible that some of them get assigned the same id.
     # The error or involuntary overwriting happens only when saving those models.
 
+    if verbose >= 2:
+        print(f'Creating model {name} with id {model_id}...')
+        print(f'Input shape: {input_shape}')
+        print(f'Number of output classes: {num_output}')
+        print(f'Model parameters: {model_parameters}')
+
     if model_class_name == 'Conv_2d':
         model = conv_2d.Conv_2d(
             input_shape=input_shape,
