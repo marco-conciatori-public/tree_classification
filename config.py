@@ -27,10 +27,10 @@ MODEL_PARAMETERS = {
 
 # TRAINING HYPERPARAMETERS
 BATCH_SIZE = 8
-NUM_EPOCHS = 8
+EPOCHS = 8
 LEARNING_RATE = 0.001
-OPTIMIZER = 'Adam'
-# LOSS_FUNCTION = 'CrossEntropyLoss'
+OPTIMIZER_NAME = 'Adam'
+LOSS_FUNCTION_NAME = 'CrossEntropyLoss'
 SHUFFLE = False
 METRICS = ['accuracy', 'precision', 'recall', 'f1']
 TRAIN_VAL_TEST_SPLIT = [0.8, 0.1, 0.1]
