@@ -1,5 +1,6 @@
-from torch.utils.data import Dataset
 # import numpy as np
+from torch.utils.data import Dataset
+import torchvision.transforms.functional as tf
 
 
 class Dataset_from_obs_targets(Dataset):
@@ -18,7 +19,7 @@ class Dataset_from_obs_targets(Dataset):
         return len(self.obs_list)
 
     def __getitem__(self, idx):
-        return self.obs_list[idx], self.target_list[idx]
+        return tf.to_tensor(self.obs_list[idx]), self.target_list[idx]
 
     # def get_subset(self, idx_min: int = None, idx_max: int = None):
     #     if idx_min is None and idx_max is None:
