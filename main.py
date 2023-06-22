@@ -9,38 +9,7 @@ from data_preprocessing import data_loading, standardize_img, custom_dataset, da
 
 verbose = config.VERBOSE
 device = utils.get_available_device(verbose=verbose)
-img_path_list = data_loading.load_img(global_constants.INTERMEDIATE_DATA_PATH, verbose=verbose)
-# # get min width and height separately
-min_width, min_height = standardize_img.get_min_dimensions(img_path_list)
-# if verbose >= 2:
-#     print(f'Minimum width: {min_width}, minimum height: {min_height}.')
-#
-# str_img_path_list = []
-# for img_path in img_path_list:
-#     # resize images to the smallest width and height found in the dataset
-#     # also save results in preprocessed data folder
-#     standardize_img.resize_img(
-#         img_path=img_path,
-#         min_width=min_width,
-#         min_height=min_height,
-#     )
-#     verbose = 0
-# verbose = config.VERBOSE
 
-img_list, tag_list = data_loading.load_data(img_folder_path=global_constants.PREPROCESSED_DATA_PATH, verbose=verbose)
-print(f'Found {len(img_list)} images.')
-
-# # apply data augmentation
-# can be repeated multiple times
-# new_img_list, new_tag_list = data_augmentation.random_transform_img_list(
-#     img_list=img_list,
-#     tag_list=tag_list,
-#     # apply_probability=0.6,
-# )
-# img_list.extend(new_img_list)
-# tag_list.extend(new_tag_list)
-
-print(len(global_constants.TREE_INFORMATION))
 model = model_utils.create_model(
     model_class_name='Conv_2d',
     input_shape=img_list[0].shape,
