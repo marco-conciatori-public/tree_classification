@@ -30,7 +30,6 @@ BATCH_SIZE: int = 8
 EPOCHS: int = 8
 LEARNING_RATE: float = 0.001
 OPTIMIZER_NAME: str = 'Adam'
-# TODO: find appropriate loss function
 LOSS_FUNCTION_NAME: str = 'CrossEntropyLoss'
 SHUFFLE: bool = False
 METRICS: list = ['Accuracy', 'Precision', 'Recall', 'F1Score']
