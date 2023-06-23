@@ -33,7 +33,7 @@ OPTIMIZER_NAME: str = 'Adam'
 # TODO: find appropriate loss function
 LOSS_FUNCTION_NAME: str = 'CrossEntropyLoss'
 SHUFFLE: bool = False
-METRICS: list = ['accuracy', 'precision', 'recall', 'f1']
+METRICS: list = ['Accuracy', 'Precision', 'Recall', 'F1Score']
 # must add up to 1 +/- TOLERANCE
 TRAIN_VAL_TEST_PROPORTIONS: list = [0.8, 0.1, 0.1]
 TOLERANCE: float = 0.01
