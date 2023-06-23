@@ -20,7 +20,7 @@ def train(model: torch.nn.Module,
           metrics=(),
           save_path=None,
           verbose: int = 0,
-          ):
+          ) -> dict:
 
     # get loss function from string name
     loss_function = getattr(torch.nn, loss_function_name)()

@@ -54,6 +54,5 @@ training_history = training.train(
     save_path=global_constants.MODEL_OUTPUT_DIR,
     # metrics=config.METRICS,
 )
-
 print('training_history:')
 print(training_history)

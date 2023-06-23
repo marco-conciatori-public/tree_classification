@@ -9,11 +9,9 @@ def eval(model: torch.nn.Module,
          test_data,
          loss_function_name: str,
          device: torch.device,
-         max_loss_coefficient: int = None,
-         meta_data: dict = None,
          metrics=(),
          verbose: int = 0,
-         ):
+         ) -> (float, dict):
 
     # get loss function from string name
     loss_function = getattr(torch.nn, loss_function_name)()
@@ -29,7 +27,6 @@ def eval(model: torch.nn.Module,
                 raise AttributeError(f'metric {metric_name} not found in custom metrics, torchmetrics or ignite.')
 
         test_metric_instance = metric_class()
-
         test_metrics[metric_name] = test_metric_instance
 
     test_loss = 0.0
