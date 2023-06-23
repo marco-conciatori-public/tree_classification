@@ -1,4 +1,4 @@
-# import numpy as np
+import numpy as np
 from torch.utils.data import Dataset
 import torchvision.transforms.functional as tf
 
@@ -34,30 +34,30 @@ class Dataset_from_obs_targets(Dataset):
     #         name=self.name + '_subset',
     #     )
     #
-    # def random_split(self, lengths: list, generator=None) -> list:
-    #     assert sum(lengths) == len(self), f'ERROR: sum(lengths) ({sum(lengths)}) must equal len(self) ({len(self)}).'
-    #     ds_list = []
-    #     if generator is not None:
-    #         # TODO: implement generator
-    #         raise NotImplementedError('ERROR: "generator" argument of "random_split" method is not yet implemented.')
-    #     else:
-    #         sequence = np.arange(len(self))
-    #         np.random.shuffle(sequence)
-    #         base = 0
-    #         for length in lengths:
-    #             assert length > 0, 'ERROR: all elements of "lengths" must be greater than 0.'
-    #             temp_obs_list = []
-    #             temp_target_list = []
-    #             for i in range(base, base + length):
-    #                 temp_obs_list.append(self.obs_list[sequence[i]])
-    #                 temp_target_list.append(self.target_list[sequence[i]])
-    #
-    #             temp_ds = Dataset_from_obs_targets(
-    #                 obs_list=temp_obs_list,
-    #                 target_list=temp_target_list,
-    #                 name=self.name + f'_random_split_{length}',
-    #             )
-    #             ds_list.append(temp_ds)
-    #             base += length
-    #
-    #     return ds_list
+    def random_split(self, lengths: list, generator=None) -> list:
+        assert sum(lengths) == len(self), f'ERROR: sum(lengths) ({sum(lengths)}) must equal len(self) ({len(self)}).'
+        ds_list = []
+        if generator is not None:
+            # TODO: implement generator
+            raise NotImplementedError('ERROR: "generator" argument of "random_split" method is not yet implemented.')
+        else:
+            sequence = np.arange(len(self))
+            np.random.shuffle(sequence)
+            base = 0
+            for length in lengths:
+                assert length > 0, 'ERROR: all elements of "lengths" must be greater than 0.'
+                temp_obs_list = []
+                temp_target_list = []
+                for i in range(base, base + length):
+                    temp_obs_list.append(self.obs_list[sequence[i]])
+                    temp_target_list.append(self.target_list[sequence[i]])
+
+                temp_ds = Dataset_from_obs_targets(
+                    obs_list=temp_obs_list,
+                    target_list=temp_target_list,
+                    name=self.name + f'_random_split_{length}',
+                )
+                ds_list.append(temp_ds)
+                base += length
+
+        return ds_list
