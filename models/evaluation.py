@@ -9,7 +9,7 @@ def eval(model: torch.nn.Module,
          test_data,
          loss_function_name: str,
          device: torch.device,
-         metrics=(),
+         metrics: dict = None,
          verbose: int = 0,
          ) -> (float, dict):
 
@@ -17,16 +17,13 @@ def eval(model: torch.nn.Module,
     loss_function = getattr(torch.nn, loss_function_name)()
 
     test_metrics = {}
-    for metric_name in metrics:
+    for metric_name, metric_args in metrics.items():
         try:
             metric_class = getattr(torchmetrics, metric_name)
         except AttributeError:
             raise AttributeError(f'metric {metric_name} not found in torchmetrics.')
 
-        test_metrics[metric_name] = metric_class(
-            task='multiclass',
-            num_classes=len(global_constants.TREE_INFORMATION),
-        )
+        test_metrics[metric_name] = metric_class(**metric_args)
 
     test_loss = 0.0
     batch_counter = 0

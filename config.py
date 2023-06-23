@@ -32,7 +32,21 @@ LEARNING_RATE: float = 0.001
 OPTIMIZER_NAME: str = 'Adam'
 LOSS_FUNCTION_NAME: str = 'CrossEntropyLoss'
 SHUFFLE: bool = False
-METRICS: list = ['Accuracy', 'Precision', 'Recall', 'F1Score']
+STANDARD_METRIC_ARGS: dict = {
+    'task': 'multiclass',
+    'num_classes': 5,
+    'average': 'weighted',
+    # 'average': 'macro',
+    # 'average': 'micro',
+}
+METRICS: dict = {
+    'Accuracy': STANDARD_METRIC_ARGS,
+    'Precision': STANDARD_METRIC_ARGS,
+    'Recall': STANDARD_METRIC_ARGS,
+    'F1Score': STANDARD_METRIC_ARGS,
+}
+
+
 # must add up to 1 +/- TOLERANCE
 TRAIN_VAL_TEST_PROPORTIONS: list = [0.8, 0.1, 0.1]
 TOLERANCE: float = 0.01

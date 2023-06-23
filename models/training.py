@@ -16,7 +16,7 @@ def train(model: torch.nn.Module,
           device: torch.device,
           epochs: int,
           save_model: bool,
-          metrics=(),
+          metrics: dict = None,
           save_path=None,
           verbose: int = 0,
           ) -> dict:
@@ -29,20 +29,14 @@ def train(model: torch.nn.Module,
 
     training_metrics = {}
     validation_metrics = {}
-    for metric_name in metrics:
+    for metric_name, metric_args in metrics.items():
         try:
             metric_class = getattr(torchmetrics, metric_name)
         except AttributeError:
             raise AttributeError(f'metric {metric_name} not found in torchmetrics.')
 
-        training_metrics[metric_name] = metric_class(
-            task='multiclass',
-            num_classes=len(global_constants.TREE_INFORMATION),
-        )
-        validation_metrics[metric_name] = metric_class(
-            task='multiclass',
-            num_classes=len(global_constants.TREE_INFORMATION),
-        )
+        training_metrics[metric_name] = metric_class(**metric_args)
+        validation_metrics[metric_name] = metric_class(**metric_args)
 
     history = {
         'loss': {},
