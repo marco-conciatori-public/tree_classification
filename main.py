@@ -1,18 +1,25 @@
-import torch
-
 import utils
 import config
 import global_constants
 from models import model_utils, training
-from data_preprocessing import data_loading, standardize_img, custom_dataset, data_augmentation
+from data_preprocessing import get_ready_data
 
 
 verbose = config.VERBOSE
 device = utils.get_available_device(verbose=verbose)
 
+train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
+    batch_size=config.BATCH_SIZE,
+    shuffle=config.SHUFFLE,
+    train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
+    tolerance=config.TOLERANCE,
+    augment_data=1,
+    verbose=verbose,
+)
+
 model = model_utils.create_model(
     model_class_name='Conv_2d',
-    input_shape=img_list[0].shape,
+    input_shape=img_shape,
     num_output=len(global_constants.TREE_INFORMATION),
     model_parameters=config.MODEL_PARAMETERS,
     device=device,
