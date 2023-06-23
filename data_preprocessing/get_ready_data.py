@@ -71,6 +71,7 @@ def get_data(batch_size: int,
     temp_img_list = []
     temp_tag_list = []
     if augment_data > 1:
+        print(f'Applying data augmentation. Num original obs: {len(img_list)}.')
         for i in range(augment_data - 1):
             new_img_list, new_tag_list = data_augmentation.random_transform_img_list(
                 img_list=img_list,
@@ -79,8 +80,9 @@ def get_data(batch_size: int,
             )
             temp_img_list.extend(new_img_list)
             temp_tag_list.extend(new_tag_list)
-    img_list.extend(temp_img_list)
-    tag_list.extend(temp_tag_list)
+        img_list.extend(temp_img_list)
+        tag_list.extend(temp_tag_list)
+        print(f'Data augmentation applied. Num obs after augmentation: {len(img_list)}.')
 
     utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)
 
