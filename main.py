@@ -1,7 +1,7 @@
 import utils
 import config
 import global_constants
-from models import model_utils, training
+from models import model_utils, training, evaluation
 from data_preprocessing import get_ready_data
 
 
@@ -56,3 +56,16 @@ training_history = training.train(
 )
 print('training_history:')
 print(training_history)
+
+# TODO: test metric, test augmentation, reactivate save_model and create a script for loading and testing models
+
+test_loss, metric_evaluations = evaluation.eval(
+    model=model,
+    test_data=test_dl,
+    loss_function_name=config.LOSS_FUNCTION_NAME,
+    device=device,
+    metrics=config.METRICS,
+    verbose=verbose,
+)
+print(f'test_loss: {test_loss}')
+print(f'test_metric_evaluations: {metric_evaluations}')
