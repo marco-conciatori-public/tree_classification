@@ -35,10 +35,6 @@ def train(model: torch.nn.Module,
         except AttributeError:
             raise AttributeError(f'metric {metric_name} not found in torchmetrics.')
 
-        print(f'Initializing metric {metric_name}.')
-        print(f'metric_class: {metric_class}.')
-        print(f'metric_class type: {type(metric_class)}.')
-
         training_metrics[metric_name] = metric_class(
             task='multiclass',
             num_classes=len(global_constants.TREE_INFORMATION),
@@ -82,7 +78,6 @@ def train(model: torch.nn.Module,
 
             # print(f'observation_batch.shape: {observation_batch.shape}')
             # print(f'target_batch.shape: {target_batch.shape}')
-            # print(f'observation_batch: {observation_batch}')
             # print(f'target_batch: {target_batch}')
 
             prediction_batch = model(observation_batch)
