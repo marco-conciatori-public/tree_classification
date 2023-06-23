@@ -14,7 +14,7 @@ def get_data(batch_size: int,
              verbose: int = 0,
              ):
     try:
-        train_dl, val_dl, test_dl, img_shape = torch.load(
+        train_dl, val_dl, test_dl = torch.load(
             f=global_constants.FINAL_DATA_PATH + global_constants.DL_FILE_NAME
         )
         print('Data loader found and loaded.')
