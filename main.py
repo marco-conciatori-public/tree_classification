@@ -52,7 +52,7 @@ training_history = training.train(
     verbose=verbose,
     save_model=True,
     save_path=global_constants.MODEL_OUTPUT_DIR,
-    # metrics=config.METRICS,
+    metrics=config.METRICS,
 )
 print('training_history:')
 print(training_history)

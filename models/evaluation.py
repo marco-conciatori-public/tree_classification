@@ -1,7 +1,7 @@
 import torch
 import torchmetrics
-import ignite.metrics
 
+import global_constants
 from models import model_utils
 
 
@@ -21,13 +21,12 @@ def eval(model: torch.nn.Module,
         try:
             metric_class = getattr(torchmetrics, metric_name)
         except AttributeError:
-            try:
-                metric_class = getattr(ignite.metrics, metric_name)
-            except AttributeError:
-                raise AttributeError(f'metric {metric_name} not found in custom metrics, torchmetrics or ignite.')
+            raise AttributeError(f'metric {metric_name} not found in torchmetrics.')
 
-        test_metric_instance = metric_class()
-        test_metrics[metric_name] = test_metric_instance
+        test_metrics[metric_name] = metric_class(
+            task='multiclass',
+            num_classes=len(global_constants.TREE_INFORMATION),
+        )
 
     test_loss = 0.0
     batch_counter = 0

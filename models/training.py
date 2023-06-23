@@ -2,7 +2,6 @@ import copy
 import numpy as np
 import torch
 import torchmetrics
-import ignite.metrics
 
 import global_constants
 from models import model_utils
@@ -34,16 +33,20 @@ def train(model: torch.nn.Module,
         try:
             metric_class = getattr(torchmetrics, metric_name)
         except AttributeError:
-            try:
-                metric_class = getattr(ignite.metrics, metric_name)
-            except AttributeError:
-                raise AttributeError(f'metric {metric_name} not found in custom metrics, torchmetrics or ignite.')
+            raise AttributeError(f'metric {metric_name} not found in torchmetrics.')
 
-        training_metric_instance = metric_class()
-        validation_metric_instance = metric_class()
+        print(f'Initializing metric {metric_name}.')
+        print(f'metric_class: {metric_class}.')
+        print(f'metric_class type: {type(metric_class)}.')
 
-        training_metrics[metric_name] = training_metric_instance
-        validation_metrics[metric_name] = validation_metric_instance
+        training_metrics[metric_name] = metric_class(
+            task='multiclass',
+            num_classes=len(global_constants.TREE_INFORMATION),
+        )
+        validation_metrics[metric_name] = metric_class(
+            task='multiclass',
+            num_classes=len(global_constants.TREE_INFORMATION),
+        )
 
     history = {
         'loss': {},
