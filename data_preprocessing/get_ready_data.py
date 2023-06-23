@@ -1,4 +1,5 @@
 import torch
+from pathlib import Path
 
 import utils
 import global_constants
@@ -12,23 +13,45 @@ def get_data(batch_size: int,
              augment_data: int = 1,
              verbose: int = 0,
              ):
-    data_loaded = True
+    try:
+        train_dl, val_dl, test_dl, img_shape = torch.load(
+            f=global_constants.FINAL_DATA_PATH + global_constants.DL_FILE_NAME
+        )
+        print('Data loader found and loaded.')
+        batched_img_tag = next(iter(train_dl))
+        batched_img_shape = batched_img_tag[0].shape
+        # print(f'batched_img_shape: {batched_img_shape}.')
+        # print(f'batched Target shape: {batched_img_tag[1].shape}.')
+        # remove batch dimension
+        img_shape = batched_img_shape[1:]
+        # print(f'img_shape: {img_shape}.')
+        return train_dl, val_dl, test_dl, img_shape
+    except Exception:
+        print('Data loader not found, generating one.')
+
+    preprocessed_data_loaded = True
     try:
         img_list, tag_list = data_loading.load_data(
             img_folder_path=global_constants.PREPROCESSED_DATA_PATH,
             verbose=verbose,
         )
-    except:
-        data_loaded = False
+        print('Preprocessed data found and loaded.')
+    except Exception:
+        print('Preprocessed data not found, generating them.')
+        preprocessed_data_loaded = False
 
-    if not data_loaded or len(img_list) == 0:
+    if preprocessed_data_loaded:
+        if len(img_list) == 0:
+            print('Preprocessed data found but incorrect, re-generating them.')
+            preprocessed_data_loaded = False
+
+    if not preprocessed_data_loaded:
         img_path_list = data_loading.load_img(global_constants.INTERMEDIATE_DATA_PATH, verbose=verbose)
         # # get min width and height separately
         min_width, min_height = standardize_img.get_min_dimensions(img_path_list)
         if verbose >= 2:
             print(f'Minimum width: {min_width}, minimum height: {min_height}.')
 
-        str_img_path_list = []
         for img_path in img_path_list:
             # resize images to the smallest width and height found in the dataset
             # also save results in preprocessed data folder
@@ -67,11 +90,42 @@ def get_data(batch_size: int,
         target_list=tag_list,
         # name='complete_dataset',
     )
+    # split dataset
+    total_length = len(ds)
+    split_lengths = [int(total_length * proportion) for proportion in train_val_test_proportions]
+    split_lengths[2] = total_length - split_lengths[0] - split_lengths[1]
+    train_ds, val_ds, test_ds = ds.random_split(lengths=split_lengths)
 
-    dl = torch.utils.data.DataLoader(
-        dataset=ds,
+    # create data loaders
+    train_dl = torch.utils.data.DataLoader(
+        dataset=train_ds,
+        batch_size=batch_size,
+        shuffle=shuffle,
+    )
+    val_dl = torch.utils.data.DataLoader(
+        dataset=val_ds,
+        batch_size=batch_size,
+        shuffle=shuffle,
+    )
+    test_dl = torch.utils.data.DataLoader(
+        dataset=test_ds,
         batch_size=batch_size,
         shuffle=shuffle,
     )
 
-    return img_list, tag_list
+    # get image shape
+    batched_img_tag = next(iter(train_dl))
+    batched_img_shape = batched_img_tag[0].shape
+    # print(f'batched_img_shape: {batched_img_shape}.')
+    # print(f'batched Target shape: {batched_img_tag[1].shape}.')
+    # remove batch dimension
+    img_shape = batched_img_shape[1:]
+    # print(f'img_shape: {img_shape}.')
+    final_data_path = Path(global_constants.FINAL_DATA_PATH)
+    if not final_data_path.exists():
+        final_data_path.mkdir(parents=False)
+    complete_file_path = global_constants.FINAL_DATA_PATH + global_constants.DL_FILE_NAME
+    torch.save(obj=(train_dl, val_dl, test_dl), f=complete_file_path)
+    print('Data loader saved.')
+
+    return train_dl, val_dl, test_dl, img_shape
