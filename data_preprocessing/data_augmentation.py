@@ -36,7 +36,7 @@ def random_transform_img(img, apply_probability: float = 0.5):
     return temp_img
 
 
-def random_transform_img_list(img_list: list, tag_list:list, apply_probability: float = 0.5) -> (list, list):
+def random_transform_img_list(img_list: list, tag_list: list, apply_probability: float = 0.5) -> (list, list):
     transformed_img_list = []
     corresponding_tag_list = []
     partial_transform = ab.Compose([
