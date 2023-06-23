@@ -69,7 +69,7 @@ def save_model_and_meta_data(model: torch.nn.Module,
 
     assert file_name is not None, 'ERROR: unable to find model file name information.'
 
-    complete_path = path + file_name + global_constants.PYTORCH_FILE_EXTENTION
+    complete_path = path + file_name
     torch.save(model, complete_path)
 
     meta_data_to_save = copy.deepcopy(meta_data)

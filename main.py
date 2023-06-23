@@ -33,7 +33,7 @@ model = model_utils.create_model(
 # result = model(temp_tensor)
 # print(result)
 
-training.train(
+training_history = training.train(
     model=model,
     train_data=train_dl,
     epochs=config.EPOCHS,
@@ -46,3 +46,6 @@ training.train(
     save_path=global_constants.MODEL_OUTPUT_DIR,
     # metrics=config.METRICS,
 )
+
+print('training_history:')
+print(training_history)

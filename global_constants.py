@@ -1,13 +1,14 @@
 DATA_PATH = 'data/'
 ONE_LEVEL_UP = '../'
 PREPROCESSED_DATA_PATH = DATA_PATH + 'preprocessed_data/'
+FINAL_DATA_PATH = DATA_PATH + 'final_data/'
 INTERMEDIATE_DATA_PATH = DATA_PATH + 'intermediate_data/'
 OUTPUT_DIR = 'output/'
 MODEL_OUTPUT_DIR = OUTPUT_DIR + 'models/'
 MAX_DECIMAL_PLACES = 4
 EXTERNAL_PARAMETER_SEPARATOR = '-'
-PYTORCH_FILE_EXTENTION = '.pt'
-INFO_FILE_NAME = 'meta_data'
+INFO_FILE_NAME = 'meta_data.pt'
+DL_FILE_NAME = 'data_loader.pt'
 
 TREE_CATEGORIES_JAPANESE = ('buna', 'matsu', 'minekaede', 'mizunara', 'nanakamado')
 DECIDUOUS = 'deciduous'

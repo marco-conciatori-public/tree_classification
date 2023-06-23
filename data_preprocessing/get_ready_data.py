@@ -1,7 +1,7 @@
 import torch
 
-import global_constants
 import utils
+import global_constants
 from data_preprocessing import data_loading, standardize_img, custom_dataset, data_augmentation
 
 
@@ -37,6 +37,7 @@ def get_data(batch_size: int,
                 min_width=min_width,
                 min_height=min_height,
             )
+        print('Preprocessed data saved.')
 
         img_list, tag_list = data_loading.load_data(
             img_folder_path=global_constants.PREPROCESSED_DATA_PATH,
@@ -60,6 +61,7 @@ def get_data(batch_size: int,
 
     utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)
 
+    # create dataset
     ds = custom_dataset.Dataset_from_obs_targets(
         obs_list=img_list,
         target_list=tag_list,
