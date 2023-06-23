@@ -8,7 +8,7 @@ from data_preprocessing import data_loading, standardize_img, custom_dataset, da
 def get_data(batch_size: int,
              shuffle: bool,
              train_val_test_proportions: list,
-             tolerance: int,
+             tolerance: float,
              augment_data: int = 1,
              verbose: int = 0,
              ):
