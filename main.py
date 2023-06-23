@@ -35,7 +35,8 @@ model = model_utils.create_model(
 
 training_history = training.train(
     model=model,
-    train_data=train_dl,
+    training_data=train_dl,
+    validation_data=val_dl,
     epochs=config.EPOCHS,
     learning_rate=config.LEARNING_RATE,
     loss_function_name=config.LOSS_FUNCTION_NAME,
