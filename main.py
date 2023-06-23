@@ -13,7 +13,7 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     shuffle=config.SHUFFLE,
     train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
     tolerance=config.TOLERANCE,
-    augment_data=1,
+    augment_data=config.DATA_AUGMENTATION_PROPORTION,
     verbose=verbose,
 )
 

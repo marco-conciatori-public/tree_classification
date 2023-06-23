@@ -38,4 +38,4 @@ METRICS: list = ['accuracy', 'precision', 'recall', 'f1']
 TRAIN_VAL_TEST_PROPORTIONS: list = [0.8, 0.1, 0.1]
 TOLERANCE: float = 0.01
 # number of times the original dataset is duplicated with random variations
-DATA_AUGMENTATION_PROPORTION: int = 1
+DATA_AUGMENTATION_PROPORTION: int = 5
