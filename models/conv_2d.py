@@ -37,6 +37,18 @@ class Conv_2d(nn.Module):
             )
             convolution_parameters['in_channels'] = convolution_parameters['out_channels']
             convolution_parameters['out_channels'] *= 2
+
+            # Batch normalization layer
+            convolutional_layer_list.append(
+                nn.BatchNorm2d(convolution_parameters['in_channels'])
+            )
+
+            # ReLU layer
+            convolutional_layer_list.append(
+                nn.ReLU()
+            )
+
+            # Pooling layer
             if pooling_operation is not None:
                 # pooling_parameters contains:
                 #   - kernel_size: int,
@@ -69,7 +81,7 @@ class Conv_2d(nn.Module):
         self.layers.append(nn.Flatten())
         self.layers.extend(dense_layer_list)
         # substitute the last ReLU layer with a Softmax
-        self.layers[-1] = nn.Softmax(dim=1)
+        # self.layers[-1] = nn.Softmax(dim=1)
 
     def forward(self, x: torch.Tensor):
         # print(f'start: {x.shape}')
