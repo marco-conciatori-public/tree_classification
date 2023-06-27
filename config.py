@@ -2,7 +2,7 @@ VERBOSE: int = 2
 
 # CONV_2D NN HYPERPARAMETERS
 NUM_CONV_LAYERS: int = 3
-DENSE_LAYERS: list = [512, 256, 128, 64]
+DENSE_LAYERS: list = [4096, 512, 64]
 CONVOLUTION_PARAMETERS: dict = {
     'in_channels': 3,
     'out_channels': 16,
@@ -26,9 +26,9 @@ MODEL_PARAMETERS: dict = {
 }
 
 # TRAINING HYPERPARAMETERS
-BATCH_SIZE: int = 8
+BATCH_SIZE: int = 32
 EPOCHS: int = 8
-LEARNING_RATE: float = 0.001
+LEARNING_RATE: float = 0.01
 OPTIMIZER_NAME: str = 'Adam'
 LOSS_FUNCTION_NAME: str = 'CrossEntropyLoss'
 SHUFFLE: bool = False
