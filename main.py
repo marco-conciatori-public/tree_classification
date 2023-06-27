@@ -56,9 +56,6 @@ training_history = training.train(
 )
 print(f'training_history:\n{training_history}')
 
-# TODO:
-#  - and create a script for loading and testing models
-
 test_loss, metric_evaluations = evaluation.eval(
     model=model,
     test_data=test_dl,
