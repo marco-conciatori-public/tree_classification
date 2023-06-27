@@ -67,14 +67,14 @@ def get_path_by_id(model_id: int, folder_path: str, partial_name: str = ''):
     # transform the generator into a string, it is not possible to use len() on a generator
     matching_paths = list(matching_paths)
     n_matches = len(matching_paths)
-    assert n_matches > 0, f'ERROR: No matches found with partial_name {partial_name} ' \
-                          f'and model_id {model_id} in folder_path {folder_path}.'
-    if n_matches > 1:
-        warnings.warn(f'ERROR: expected 2 matches with partial name {partial_name} and'
-                      f' model_id {model_id} in folder_path {folder_path}. One for the'
+    assert n_matches > 0, f'ERROR: No matches found with partial_name "{partial_name}" ' \
+                          f'and model_id "{model_id}" in folder_path "{folder_path}".'
+    if n_matches == 1:
+        warnings.warn(f'expected 2 matches with partial name "{partial_name}" and'
+                      f' model_id "{model_id}" in folder_path "{folder_path}". One for the'
                       f' model, the other for the meta data file.')
-    assert n_matches < 3, f'ERROR: More than 2 match found with partial_name {partial_name}' \
-                          f' and model_id {model_id} in folder_path {folder_path}.'
+    assert n_matches < 3, f'ERROR: More than 2 match found with partial_name "{partial_name}"' \
+                          f' and model_id "{model_id}" in folder_path "{folder_path}".'
 
     model_path = matching_paths[0]
     meta_data_path = matching_paths[1]

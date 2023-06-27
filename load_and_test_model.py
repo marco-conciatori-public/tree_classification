@@ -1,5 +1,4 @@
 import torch
-import numpy as np
 
 import config
 import utils
@@ -60,17 +59,11 @@ with torch.set_grad_enabled(False):
         loss_counter += 1
         test_loss += loss
 
-        # print('----------------')
-        # print(f'target: {target}')
-        # print(f'prediction: {prediction}')
         targets.append(target)
         predictions.append(prediction)
 
 print(f'len(targets): {len(targets)}')
 print(f'len(predictions): {len(predictions)}')
-targets = np.array(targets)
-predictions = np.array(predictions)
-
 test_loss = test_loss / loss_counter
 print(f'loss_counter: {loss_counter}')
 print(f'test_loss: {test_loss}')
