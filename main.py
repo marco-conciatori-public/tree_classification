@@ -54,8 +54,7 @@ training_history = training.train(
     save_path=global_constants.MODEL_OUTPUT_DIR,
     metrics=config.METRICS,
 )
-print('training_history:')
-print(training_history)
+print(f'training_history:\n{training_history}')
 
 # TODO:
 #  - and create a script for loading and testing models

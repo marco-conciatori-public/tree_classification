@@ -1,5 +1,8 @@
 import torch
 from pathlib import Path
+import warnings
+
+import global_constants
 
 
 def get_available_id(partial_name: str, folder_path: str) -> int:
@@ -33,7 +36,7 @@ def get_available_id(partial_name: str, folder_path: str) -> int:
 
 def get_available_device(verbose: int = 0) -> torch.device:
     if not torch.cuda.is_available():
-        print('WARNING: GPU not found, using CPU.')
+        warnings.warn('GPU not found, using CPU.')
         device = torch.device('cpu')
     else:
         device = torch.device('cuda:0')
