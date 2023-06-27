@@ -4,7 +4,7 @@ import numpy as np
 import config
 import utils
 import global_constants
-from models import model_utils
+from models import model_utils, evaluation
 from data_preprocessing import get_ready_data
 
 
@@ -74,3 +74,14 @@ predictions = np.array(predictions)
 test_loss = test_loss / loss_counter
 print(f'loss_counter: {loss_counter}')
 print(f'test_loss: {test_loss}')
+
+print('----------------------------------')
+test_loss, metric_evaluations = evaluation.eval(
+    model=loaded_model,
+    test_data=test_dl,
+    loss_function_name=config.LOSS_FUNCTION_NAME,
+    device=cpu,
+    metrics=config.METRICS,
+    verbose=verbose,
+)
+
