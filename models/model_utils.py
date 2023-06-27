@@ -52,42 +52,30 @@ def create_model(model_class_name: str,
 
 
 def save_model_and_meta_data(model: torch.nn.Module,
-                             meta_data: dict,
-                             path,
-                             learning_rate: float,
-                             epochs: int,
-                             loss_function_name: str,
-                             optimizer_name: str,
-                             # loss=None,
+                             save_path: str,
+                             meta_data: dict = None,
                              verbose: int = 0,
                              ):
 
     if verbose >= 1:
         print('Saving model...')
-    Path(path).mkdir(parents=True, exist_ok=True)
+    Path(save_path).mkdir(parents=True, exist_ok=True)
+
     file_name = f'{model.name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{model.id}'
+    assert file_name is not None, 'ERROR: unable to retrieve model information.'
 
-    assert file_name is not None, 'ERROR: unable to find model file name information.'
-
-    complete_path = path + file_name
-    torch.save(model, complete_path)
-
-    meta_data_to_save = copy.deepcopy(meta_data)
-    meta_data_to_save['training_epochs'] = epochs
-    meta_data_to_save['initial_learning_rate'] = learning_rate
-    meta_data_to_save['loss_function_name'] = loss_function_name
-    meta_data_to_save['optimizer_name'] = optimizer_name
-    meta_data_to_save['model_layers'] = model.layers
-
-    with open(
-            f'{path}{file_name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}'
-            f'{global_constants.INFO_FILE_NAME}.json',
-            'w'
-    ) as json_file:
-        json.dump(meta_data_to_save, json_file, default=str)
-
+    model_path = save_path + file_name
+    torch.save(model, model_path)
     if verbose >= 1:
-        print(f'Model saved successfully ({complete_path}).')
+        print(f'Model saved successfully ({model_path}).')
+
+    if meta_data is not None:
+        meta_data_path = f'{save_path}{file_name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}' \
+                         f'{global_constants.INFO_FILE_NAME}.json'
+        with open(file=meta_data_path, mode='w') as json_file:
+            json.dump(meta_data, json_file, default=str)
+        if verbose >= 1:
+            print(f'Meta data saved successfully ({meta_data_path}).')
 
 
 def load_model(model_path: str,

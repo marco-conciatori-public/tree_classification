@@ -58,8 +58,6 @@ print('training_history:')
 print(training_history)
 
 # TODO:
-#  - test metric
-#  - reactivate save_model
 #  - and create a script for loading and testing models
 #  - convert to one-hot encoding
 

@@ -175,15 +175,18 @@ def train(model: torch.nn.Module,
         )
 
     # save model (weights and configuration) and other useful information
-    # if save_model:
-    #     model_utils.save_model_and_meta_data(
-    #         model=model,
-    #         meta_data=meta_data,
-    #         path=save_path,
-    #         learning_rate=learning_rate,
-    #         epochs=epochs,
-    #         loss_function_name=loss_function_name,
-    #         optimizer_name=optimizer_name,
-    #         verbose=verbose,
-    #     )
+    meta_data = {
+        'learning_rate': learning_rate,
+        'epochs': epochs,
+        'loss_function_name': loss_function_name,
+        'optimizer_name': optimizer_name,
+        'history': history,
+    }
+    if save_model:
+        model_utils.save_model_and_meta_data(
+            model=model,
+            save_path=save_path,
+            meta_data=meta_data,
+            verbose=verbose,
+        )
     return history
