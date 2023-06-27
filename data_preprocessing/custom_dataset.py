@@ -4,7 +4,7 @@ import torchvision.transforms.functional as tf
 
 
 class Dataset_from_obs_targets(Dataset):
-    def __init__(self, obs_list, target_list, name: str = None):
+    def __init__(self, obs_list: list, target_list: list, name: str = None):
         assert len(obs_list) == len(target_list), 'ERROR: obs_list and' \
                    ' target_list must have the same number of elements.'
 

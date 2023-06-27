@@ -59,7 +59,6 @@ print(training_history)
 
 # TODO:
 #  - and create a script for loading and testing models
-#  - convert to one-hot encoding
 
 test_loss, metric_evaluations = evaluation.eval(
     model=model,

@@ -45,9 +45,6 @@ def create_model(model_class_name: str,
 
     # migrate model to cpu or gpu depending on the available device
     model.to(device=device)
-
-    # convert model to float64 dtype
-    # model.double()
     return model
 
 
