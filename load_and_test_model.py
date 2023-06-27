@@ -77,4 +77,3 @@ test_loss, metric_evaluations = evaluation.eval(
     metrics=config.METRICS,
     verbose=verbose,
 )
-
