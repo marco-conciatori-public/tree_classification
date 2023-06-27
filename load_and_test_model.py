@@ -10,8 +10,8 @@ from data_preprocessing import get_ready_data
 cpu = torch.device('cpu')
 
 # PARAMETERS
-verbose = config.VERBOSE
-model_id = 3
+verbose = 2
+model_id = 0
 partial_name = ''
 
 model_path, info_path = utils.get_path_by_id(
