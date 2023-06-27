@@ -7,8 +7,9 @@ OUTPUT_DIR = 'output/'
 MODEL_OUTPUT_DIR = OUTPUT_DIR + 'models/'
 MAX_DECIMAL_PLACES = 4
 EXTERNAL_PARAMETER_SEPARATOR = '-'
-INFO_FILE_NAME = 'meta_data.pt'
-DL_FILE_NAME = 'data_loader.pt'
+INFO_FILE_NAME = 'meta_data'
+PYTORCH_FILE_EXTENSION = '.pt'
+DL_FILE_NAME = 'data_loader'
 
 TREE_CATEGORIES_JAPANESE = ('buna', 'matsu', 'minekaede', 'mizunara', 'nanakamado')
 DECIDUOUS = 'deciduous'

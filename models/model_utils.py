@@ -61,7 +61,7 @@ def save_model_and_meta_data(model: torch.nn.Module,
     file_name = f'{model.name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{model.id}'
     assert file_name is not None, 'ERROR: unable to retrieve model information.'
 
-    model_path = save_path + file_name
+    model_path = save_path + file_name + global_constants.PYTORCH_FILE_EXTENSION
     torch.save(model, model_path)
     if verbose >= 1:
         print(f'Model saved successfully ({model_path}).')

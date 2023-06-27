@@ -15,7 +15,7 @@ def get_data(batch_size: int,
              ):
     try:
         train_dl, val_dl, test_dl = torch.load(
-            f=global_constants.FINAL_DATA_PATH + global_constants.DL_FILE_NAME
+            f=global_constants.FINAL_DATA_PATH + global_constants.DL_FILE_NAME + global_constants.PYTORCH_FILE_EXTENSION
         )
         print('Data loader found and loaded.')
         batched_img_tag = next(iter(train_dl))
@@ -126,7 +126,8 @@ def get_data(batch_size: int,
     final_data_path = Path(global_constants.FINAL_DATA_PATH)
     if not final_data_path.exists():
         final_data_path.mkdir(parents=False)
-    complete_file_path = global_constants.FINAL_DATA_PATH + global_constants.DL_FILE_NAME
+    complete_file_path = global_constants.FINAL_DATA_PATH + global_constants.DL_FILE_NAME\
+                         + global_constants.PYTORCH_FILE_EXTENSION
     torch.save(obj=(train_dl, val_dl, test_dl), f=complete_file_path)
     print('Data loader saved.')
 
