@@ -35,19 +35,14 @@ class Conv_2d(nn.Module):
             convolutional_layer_list.append(
                 nn.Conv2d(**convolution_parameters)
             )
-            convolution_parameters['in_channels'] = convolution_parameters['out_channels']
-            convolution_parameters['out_channels'] *= 2
-
             # Batch normalization layer
             convolutional_layer_list.append(
-                nn.BatchNorm2d(convolution_parameters['in_channels'])
+                nn.BatchNorm2d(convolution_parameters['out_channels'])
             )
-
             # ReLU layer
             convolutional_layer_list.append(
                 nn.ReLU()
             )
-
             # Pooling layer
             if pooling_operation is not None:
                 # pooling_parameters contains:
@@ -57,6 +52,10 @@ class Conv_2d(nn.Module):
                 convolutional_layer_list.append(
                     getattr(nn, pooling_operation)(**pooling_parameters)
                 )
+
+            # update the number of input and output channels for the next conv layer
+            convolution_parameters['in_channels'] = convolution_parameters['out_channels']
+            convolution_parameters['out_channels'] *= 2
 
         layers_dimension = []
         # TODO: substitute 6400 with the correct number
@@ -84,12 +83,11 @@ class Conv_2d(nn.Module):
         # self.layers[-1] = nn.Softmax(dim=1)
 
     def forward(self, x: torch.Tensor):
-        # print(f'start: {x.shape}')
+        # print(f'Input shape: {x.shape}')
         counter = 0
         for layer in self.layers:
-            print(f'layer: {layer.__class__.__name__}')
             x = layer(x)
-            # print(f'{counter}° layer: {x.shape}')
+            # print(f'{counter}° layer ({layer.__class__.__name__}): {x.shape}')
             counter += 1
 
         return x

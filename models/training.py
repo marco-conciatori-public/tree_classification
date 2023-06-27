@@ -69,7 +69,6 @@ def train(model: torch.nn.Module,
             if observation_batch.device != device:
                 observation_batch = observation_batch.to(device)
                 target_batch = target_batch.to(device)
-
             # print(f'observation_batch.shape: {observation_batch.shape}')
             # print(f'target_batch.shape: {target_batch.shape}')
             # print(f'target_batch: {target_batch}')
