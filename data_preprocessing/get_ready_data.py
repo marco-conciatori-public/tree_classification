@@ -13,6 +13,9 @@ def get_data(batch_size: int,
              augment_data: int = 1,
              verbose: int = 0,
              ):
+
+    if verbose >= 1:
+        print('Loading data...')
     try:
         train_dl, val_dl, test_dl = torch.load(
             f=global_constants.FINAL_DATA_PATH + global_constants.DL_FILE_NAME + global_constants.PYTORCH_FILE_EXTENSION
@@ -32,7 +35,7 @@ def get_data(batch_size: int,
     preprocessed_data_loaded = True
     try:
         img_list, tag_list = data_loading.load_data(
-            img_folder_path=global_constants.PREPROCESSED_DATA_PATH,
+            data_path=global_constants.PREPROCESSED_DATA_PATH,
             verbose=verbose,
         )
         print('Preprocessed data found and loaded.')
@@ -46,7 +49,7 @@ def get_data(batch_size: int,
             preprocessed_data_loaded = False
 
     if not preprocessed_data_loaded:
-        img_path_list = data_loading.load_img(global_constants.INTERMEDIATE_DATA_PATH, verbose=verbose)
+        img_path_list = data_loading.get_img_path_list(global_constants.INTERMEDIATE_DATA_PATH, verbose=verbose)
         # # get min width and height separately
         min_width, min_height = standardize_img.get_min_dimensions(img_path_list)
         if verbose >= 2:
@@ -60,10 +63,11 @@ def get_data(batch_size: int,
                 min_width=min_width,
                 min_height=min_height,
             )
-        print('Preprocessed data saved.')
+        if verbose >= 1:
+            print('Preprocessed data saved.')
 
         img_list, tag_list = data_loading.load_data(
-            img_folder_path=global_constants.PREPROCESSED_DATA_PATH,
+            data_path=global_constants.PREPROCESSED_DATA_PATH,
             verbose=verbose,
         )
 
@@ -71,7 +75,8 @@ def get_data(batch_size: int,
     temp_img_list = []
     temp_tag_list = []
     if augment_data > 1:
-        print(f'Applying data augmentation. Num original obs: {len(img_list)}.')
+        if verbose >= 1:
+            print(f'Applying data augmentation. Num original obs: {len(img_list)}.')
         for i in range(augment_data - 1):
             new_img_list, new_tag_list = data_augmentation.random_transform_img_list(
                 img_list=img_list,
@@ -82,7 +87,8 @@ def get_data(batch_size: int,
             temp_tag_list.extend(new_tag_list)
         img_list.extend(temp_img_list)
         tag_list.extend(temp_tag_list)
-        print(f'Data augmentation applied. Num obs after augmentation: {len(img_list)}.')
+        if verbose >= 1:
+            print(f'Data augmentation applied. Num obs after augmentation: {len(img_list)}.')
 
     utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)
 
@@ -129,6 +135,8 @@ def get_data(batch_size: int,
     complete_file_path = global_constants.FINAL_DATA_PATH + global_constants.DL_FILE_NAME\
                          + global_constants.PYTORCH_FILE_EXTENSION
     torch.save(obj=(train_dl, val_dl, test_dl), f=complete_file_path)
-    print('Data loader saved.')
+    if verbose >= 1:
+        print('Data Generated.')
+        print('Data loader saved.')
 
     return train_dl, val_dl, test_dl, img_shape

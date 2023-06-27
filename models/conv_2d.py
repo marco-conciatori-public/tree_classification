@@ -30,6 +30,8 @@ class Conv_2d(nn.Module):
             #   - kernel_size: int,
             #   - stride: int,
             #   - padding: int,
+
+            # Convolutional layer
             convolutional_layer_list.append(
                 nn.Conv2d(**convolution_parameters)
             )
@@ -45,18 +47,20 @@ class Conv_2d(nn.Module):
                 )
 
         layers_dimension = []
-        # TODO: substitute 10 with the correct number
+        # TODO: substitute 6400 with the correct number
         layers_dimension.append(6400)
         layers_dimension.extend(dense_layers)
         layers_dimension.append(self.num_output)
         dense_layer_list = []
         for layer_index in range(len(layers_dimension) - 1):
+            # Dense layer
             dense_layer_list.append(
                 nn.Linear(
                     in_features=layers_dimension[layer_index],
                     out_features=layers_dimension[layer_index + 1]
                 )
             )
+            # ReLU layer
             dense_layer_list.append(
                 nn.ReLU()
             )
@@ -71,6 +75,7 @@ class Conv_2d(nn.Module):
         # print(f'start: {x.shape}')
         counter = 0
         for layer in self.layers:
+            print(f'layer: {layer.__class__.__name__}')
             x = layer(x)
             # print(f'{counter}° layer: {x.shape}')
             counter += 1

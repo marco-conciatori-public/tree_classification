@@ -43,6 +43,9 @@ with torch.set_grad_enabled(False):
         tensor_img = torch.tensor(img).to(cpu)
         prediction = loaded_model(tensor_img)
 
-        for i in range(len(prediction)):
-            print(f'{global_constants.TREE_INFORMATION[i]}: '
-                  f'{round(prediction[i] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
+        print('-------------------')
+        for tree_class in range(len(prediction)):
+            if prediction[tree_class] > config.TOLERANCE:
+                print(f'\t{global_constants.TREE_INFORMATION[tree_class]["japanese_reading"]}: '
+                      f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
+        print(f'\ttrue class: {global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"]}')
