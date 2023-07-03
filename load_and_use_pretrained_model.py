@@ -7,8 +7,8 @@ from data_preprocessing import data_loading
 
 verbose = 2
 num_classes = len(global_constants.TREE_INFORMATION)
-img_path_list, tag_list = data_loading.load_data(data_path=global_constants.PREPROCESSED_DATA_PATH, verbose=verbose)
-img = img_path_list[0]
+img_list, tag_list = data_loading.load_data(data_path=global_constants.PREPROCESSED_DATA_PATH, verbose=verbose)
+img = img_list[0]
 print(f'img.shape: {img.shape}')
 img = tf.to_tensor(img)
 print(f'img.shape: {img.shape}')
@@ -17,7 +17,9 @@ model, preprocess = pretrained_regnet.get_regnet(training=True, num_classes=num_
 print(f'model:\n{model}')
 
 # Apply inference preprocessing transforms
-batch = preprocess(img).unsqueeze(0)
+img = preprocess(img)
+print(f'img.shape: {img.shape}')
+batch = img.unsqueeze(0)
 print(f'batch.shape: {batch.shape}')
 
 # Use the model and print the predicted category
