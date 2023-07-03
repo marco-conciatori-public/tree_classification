@@ -1,29 +1,32 @@
+from torch import nn
 from torchvision.models import regnet_y_128gf, RegNet_Y_128GF_Weights
 
-import global_constants
-from data_preprocessing import data_loading
 
+# also Seer
+def get_regnet(training: bool = False, num_classes: int = None):
+    # Initialize model with the best available weights
+    weights = RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1
+    model = regnet_y_128gf(weights=weights)
+    # Initialize the inference transforms
+    preprocess = weights.transforms(antialias=True)
 
-verbose = 2
+    if training:
+        assert num_classes is not None, 'num_classes must be specified when training = True.'
+        model.train()
 
-img_path_list = data_loading.load_data(data_path=global_constants.PREPROCESSED_DATA_PATH, verbose=verbose)
-img = img_path_list[0]
+        # Freeze all layers weights
+        for param in model.parameters():
+            param.requires_grad = False
+        # Replace the last layer
+        model.fc.out_features = num_classes
+        # unfreeze the last layer
+        model.fc.requires_grad = True
 
-# Step 1: Initialize model with the best available weights
-weights = RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1
-model = regnet_y_128gf(weights=weights)
-model.eval()
-# model.train()
+    else:
+        model.eval()
+        # Freeze all layers weights
+        for param in model.parameters():
+            param.requires_grad = False
 
-# Step 2: Initialize the inference transforms
-preprocess = weights.transforms()
-
-# Step 3: Apply inference preprocessing transforms
-batch = preprocess(img).unsqueeze(0)
-
-# Step 4: Use the model and print the predicted category
-prediction = model(batch).squeeze(0).softmax(0)
-class_id = prediction.argmax().item()
-score = prediction[class_id].item()
-category_name = weights.meta["categories"][class_id]
-print(f"{category_name}: {100 * score:.1f}%")
+    # print(f'model:\n{model}')
+    return model, preprocess
