@@ -1,7 +1,6 @@
 import torch
 import torchmetrics
 
-import global_constants
 from models import model_utils
 
 
