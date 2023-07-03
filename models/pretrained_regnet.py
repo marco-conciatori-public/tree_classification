@@ -17,8 +17,8 @@ def get_regnet(training: bool = False, num_classes: int = None):
         # Freeze all layers weights
         for param in model.parameters():
             param.requires_grad = False
-        # Replace the last layer
-        model.fc.out_features = num_classes
+        # Replace the last layer with a new, untrained layer that has num_classes outputs
+        model.fc = nn.Linear(model.fc.in_features, num_classes)
         # unfreeze the last layer
         model.fc.requires_grad = True
 
