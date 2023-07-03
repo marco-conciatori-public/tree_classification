@@ -14,6 +14,7 @@ augment_data = config.DATA_AUGMENTATION_PROPORTION
 device = utils.get_available_device(verbose=verbose)
 
 model, preprocess = pretrained_regnet.get_regnet(training=True, num_classes=num_classes)
+model.to(device=device)
 # print(f'model:\n{model}')
 
 img_list, tag_list = data_loading.load_data(data_path=global_constants.PREPROCESSED_DATA_PATH, verbose=verbose)
