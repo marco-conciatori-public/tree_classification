@@ -19,6 +19,7 @@ class Dataset_from_obs_targets(Dataset):
         return len(self.obs_list)
 
     def __getitem__(self, idx):
+        # convert to tensor and change to channel_first
         return tf.to_tensor(self.obs_list[idx]), self.target_list[idx]
 
     # def get_subset(self, idx_min: int = None, idx_max: int = None):
