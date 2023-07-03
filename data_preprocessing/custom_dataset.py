@@ -1,3 +1,4 @@
+import torch
 import numpy as np
 from torch.utils.data import Dataset
 import torchvision.transforms.functional as tf
@@ -15,11 +16,17 @@ class Dataset_from_obs_targets(Dataset):
         else:
             self.name = self.__class__.__name__
 
+        self.tensor_imgs = False
+        if isinstance(obs_list[0], torch.Tensor):
+            self.tensor_imgs = True
+
     def __len__(self):
         return len(self.obs_list)
 
     def __getitem__(self, idx):
-        # convert to tensor and change to channel_first
+        if self.tensor_imgs:
+            # convert to tensor and change to channel_first
+            return self.obs_list[idx], self.target_list[idx]
         return tf.to_tensor(self.obs_list[idx]), self.target_list[idx]
 
     # def get_subset(self, idx_min: int = None, idx_max: int = None):
