@@ -9,7 +9,7 @@ CONVOLUTION_PARAMETERS: dict = {
     'groups': 1,
     'kernel_size': 3,
     'stride': 1,
-    'padding': 0,
+    'padding': 'same',
 }
 POOLING_OPERATION: str = 'MaxPool2d'
 POOLING_PARAMETERS: dict = {
@@ -26,10 +26,11 @@ MODEL_PARAMETERS: dict = {
 }
 
 # TRAINING HYPERPARAMETERS
-BATCH_SIZE: int = 32
-EPOCHS: int = 8
+BATCH_SIZE: int = 16
+EPOCHS: int = 4
 LEARNING_RATE: float = 0.01
-OPTIMIZER_NAME: str = 'Adam'
+# OPTIMIZER_NAME: str = 'Adam'
+OPTIMIZER_NAME: str = 'RMSprop'
 LOSS_FUNCTION_NAME: str = 'CrossEntropyLoss'
 SHUFFLE: bool = False
 STANDARD_METRIC_ARGS: dict = {
@@ -51,4 +52,4 @@ METRICS: dict = {
 TRAIN_VAL_TEST_PROPORTIONS: list = [0.8, 0.1, 0.1]
 TOLERANCE: float = 0.01
 # number of times the original dataset is duplicated with random variations
-DATA_AUGMENTATION_PROPORTION: int = 20
+DATA_AUGMENTATION_PROPORTION: int = 1
