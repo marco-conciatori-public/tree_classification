@@ -82,3 +82,16 @@ def get_path_by_id(model_id: int, folder_path: str, partial_name: str = ''):
         model_path = matching_paths[1]
         meta_data_path = matching_paths[0]
     return model_path, meta_data_path
+
+
+def pretty_print_dict(data, _level: int = 0):
+    if type(data) == dict:
+        for key in data:
+            for i in range(_level):
+                print('\t', end='')
+            print(f'{key}:')
+            pretty_print_dict(data[key], _level=_level + 1)
+    else:
+        for i in range(_level):
+            print('\t', end='')
+        print(data)
