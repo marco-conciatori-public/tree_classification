@@ -13,7 +13,10 @@ verbose = 2
 num_classes = len(global_constants.TREE_INFORMATION)
 augment_data = config.DATA_AUGMENTATION_PROPORTION
 device = utils.get_available_device(verbose=verbose)
+# warning: case-sensitive names
 model_version = 'RegNet_Y_1_6GF'
+# model_version = 'RegNetY_32GF'
+# model_version = 'RegNetY_128GF'
 
 # load model
 model_found = False
@@ -26,7 +29,7 @@ for module_info in pkgutil.iter_modules(pretrained.__path__):
 assert model_found, f'Model {model_version} not implemented.'
 
 module = importlib.import_module(name=f'{pretrained.__name__}.{last_module_info.name}')
-model, preprocess = module.get_model(model_name=model_version,training=True, num_classes=num_classes)
+model, preprocess = module.get_model(model_name=model_version, training=True, num_classes=num_classes)
 model.to(device=device)
 # print(f'model:\n{model}')
 
