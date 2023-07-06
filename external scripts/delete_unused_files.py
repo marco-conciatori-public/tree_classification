@@ -4,7 +4,7 @@ import cv2
 
 import global_constants
 
-# DELETE FILSE BY EXTENTION
+# DELETE FILES BY EXTENTION
 original_data_path = global_constants.DATA_PATH + 'original_data/'
 pure_path = Path(global_constants.ONE_LEVEL_UP + original_data_path)
 print(f'pure_path: {pure_path}')

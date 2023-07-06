@@ -3,6 +3,7 @@ data/
 logs/
 output/
 runs/
+.idea/
 *.csv
 *.pth
 
