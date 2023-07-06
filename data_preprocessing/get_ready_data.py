@@ -77,6 +77,9 @@ def get_data(batch_size: int,
     for img in img_list:
         for transform in custom_transforms:
             img = transform(img)
+
+        if torch.is_tensor(img):
+            img = img.numpy()
         temp_img_list.append(img)
     img_list = temp_img_list
 
