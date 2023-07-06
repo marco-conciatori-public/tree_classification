@@ -1,17 +1,22 @@
 from torch import nn
 from torchvision.models import regnet_y_128gf, RegNet_Y_128GF_Weights
 
+import utils
+import global_constants
+
 
 # also Seer
 def get_regnet(training: bool = False, num_classes: int = None):
-    name = 'RegNetY-128GF_Weights-IMAGENET1K_SWAG_E2E_V1'
+    model_name = 'RegNetY-128GF_Weights-IMAGENET1K_SWAG_E2E_V1'
+    model_id = utils.get_available_id(partial_name=model_name, folder_path=global_constants.MODEL_OUTPUT_DIR)
 
     # Initialize model with the best available weights
     weights = RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1
     model = regnet_y_128gf(weights=weights)
     # Initialize the inference transforms
     preprocess = weights.transforms(antialias=True)
-    model.name = name
+    model.name = model_name
+    model.id = model_id
 
     if training:
         assert num_classes is not None, 'num_classes must be specified when training = True.'
