@@ -45,7 +45,9 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     verbose=verbose,
 )
 
-# get image shape
+# check image shape
+print(f'img_shape: {img_shape}.')
+
 batched_img_tag = next(iter(train_dl))
 batched_img_shape = batched_img_tag[0].shape
 print(f'batched_img_shape: {batched_img_shape}.')
