@@ -18,7 +18,7 @@ def get_data(batch_size: int,
         print('Loading data...')
     try:
         train_dl, val_dl, test_dl = torch.load(
-            f=global_constants.FINAL_DATA_PATH + global_constants.DL_FILE_NAME + global_constants.PYTORCH_FILE_EXTENSION
+            f=global_constants.STEP_3_DATA_PATH + global_constants.DL_FILE_NAME + global_constants.PYTORCH_FILE_EXTENSION
         )
         print('Data loader found and loaded.')
         batched_img_tag = next(iter(train_dl))
@@ -32,24 +32,24 @@ def get_data(batch_size: int,
     except Exception:
         print('Data loader not found, generating one.')
 
-    preprocessed_data_loaded = True
+    step_2_data_loaded = True
     try:
         img_list, tag_list = data_loading.load_data(
-            data_path=global_constants.PREPROCESSED_DATA_PATH,
+            data_path=global_constants.STEP_2_DATA_PATH,
             verbose=verbose,
         )
-        print('Preprocessed data found and loaded.')
+        print('Step 2 data found and loaded.')
     except Exception:
-        print('Preprocessed data not found, generating them.')
-        preprocessed_data_loaded = False
+        print('Step 2 data not found, generating them.')
+        step_2_data_loaded = False
 
-    if preprocessed_data_loaded:
+    if step_2_data_loaded:
         if len(img_list) == 0:
-            print('Preprocessed data found but incorrect, re-generating them.')
-            preprocessed_data_loaded = False
+            print('Step 2 data found but incorrect, re-generating them.')
+            step_2_data_loaded = False
 
-    if not preprocessed_data_loaded:
-        img_path_list = data_loading.get_img_path_list(global_constants.INTERMEDIATE_DATA_PATH, verbose=verbose)
+    if not step_2_data_loaded:
+        img_path_list = data_loading.get_img_path_list(global_constants.STEP_1_DATA_PATH, verbose=verbose)
         # # get min width and height separately
         min_width, min_height = standardize_img.get_min_dimensions(img_path_list)
         if verbose >= 2:
@@ -57,17 +57,17 @@ def get_data(batch_size: int,
 
         for img_path in img_path_list:
             # resize images to the smallest width and height found in the dataset
-            # also save results in preprocessed data folder
+            # also save results in step_2_data folder
             standardize_img.resize_img(
                 img_path=img_path,
                 min_width=min_width,
                 min_height=min_height,
             )
         if verbose >= 1:
-            print('Preprocessed data saved.')
+            print('Step 2 data saved.')
 
         img_list, tag_list = data_loading.load_data(
-            data_path=global_constants.PREPROCESSED_DATA_PATH,
+            data_path=global_constants.STEP_2_DATA_PATH,
             verbose=verbose,
         )
 
@@ -129,10 +129,10 @@ def get_data(batch_size: int,
     # remove batch dimension
     img_shape = batched_img_shape[1:]
     # print(f'img_shape: {img_shape}.')
-    final_data_path = Path(global_constants.FINAL_DATA_PATH)
-    if not final_data_path.exists():
-        final_data_path.mkdir(parents=False)
-    complete_file_path = global_constants.FINAL_DATA_PATH + global_constants.DL_FILE_NAME\
+    step_3_data_path = Path(global_constants.STEP_3_DATA_PATH)
+    if not step_3_data_path.exists():
+        step_3_data_path.mkdir(parents=False)
+    complete_file_path = global_constants.STEP_3_DATA_PATH + global_constants.DL_FILE_NAME \
                          + global_constants.PYTORCH_FILE_EXTENSION
     torch.save(obj=(train_dl, val_dl, test_dl), f=complete_file_path)
     if verbose >= 1:

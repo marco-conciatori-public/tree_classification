@@ -27,7 +27,7 @@ def get_min_dimensions(img_list: list) -> (int, int):
 
 
 def resize_img(img_path, min_width: int, min_height: int):
-    save_folder_path = Path(global_constants.PREPROCESSED_DATA_PATH)
+    save_folder_path = Path(global_constants.STEP_2_DATA_PATH)
     if not save_folder_path.exists():
         save_folder_path.mkdir(parents=False)
 

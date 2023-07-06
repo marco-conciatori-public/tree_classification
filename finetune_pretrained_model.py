@@ -17,7 +17,7 @@ model, preprocess = pretrained_regnet.get_regnet(training=True, num_classes=num_
 model.to(device=device)
 # print(f'model:\n{model}')
 
-img_list, tag_list = data_loading.load_data(data_path=global_constants.PREPROCESSED_DATA_PATH, verbose=verbose)
+img_list, tag_list = data_loading.load_data(data_path=global_constants.STEP_2_DATA_PATH, verbose=verbose)
 print(f'img_list[0].shape: {img_list[0].shape}')
 temp_img_list = []
 for img in img_list:

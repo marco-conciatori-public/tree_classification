@@ -16,7 +16,7 @@ model_id = 0
 partial_name = ''
 jump = 50
 
-img_list, tag_list = data_loading.load_data(data_path=global_constants.PREPROCESSED_DATA_PATH, verbose=verbose)
+img_list, tag_list = data_loading.load_data(data_path=global_constants.STEP_2_DATA_PATH, verbose=verbose)
 print(f'img_list length: {len(img_list)}')
 
 tree_class_counter = [0, 0, 0, 0, 0]
