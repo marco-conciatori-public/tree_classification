@@ -23,6 +23,7 @@ MODEL_PARAMETERS: dict = {
     'convolution_parameters': CONVOLUTION_PARAMETERS,
     'pooling_operation': POOLING_OPERATION,
     'pooling_parameters': POOLING_PARAMETERS,
+    'temp_dense_layer_dimension': 7744,  # temporary fix
 }
 
 # TRAINING HYPERPARAMETERS

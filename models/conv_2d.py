@@ -10,6 +10,7 @@ class Conv_2d(nn.Module):
             num_conv_layers: int,
             dense_layers: list,
             convolution_parameters: dict,
+            temp_dense_layer_dimension: int,
             pooling_operation: str = None,
             pooling_parameters: dict = None,
             name: str = None,
@@ -58,8 +59,8 @@ class Conv_2d(nn.Module):
             convolution_parameters['out_channels'] *= 2
 
         layers_dimension = []
-        # TODO: substitute 6400 with the correct number
-        layers_dimension.append(6400)
+        # TODO: substitute with proper operation
+        layers_dimension.append(temp_dense_layer_dimension)
         layers_dimension.extend(dense_layers)
         layers_dimension.append(self.num_output)
         dense_layer_list = []
