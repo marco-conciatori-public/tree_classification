@@ -10,6 +10,7 @@ def get_data(batch_size: int,
              shuffle: bool,
              train_val_test_proportions: list,
              tolerance: float,
+             custom_transforms: list = None,
              augment_data: int = 1,
              verbose: int = 0,
              ):
@@ -71,24 +72,20 @@ def get_data(batch_size: int,
             verbose=verbose,
         )
 
-    # apply data augmentation
+    # apply custom transforms
     temp_img_list = []
-    temp_tag_list = []
-    if augment_data > 1:
-        if verbose >= 1:
-            print(f'Applying data augmentation. Num original obs: {len(img_list)}.')
-        for i in range(augment_data - 1):
-            new_img_list, new_tag_list = data_augmentation.random_transform_img_list(
-                img_list=img_list,
-                tag_list=tag_list,
-                # apply_probability=0.6,
-            )
-            temp_img_list.extend(new_img_list)
-            temp_tag_list.extend(new_tag_list)
-        img_list.extend(temp_img_list)
-        tag_list.extend(temp_tag_list)
-        if verbose >= 1:
-            print(f'Data augmentation applied. Num obs after augmentation: {len(img_list)}.')
+    for img in img_list:
+        for transform in custom_transforms:
+            img = transform(img)
+        temp_img_list.append(img)
+    img_list = temp_img_list
+
+    img_list, tag_list = data_augmentation.apply_data_augmentation(
+        img_list=img_list,
+        tag_list=tag_list,
+        augment_data=augment_data,
+        verbose=verbose,
+    )
 
     utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)
 
@@ -98,11 +95,18 @@ def get_data(batch_size: int,
         target_list=tag_list,
         # name='complete_dataset',
     )
+    if verbose >= 1:
+        print('Dataset created.')
     # split dataset
     total_length = len(ds)
     split_lengths = [int(total_length * proportion) for proportion in train_val_test_proportions]
     split_lengths[2] = total_length - split_lengths[0] - split_lengths[1]
     train_ds, val_ds, test_ds = ds.random_split(lengths=split_lengths)
+    if verbose >= 2:
+        print('Dataset split.')
+        print(f'train_ds length: {len(train_ds)}.')
+        print(f'val_ds length: {len(val_ds)}.')
+        print(f'test_ds length: {len(test_ds)}.')
 
     # create data loaders
     train_dl = torch.utils.data.DataLoader(
@@ -120,6 +124,8 @@ def get_data(batch_size: int,
         batch_size=batch_size,
         shuffle=shuffle,
     )
+    if verbose >= 1:
+        print('Data loaders created.')
 
     # get image shape
     batched_img_tag = next(iter(train_dl))
@@ -136,7 +142,7 @@ def get_data(batch_size: int,
                          + global_constants.PYTORCH_FILE_EXTENSION
     torch.save(obj=(train_dl, val_dl, test_dl), f=complete_file_path)
     if verbose >= 1:
-        print('Data Generated.')
-        print('Data loader saved.')
+        print('Step 3 data generated.')
+        print('Step 3 data saved.')
 
     return train_dl, val_dl, test_dl, img_shape
