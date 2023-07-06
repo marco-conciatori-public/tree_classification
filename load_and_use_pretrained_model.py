@@ -1,19 +1,28 @@
 import torchvision.transforms.functional as tf
 
+import config
 import global_constants
-from models import pretrained_regnet
-from data_preprocessing import data_loading
+from models import pretrained
+from data_preprocessing import get_ready_data
 
 
 verbose = 2
 num_classes = len(global_constants.TREE_INFORMATION)
-img_list, tag_list = data_loading.load_data(data_path=global_constants.STEP_2_DATA_PATH, verbose=verbose)
+train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
+    batch_size=config.BATCH_SIZE,
+    shuffle=config.SHUFFLE,
+    custom_transforms=[],
+    train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
+    tolerance=config.TOLERANCE,
+    augment_data=config.DATA_AUGMENTATION_PROPORTION,
+    verbose=verbose,
+)
 img = img_list[0]
 print(f'img.shape: {img.shape}')
 img = tf.to_tensor(img)
 print(f'img.shape: {img.shape}')
 
-model, preprocess = pretrained_regnet.get_model(training=True, num_classes=num_classes)
+model, preprocess = pretrained.regnet.get_model(training=True, num_classes=num_classes)
 print(f'model:\n{model}')
 
 # Apply inference preprocessing transforms

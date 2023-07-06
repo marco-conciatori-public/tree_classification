@@ -1,85 +1,48 @@
-import torch
+import pkgutil
+import importlib
 import torchvision.transforms.functional as tf
 
 import utils
 import config
 import global_constants
 from models import training, evaluation, pretrained
-from data_preprocessing import data_loading, data_augmentation, custom_dataset
+from data_preprocessing import get_ready_data
 
 
 verbose = 2
 num_classes = len(global_constants.TREE_INFORMATION)
 augment_data = config.DATA_AUGMENTATION_PROPORTION
 device = utils.get_available_device(verbose=verbose)
-model_architecture = 'regnet'
-model_version = 'regnet_y_1_6gf'
+model_version = 'RegNet_Y_1_6GF'
 
 # load model
-# for module in pretrained.__dict__.values():
-#     if module.__name__ in model_version:
-#         model = module.get_model(training=True, num_classes=num_classes)
-#         break
+model_found = False
+last_module_info = None
+for module_info in pkgutil.iter_modules(pretrained.__path__):
+    if module_info.name in model_version.lower():
+        model_found = True
+        last_module_info = module_info
+        break
+assert model_found, f'Model {model_version} not implemented.'
 
-module = getattr(pretrained, model_architecture)
-model, preprocess = module.get_model(training=True, num_classes=num_classes)
+module = importlib.import_module(name=f'{pretrained.__name__}.{last_module_info.name}')
+model, preprocess = module.get_model(model_name=model_version,training=True, num_classes=num_classes)
 model.to(device=device)
 # print(f'model:\n{model}')
 
-img_list, tag_list = data_loading.load_data(data_path=global_constants.STEP_2_DATA_PATH, verbose=verbose)
-print(f'img_list[0].shape: {img_list[0].shape}')
-temp_img_list = []
-for img in img_list:
-    img = tf.to_tensor(img)
-    img = preprocess(img)
-    temp_img_list.append(img)
-img_list = temp_img_list
-print(f'img_list[0].shape: {img_list[0].shape}')
+custom_transforms = [
+    tf.to_tensor,
+    preprocess,
+]
 
-# apply data augmentation
-temp_img_list = []
-temp_tag_list = []
-if augment_data > 1:
-    for i in range(augment_data - 1):
-        new_img_list, new_tag_list = data_augmentation.random_transform_img_list(
-            img_list=img_list,
-            tag_list=tag_list,
-            # apply_probability=0.6,
-        )
-        temp_img_list.extend(new_img_list)
-        temp_tag_list.extend(new_tag_list)
-    img_list.extend(temp_img_list)
-    tag_list.extend(temp_tag_list)
-
-utils.check_split_proportions(train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS, tolerance=config.TOLERANCE)
-
-# create dataset
-ds = custom_dataset.Dataset_from_obs_targets(
-    obs_list=img_list,
-    target_list=tag_list,
-    # name='complete_dataset',
-)
-# split dataset
-total_length = len(ds)
-split_lengths = [int(total_length * proportion) for proportion in config.TRAIN_VAL_TEST_PROPORTIONS]
-split_lengths[2] = total_length - split_lengths[0] - split_lengths[1]
-train_ds, val_ds, test_ds = ds.random_split(lengths=split_lengths)
-
-# create data loaders
-train_dl = torch.utils.data.DataLoader(
-    dataset=train_ds,
+train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     batch_size=config.BATCH_SIZE,
     shuffle=config.SHUFFLE,
-)
-val_dl = torch.utils.data.DataLoader(
-    dataset=val_ds,
-    batch_size=config.BATCH_SIZE,
-    shuffle=config.SHUFFLE,
-)
-test_dl = torch.utils.data.DataLoader(
-    dataset=test_ds,
-    batch_size=config.BATCH_SIZE,
-    shuffle=config.SHUFFLE,
+    custom_transforms=custom_transforms,
+    train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
+    tolerance=config.TOLERANCE,
+    augment_data=config.DATA_AUGMENTATION_PROPORTION,
+    verbose=verbose,
 )
 
 # get image shape
