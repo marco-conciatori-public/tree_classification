@@ -4,7 +4,7 @@ import torchvision.transforms.functional as tf
 import utils
 import config
 import global_constants
-from models import pretrained_regnet, training, evaluation
+from models import training, evaluation, pretrained
 from data_preprocessing import data_loading, data_augmentation, custom_dataset
 
 
@@ -12,8 +12,17 @@ verbose = 2
 num_classes = len(global_constants.TREE_INFORMATION)
 augment_data = config.DATA_AUGMENTATION_PROPORTION
 device = utils.get_available_device(verbose=verbose)
+model_architecture = 'regnet'
+model_version = 'regnet_y_1_6gf'
 
-model, preprocess = pretrained_regnet.get_regnet(training=True, num_classes=num_classes)
+# load model
+# for module in pretrained.__dict__.values():
+#     if module.__name__ in model_version:
+#         model = module.get_model(training=True, num_classes=num_classes)
+#         break
+
+module = getattr(pretrained, model_architecture)
+model, preprocess = module.get_model(training=True, num_classes=num_classes)
 model.to(device=device)
 # print(f'model:\n{model}')
 

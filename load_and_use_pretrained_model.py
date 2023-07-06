@@ -13,7 +13,7 @@ print(f'img.shape: {img.shape}')
 img = tf.to_tensor(img)
 print(f'img.shape: {img.shape}')
 
-model, preprocess = pretrained_regnet.get_regnet(training=True, num_classes=num_classes)
+model, preprocess = pretrained_regnet.get_model(training=True, num_classes=num_classes)
 print(f'model:\n{model}')
 
 # Apply inference preprocessing transforms
