@@ -22,7 +22,7 @@ def get_data(batch_size: int,
         train_dl, val_dl, test_dl = torch.load(
             f=augmentation_path + global_constants.DL_FILE_NAME + global_constants.PYTORCH_FILE_EXTENSION
         )
-        print('Data loader found and loaded')
+        print('Step 3 data found and loaded')
         batched_img_tag = next(iter(train_dl))
         batched_img_shape = batched_img_tag[0].shape
         # print(f'batched_img_shape: {batched_img_shape}')
@@ -32,7 +32,7 @@ def get_data(batch_size: int,
         # print(f'img_shape: {img_shape}')
         return train_dl, val_dl, test_dl, img_shape
     except Exception:
-        print('Data loader not found, generating one')
+        print('Step 3 data not found, generating them')
 
     step_2_data_loaded = True
     try:
@@ -144,7 +144,6 @@ def get_data(batch_size: int,
         augmentation_path.mkdir(parents=True)
     torch.save(obj=(train_dl, val_dl, test_dl), f=complete_file_path)
     if verbose >= 1:
-        print('Step 3 data generated')
-        print('Step 3 data saved')
+        print('Step 3 data generated and saved')
 
     return train_dl, val_dl, test_dl, img_shape
