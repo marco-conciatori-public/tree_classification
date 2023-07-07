@@ -92,7 +92,7 @@ ConfusionMatrixDisplay.from_predictions(
     y_true=tag_list,
     y_pred=top_predictions,
     display_labels=global_constants.TREE_CATEGORIES_JAPANESE,
-    xticks_rotation=60,
+    xticks_rotation=45,
 )
 # sns.heatmap(cm,
 #             annot=True,
