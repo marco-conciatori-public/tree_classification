@@ -15,8 +15,8 @@ cpu = torch.device('cpu')
 
 # PARAMETERS
 verbose = 2
-model_id = 1
-partial_name = 'RegNetY-128GF_Weights-IMAGENET1K_SWAG_E2E_V1'
+model_id = 3
+partial_name = 'RegNet_Y_1_6'
 jump = 50
 
 img_list, tag_list = data_loading.load_data(data_path=global_constants.STEP_2_DATA_PATH, verbose=verbose)
