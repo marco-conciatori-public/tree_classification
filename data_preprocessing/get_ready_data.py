@@ -72,17 +72,6 @@ def get_data(batch_size: int,
             verbose=verbose,
         )
 
-    # apply custom transforms
-    temp_img_list = []
-    for img in img_list:
-        for transform in custom_transforms:
-            img = transform(img)
-
-        if torch.is_tensor(img):
-            img = img.numpy()
-        temp_img_list.append(img)
-    img_list = temp_img_list
-
     img_list, tag_list = data_augmentation.apply_data_augmentation(
         img_list=img_list,
         tag_list=tag_list,
@@ -90,6 +79,16 @@ def get_data(batch_size: int,
         verbose=verbose,
     )
 
+    # apply custom transforms
+    temp_img_list = []
+    for img in img_list:
+        for transform in custom_transforms:
+            img = transform(img)
+
+        # if torch.is_tensor(img):
+        #     img = img.numpy()
+        temp_img_list.append(img)
+    img_list = temp_img_list
     utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)
 
     # create dataset
