@@ -17,9 +17,10 @@ def get_data(batch_size: int,
 
     if verbose >= 1:
         print('Loading data...')
+    augmentation_path = f'{global_constants.STEP_3_DATA_PATH}AUGMENTATION-{augment_data}/'
     try:
         train_dl, val_dl, test_dl = torch.load(
-            f=global_constants.STEP_3_DATA_PATH + global_constants.DL_FILE_NAME + global_constants.PYTORCH_FILE_EXTENSION
+            f=augmentation_path + global_constants.DL_FILE_NAME + global_constants.PYTORCH_FILE_EXTENSION
         )
         print('Data loader found and loaded')
         batched_img_tag = next(iter(train_dl))
@@ -137,11 +138,10 @@ def get_data(batch_size: int,
     # remove batch dimension
     img_shape = batched_img_shape[1:]
     # print(f'img_shape: {img_shape}')
-    step_3_data_path = Path(global_constants.STEP_3_DATA_PATH)
-    if not step_3_data_path.exists():
-        step_3_data_path.mkdir(parents=False)
-    complete_file_path = global_constants.STEP_3_DATA_PATH + global_constants.DL_FILE_NAME \
-                         + global_constants.PYTORCH_FILE_EXTENSION
+    complete_file_path = f'{augmentation_path}{global_constants.DL_FILE_NAME}{global_constants.PYTORCH_FILE_EXTENSION}'
+    augmentation_path = Path(augmentation_path)
+    if not augmentation_path.exists():
+        augmentation_path.mkdir(parents=True)
     torch.save(obj=(train_dl, val_dl, test_dl), f=complete_file_path)
     if verbose >= 1:
         print('Step 3 data generated')
