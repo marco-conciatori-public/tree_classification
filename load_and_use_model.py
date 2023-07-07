@@ -1,5 +1,8 @@
 import torch
 import torchvision.transforms.functional as tf
+import cv2
+from sklearn.metrics import ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
 
 import utils
 import config
@@ -19,10 +22,6 @@ jump = 50
 img_list, tag_list = data_loading.load_data(data_path=global_constants.STEP_2_DATA_PATH, verbose=verbose)
 print(f'img_list length: {len(img_list)}')
 
-true_class_counter = [0, 0, 0, 0, 0]
-for tag in tag_list:
-    true_class_counter[tag] += 1
-
 model_path, info_path = utils.get_path_by_id(
     partial_name=partial_name,
     model_id=model_id,
@@ -41,10 +40,8 @@ loaded_model, meta_data = model_utils.load_model(
 # get loss function from string name
 loss_function = getattr(torch.nn, config.LOSS_FUNCTION_NAME)()
 
-test_loss = 0.0
-loss_counter = 0
-predictd_class_counter = [0, 0, 0, 0, 0]
 softmax = torch.nn.Softmax(dim=0)
+top_predictions = []
 with torch.set_grad_enabled(False):
     for img_index in range(len(img_list)):
         # if img_index % jump != 0:
@@ -53,6 +50,14 @@ with torch.set_grad_enabled(False):
         img = img_list[img_index]
         # print(f'img shape: {img.shape}')
         # print(f'img type: {type(img)}')
+
+        # show image
+        # cv2.imshow(
+        #     winname=global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"].upper(),
+        #     mat=img,
+        # )
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
         img = tf.to_tensor(img)
         # print(f'img shape: {img.shape}')
         # print(f'img type: {type(img)}')
@@ -71,9 +76,8 @@ with torch.set_grad_enabled(False):
         # print(f'prediction shape: {prediction.shape}')
         # print(f'prediction: {prediction}')
         top_class = prediction.argmax()
+        top_predictions.append(top_class)
         # print(f'top_class: {top_class}')
-        predictd_class_counter[top_class] += 1
-
 
         # print('-------------------')
         # print(f'\tTRUE LABEL: {global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"].upper()}')
@@ -83,5 +87,16 @@ with torch.set_grad_enabled(False):
         #               f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
         # exit()
 
-print(f'true_class_counter: {true_class_counter}')
-print(f'predictd_class_counter: {predictd_class_counter}')
+# Plot the confusion matrix
+ConfusionMatrixDisplay.from_predictions(
+    y_true=tag_list,
+    y_pred=top_predictions,
+    display_labels=global_constants.TREE_CATEGORIES_JAPANESE,
+)
+# sns.heatmap(cm,
+#             annot=True,
+#             fmt='g')
+# plt.ylabel('Prediction',fontsize=13)
+# plt.xlabel('Actual',fontsize=13)
+plt.title('Confusion Matrix', fontsize=17)
+plt.show()
