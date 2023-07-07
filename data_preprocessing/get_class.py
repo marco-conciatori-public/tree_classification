@@ -12,4 +12,4 @@ def from_name(name: str) -> int:
         if value['japanese_reading'] in name_lower:
             return key
 
-    raise ValueError(f'No tree found with image name "{name}".')
+    raise ValueError(f'No tree found with image name "{name}"')

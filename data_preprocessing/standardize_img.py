@@ -45,7 +45,7 @@ def resize_img(img_path, min_width: int, min_height: int):
         return
     # the [:-1] is used to remove due "\", that causes problems
     img_path = f'{save_folder_path}\{img_name}'
-    # print(f'Saving image to "{img_path}".')
+    # print(f'Saving image to "{img_path}"')
     try:
         cv2.imwrite(img_path, img)
     except Exception as e:

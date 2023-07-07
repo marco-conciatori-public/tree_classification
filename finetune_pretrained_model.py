@@ -26,7 +26,7 @@ for module_info in pkgutil.iter_modules(pretrained.__path__):
         model_found = True
         last_module_info = module_info
         break
-assert model_found, f'Model {model_version} not implemented.'
+assert model_found, f'Model {model_version} not implemented'
 
 module = importlib.import_module(name=f'{pretrained.__name__}.{last_module_info.name}')
 model, preprocess = module.get_model(model_name=model_version, training=True, num_classes=num_classes)
@@ -49,15 +49,15 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
 )
 
 # check image shape
-print(f'img_shape: {img_shape}.')
+print(f'img_shape: {img_shape}')
 
 batched_img_tag = next(iter(train_dl))
 batched_img_shape = batched_img_tag[0].shape
-print(f'batched_img_shape: {batched_img_shape}.')
-print(f'batched Target shape: {batched_img_tag[1].shape}.')
+print(f'batched_img_shape: {batched_img_shape}')
+print(f'batched Target shape: {batched_img_tag[1].shape}')
 # remove batch dimension
 img_shape = batched_img_shape[1:]
-print(f'img_shape: {img_shape}.')
+print(f'img_shape: {img_shape}')
 
 training_history = training.train(
     model=model,

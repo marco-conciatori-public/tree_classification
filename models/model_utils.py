@@ -40,7 +40,7 @@ def create_model(model_class_name: str,
         )
 
     else:
-        raise NotImplementedError(f'ERROR: the model class {model_class_name} is not implemented.')
+        raise NotImplementedError(f'ERROR: the model class {model_class_name} is not implemented')
 
     # migrate model to cpu or gpu depending on the available device
     model.to(device=device)
@@ -58,12 +58,12 @@ def save_model_and_meta_data(model: torch.nn.Module,
     Path(save_path).mkdir(parents=True, exist_ok=True)
 
     file_name = f'{model.name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{model.id}'
-    assert file_name is not None, 'ERROR: unable to retrieve model information.'
+    assert file_name is not None, 'ERROR: unable to retrieve model information'
 
     model_path = save_path + file_name + global_constants.PYTORCH_FILE_EXTENSION
     torch.save(model, model_path)
     if verbose >= 1:
-        print(f'Model saved successfully ({model_path}).')
+        print(f'Model saved successfully ({model_path})')
 
     if meta_data is not None:
         meta_data_path = f'{save_path}{file_name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}' \
@@ -71,7 +71,7 @@ def save_model_and_meta_data(model: torch.nn.Module,
         with open(file=meta_data_path, mode='w') as json_file:
             json.dump(meta_data, json_file, default=str)
         if verbose >= 1:
-            print(f'Meta data saved successfully ({meta_data_path}).')
+            print(f'Meta data saved successfully ({meta_data_path})')
 
 
 def load_model(model_path: str,

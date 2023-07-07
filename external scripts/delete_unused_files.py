@@ -8,7 +8,7 @@ import global_constants
 original_data_path = global_constants.DATA_PATH + 'original_data/'
 pure_path = Path(global_constants.ONE_LEVEL_UP + original_data_path)
 print(f'pure_path: {pure_path}')
-assert pure_path.exists(), f'Path {original_data_path} does not exist.'
+assert pure_path.exists(), f'Path {original_data_path} does not exist'
 tif_list = []
 for dir_path in pure_path.iterdir():
     # correct wrong 's1' to 's2' naming for Minekaede_s2 folder

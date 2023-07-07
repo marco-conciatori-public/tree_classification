@@ -26,7 +26,7 @@ TREE_INFORMATION = {
     1: {
         'japanese_reading': 'matsu',
         'common_name': 'pine',
-        'scientific_name': 'pinus spp.',
+        'scientific_name': 'pinus spp',
         'japanese_name': 'マツ',
         'type': EVERGREEN,
     },

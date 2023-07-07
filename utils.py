@@ -36,13 +36,13 @@ def get_available_id(partial_name: str, folder_path: str) -> int:
 
 def get_available_device(verbose: int = 0) -> torch.device:
     if not torch.cuda.is_available():
-        warnings.warn('GPU not found, using CPU.')
+        warnings.warn('GPU not found, using CPU')
         device = torch.device('cpu')
     else:
         device = torch.device('cuda:0')
 
     if verbose >= 1:
-        print(f'Device: {device}.')
+        print(f'Device: {device}')
 
     return device
 
@@ -50,13 +50,13 @@ def get_available_device(verbose: int = 0) -> torch.device:
 def check_split_proportions(train_val_test_proportions: list, tolerance: float):
     # check that proportions adds up to 1, except for rounding errors
     assert 1 - tolerance < sum(train_val_test_proportions) < 1 + tolerance, \
-        f'The values of train_val_test_proportions must add up to 1 +/- {tolerance}.' \
-        f' They add up to {sum(train_val_test_proportions)}.'
+        f'The values of train_val_test_proportions must add up to 1 +/- {tolerance}' \
+        f' They add up to {sum(train_val_test_proportions)}'
 
 
 def get_path_by_id(model_id: int, folder_path: str, partial_name: str = ''):
     pure_path = Path(folder_path)
-    assert pure_path.exists(), f'ERROR: The folder_path {folder_path} does not exists.'
+    assert pure_path.exists(), f'ERROR: The folder_path {folder_path} does not exists'
 
     # returns a GENERATOR that YELDS all the file paths matching the string
     search_string = f'*{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{model_id}*'
@@ -68,13 +68,13 @@ def get_path_by_id(model_id: int, folder_path: str, partial_name: str = ''):
     matching_paths = list(matching_paths)
     n_matches = len(matching_paths)
     assert n_matches > 0, f'ERROR: No matches found with partial_name "{partial_name}" ' \
-                          f'and model_id "{model_id}" in folder_path "{folder_path}".'
+                          f'and model_id "{model_id}" in folder_path "{folder_path}"'
     if n_matches == 1:
         warnings.warn(f'expected 2 matches with partial name "{partial_name}" and'
                       f' model_id "{model_id}" in folder_path "{folder_path}". One for the'
-                      f' model, the other for the meta data file.')
+                      f' model, the other for the meta data file')
     assert n_matches < 3, f'ERROR: More than 2 match found with partial_name "{partial_name}"' \
-                          f' and model_id "{model_id}" in folder_path "{folder_path}".'
+                          f' and model_id "{model_id}" in folder_path "{folder_path}"'
 
     model_path = matching_paths[0]
     meta_data_path = matching_paths[1]

@@ -27,7 +27,7 @@ def get_model(model_name: str, weights_name: str = 'DEFAULT', training: bool = F
     model.id = model_id
 
     if training:
-        assert num_classes is not None, 'num_classes must be specified when training = True.'
+        assert num_classes is not None, 'num_classes must be specified when training = True'
         model.train()
 
         # Freeze all layers weights

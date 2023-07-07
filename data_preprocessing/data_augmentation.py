@@ -81,7 +81,7 @@ def apply_data_augmentation(img_list: list, tag_list: list, augment_data: int, v
     temp_tag_list = []
     if augment_data > 1:
         if verbose >= 1:
-            print(f'Applying data augmentation. Num original obs: {len(img_list)}.')
+            print(f'Applying data augmentation. Num original obs: {len(img_list)}')
         for i in range(augment_data - 1):
             new_img_list, new_tag_list = random_transform_img_list(
                 img_list=img_list,
@@ -93,6 +93,6 @@ def apply_data_augmentation(img_list: list, tag_list: list, augment_data: int, v
         img_list.extend(temp_img_list)
         tag_list.extend(temp_tag_list)
         if verbose >= 1:
-            print(f'Data augmentation applied. Num obs after augmentation: {len(img_list)}.')
+            print(f'Data augmentation applied. Num obs after augmentation: {len(img_list)}')
 
     return img_list, tag_list

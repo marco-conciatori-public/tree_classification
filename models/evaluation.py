@@ -20,7 +20,7 @@ def eval(model: torch.nn.Module,
         try:
             metric_class = getattr(torchmetrics, metric_name)
         except AttributeError:
-            raise AttributeError(f'metric {metric_name} not found in torchmetrics.')
+            raise AttributeError(f'metric {metric_name} not found in torchmetrics')
 
         test_metrics[metric_name] = metric_class(**metric_args)
 
