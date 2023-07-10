@@ -1,14 +1,12 @@
 import torch
 import torchvision.transforms.functional as tf
 import cv2
-from sklearn.metrics import ConfusionMatrixDisplay
-import matplotlib.pyplot as plt
 
 import utils
 import config
 import global_constants
 from models import model_utils
-from data_preprocessing import data_loading
+from data_preprocessing import get_ready_data
 
 
 cpu = torch.device('cpu')
@@ -66,31 +64,15 @@ shortened_tag_list = [tag_list[i] for i in range(0, len(tag_list), jump)]
 # get loss function from string name
 loss_function = getattr(torch.nn, config.LOSS_FUNCTION_NAME)()
 softmax = torch.nn.Softmax(dim=0)
-top_predictions = []
 with torch.set_grad_enabled(False):
-    for img_index in range(len(img_list)):
-        # if img_index % jump != 0:
-        #     continue
-        # print(f'img_index: {img_index}')
-        img = img_list[img_index]
-        # print(f'img shape: {img.shape}')
-        # print(f'img type: {type(img)}')
+    for img_index in range(len(shortened_img_list)):
+        img = shortened_img_list[img_index]
 
         prediction = loaded_model(img)
-        # print(f'prediction shape: {prediction.shape}')
-        # print(f'prediction: {prediction}')
         prediction = prediction.squeeze(0)
-        # print(f'prediction shape: {prediction.shape}')
-        # print(f'prediction: {prediction}')
         prediction = softmax(prediction)
-        # print(f'prediction shape: {prediction.shape}')
-        # print(f'prediction: {prediction}')
         prediction = prediction.numpy()
-        # print(f'prediction shape: {prediction.shape}')
-        # print(f'prediction: {prediction}')
         top_class = prediction.argmax()
-        top_predictions.append(top_class)
-        # print(f'top_class: {top_class}')
 
         print('-------------------')
         print(f'TRUE LABEL: '
@@ -109,13 +91,3 @@ with torch.set_grad_enabled(False):
         cv2.waitKey(0)
         cv2.destroyAllWindows()
         # exit()
-
-# Plot the confusion matrix
-ConfusionMatrixDisplay.from_predictions(
-    y_true=tag_list,
-    y_pred=top_predictions,
-    display_labels=global_constants.TREE_CATEGORIES_JAPANESE,
-    xticks_rotation=45,
-)
-plt.title('Confusion Matrix', fontsize=17)
-plt.show()
