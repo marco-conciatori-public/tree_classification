@@ -46,15 +46,15 @@ tag_list = []
 for batch in train_dl:
     observation_batch, target_batch = batch
     img_list.append(observation_batch)
-    tag_list.append(target_batch)
+    tag_list.append(target_batch.squeeze(0).item())
 for batch in val_dl:
     observation_batch, target_batch = batch
     img_list.append(observation_batch)
-    tag_list.append(target_batch)
+    tag_list.append(target_batch.squeeze(0).item())
 for batch in test_dl:
     observation_batch, target_batch = batch
     img_list.append(observation_batch)
-    tag_list.append(target_batch)
+    tag_list.append(target_batch.squeeze(0).item())
 print(f'img_list length: {len(img_list)}')
 # shortened_img_list = [img_list[0]]
 shortened_img_list = [img_list[i] for i in range(0, len(img_list), jump)]
@@ -84,10 +84,10 @@ with torch.set_grad_enabled(False):
                       f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
 
         # show image
+        img = img.squeeze(0).numpy().transpose(1, 2, 0)
         cv2.imshow(
             winname=global_constants.TREE_INFORMATION[shortened_tag_list[img_index]]["japanese_reading"].upper(),
-            mat=img.squeeze(0),
+            mat=img,
         )
         cv2.waitKey(0)
         cv2.destroyAllWindows()
-        # exit()
