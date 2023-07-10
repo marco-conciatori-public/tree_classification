@@ -49,7 +49,7 @@ METRICS: dict = {
     'Recall': STANDARD_METRIC_ARGS,
     'F1Score': STANDARD_METRIC_ARGS,
 }
-
+SAVE_MODEL: bool = False
 
 # must add up to 1 +/- TOLERANCE
 TRAIN_VAL_TEST_PROPORTIONS: list = [0.8, 0.1, 0.1]

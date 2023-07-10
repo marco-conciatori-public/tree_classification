@@ -51,7 +51,7 @@ training_history = training.train(
     optimizer_name=config.OPTIMIZER_NAME,
     device=device,
     verbose=verbose,
-    save_model=True,
+    save_model=config.SAVE_MODEL,
     save_path=global_constants.MODEL_OUTPUT_DIR,
     metrics=config.METRICS,
 )
