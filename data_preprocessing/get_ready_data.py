@@ -11,7 +11,7 @@ def get_data(batch_size: int,
              train_val_test_proportions: list,
              tolerance: float,
              standard_img_dim: tuple = None,
-             custom_transforms: list = None,
+             custom_transforms: list = (),
              augment_data: int = 1,
              verbose: int = 0,
              ):
