@@ -25,14 +25,16 @@ custom and pre-trained fine-tuned models.
 be used for both custom and pre-trained fine-tuned models.
 
 Saved models are stored in the folder "output/models". They have names chosen by the user (if it is not chosen, the
-default is the type of Neural Network used). Then, they are assigned a sequential ID to avoid overwriting.
+default is the type of Neural Network used). Then, they are assigned a sequential ID to avoid overwriting. Also each of
+them as a meta_data file associated, which contains the parameters used to create the model and the results obtained
+during training/fine-tuning and evaluation.
 
 Parameters for the scripts can be modified in the file "config.py".
 
-The data preprocessing expects data in data/step_1_data, loads the images and resizes them and saves them in
-data/step_2_data. If specified in the config file, data augmentation is applied, and transformations specific to
+The data preprocessing expects data in data/step_1, loads the images and resizes them and saves them in
+data/step_2. If specified in the config file, data augmentation is applied, and transformations specific to
 pre-trained models are executed. The resulting images are organized in a pytorch dataset, which is split into train,
 validation and test sets. The datasets are converted into pytorch dataloaders, which are saved in
-data/step_3_data/augmentation_ _X_. _X_=1 means no augmentation; _X_=2 and _X_=3 mean respectively double and triple
+data/step_3/augmentation_ _X_. _X_=1 means no augmentation; _X_=2 and _X_=3 mean respectively double and triple
 the original data. When a script is run, if appropriate step_3 or step_2 data are present, they are not re-created.
 
