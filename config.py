@@ -30,7 +30,7 @@ MODEL_PARAMETERS: dict = {
 # width and height of images
 # IMG_DIM: tuple = (95, 95)
 BATCH_SIZE: int = 16
-EPOCHS: int = 4
+EPOCHS: int = 5
 LEARNING_RATE: float = 0.01
 # OPTIMIZER_NAME: str = 'Adam'
 OPTIMIZER_NAME: str = 'RMSprop'
@@ -40,8 +40,6 @@ STANDARD_METRIC_ARGS: dict = {
     'task': 'multiclass',
     'num_classes': 5,
     'average': 'weighted',
-    # 'average': 'macro',
-    # 'average': 'micro',
 }
 METRICS: dict = {
     'Accuracy': STANDARD_METRIC_ARGS,
@@ -49,10 +47,10 @@ METRICS: dict = {
     'Recall': STANDARD_METRIC_ARGS,
     'F1Score': STANDARD_METRIC_ARGS,
 }
-SAVE_MODEL: bool = False
+SAVE_MODEL: bool = True
 
 # must add up to 1 +/- TOLERANCE
 TRAIN_VAL_TEST_PROPORTIONS: list = [0.8, 0.1, 0.1]
 TOLERANCE: float = 0.01
 # number of times the original dataset is duplicated with random variations
-DATA_AUGMENTATION_PROPORTION: int = 1
+DATA_AUGMENTATION_PROPORTION: int = 50

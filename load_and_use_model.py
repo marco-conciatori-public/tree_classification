@@ -13,8 +13,8 @@ cpu = torch.device('cpu')
 
 # PARAMETERS
 verbose = 2
-model_id = 3
-partial_name = 'RegNet_Y_1_6'
+model_id = 0
+partial_name = 'conv'
 jump = 200
 
 model_path, info_path = utils.get_path_by_id(
