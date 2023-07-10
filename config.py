@@ -35,7 +35,7 @@ LEARNING_RATE: float = 0.01
 # OPTIMIZER_NAME: str = 'Adam'
 OPTIMIZER_NAME: str = 'RMSprop'
 LOSS_FUNCTION_NAME: str = 'CrossEntropyLoss'
-SHUFFLE: bool = False
+SHUFFLE: bool = True
 STANDARD_METRIC_ARGS: dict = {
     'task': 'multiclass',
     'num_classes': 5,
