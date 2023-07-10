@@ -112,9 +112,9 @@ def get_data(batch_size: int,
     if shuffle:
         train_ds, val_ds, test_ds = ds.random_split(lengths=split_lengths)
     else:
-        train_ds = ds[ : split_lengths[0]]
-        val_ds = ds[split_lengths[0] : split_lengths[0] + split_lengths[1]]
-        test_ds = ds[split_lengths[0] + split_lengths[1] : ]
+        train_ds = ds.get_subset(idx_max=split_lengths[0])
+        val_ds = ds.get_subset(idx_min=split_lengths[0], idx_max=split_lengths[0] + split_lengths[1])
+        test_ds = ds.get_subset(idx_min=split_lengths[0] + split_lengths[1])
     if verbose >= 2:
         print('Dataset split')
         print(f'train_ds length: {len(train_ds)}')

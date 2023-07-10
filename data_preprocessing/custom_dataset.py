@@ -29,19 +29,21 @@ class Dataset_from_obs_targets(Dataset):
             return self.obs_list[idx], self.target_list[idx]
         return tf.to_tensor(self.obs_list[idx]), self.target_list[idx]
 
-    # def get_subset(self, idx_min: int = None, idx_max: int = None):
-    #     if idx_min is None and idx_max is None:
-    #         raise ValueError('ERROR: "idx_min" and "idx_max" cannot both be None')
-    #     if idx_min is None:
-    #         idx_min = 0
-    #     if idx_max is None:
-    #         idx_max = len(self)
-    #     return Dataset_from_obs_targets(
-    #         obs_list=self.obs_list[idx_min:idx_max],
-    #         target_list=self.target_list[idx_min:idx_max],
-    #         name=self.name + '_subset',
-    #     )
-    #
+    def get_subset(self, idx_min: int = None, idx_max: int = None, name: str = None):
+        if idx_min is None and idx_max is None:
+            raise ValueError('ERROR: "idx_min" and "idx_max" cannot both be None')
+        if idx_min is None:
+            idx_min = 0
+        if idx_max is None:
+            idx_max = len(self)
+        if name is None:
+            name = self.name + '_subset'
+        return Dataset_from_obs_targets(
+            obs_list=self.obs_list[idx_min:idx_max],
+            target_list=self.target_list[idx_min:idx_max],
+            name=name,
+        )
+
     def random_split(self, lengths: list, generator=None) -> list:
         assert sum(lengths) == len(self), f'ERROR: sum(lengths) ({sum(lengths)}) must equal len(self) ({len(self)})'
         ds_list = []
