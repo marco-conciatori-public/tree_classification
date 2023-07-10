@@ -96,11 +96,11 @@ for i in range(worst_n_predictions):
             print(f' - {global_constants.TREE_INFORMATION[tree_class]["japanese_reading"]}: '
                   f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
 
-        # show image
-        img = step_2_img_list[img_index]
-        cv2.imshow(
-            winname=global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"].upper(),
-            mat=img,
-        )
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    # show image
+    img = step_2_img_list[img_index]
+    cv2.imshow(
+        winname=global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"].upper(),
+        mat=img,
+    )
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
