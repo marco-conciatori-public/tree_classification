@@ -1,8 +1,8 @@
 DATA_PATH = 'data/'
 ONE_LEVEL_UP = '../'
-STEP_2_DATA_PATH = DATA_PATH + 'step_2_data/'
-STEP_3_DATA_PATH = DATA_PATH + 'step_3_data/'
-STEP_1_DATA_PATH = DATA_PATH + 'step_1_data/'
+STEP_2_DATA_PATH = DATA_PATH + 'step_2/'
+STEP_3_DATA_PATH = DATA_PATH + 'step_3/'
+STEP_1_DATA_PATH = DATA_PATH + 'step_1/'
 OUTPUT_DIR = 'output/'
 MODEL_OUTPUT_DIR = OUTPUT_DIR + 'models/'
 MAX_DECIMAL_PLACES = 4

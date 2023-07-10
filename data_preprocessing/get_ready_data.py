@@ -18,7 +18,7 @@ def get_data(batch_size: int,
 
     if verbose >= 1:
         print('Loading data...')
-    augmentation_path = f'{global_constants.STEP_3_DATA_PATH}AUGMENTATION-{augment_data}/'
+    augmentation_path = f'{global_constants.STEP_3_DATA_PATH}augmentation_{augment_data}/'
     try:
         train_dl, val_dl, test_dl = torch.load(
             f=augmentation_path + global_constants.DL_FILE_NAME + global_constants.PYTORCH_FILE_EXTENSION
@@ -63,7 +63,7 @@ def get_data(batch_size: int,
 
         for img_path in img_path_list:
             # resize images to the width and height
-            # also save results in step_2_data folder
+            # also save results in step_2 folder
             standardize_img.resize_img(
                 img_path=img_path,
                 min_width=width,
@@ -90,8 +90,6 @@ def get_data(batch_size: int,
         for transform in custom_transforms:
             img = transform(img)
 
-        # if torch.is_tensor(img):
-        #     img = img.numpy()
         temp_img_list.append(img)
     img_list = temp_img_list
     utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)

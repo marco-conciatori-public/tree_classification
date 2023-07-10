@@ -3,7 +3,7 @@ import cv2
 
 import global_constants
 
-original_data_path = global_constants.DATA_PATH + 'original_data/'
+original_data_path = global_constants.DATA_PATH + 'original/'
 pure_path = Path(global_constants.ONE_LEVEL_UP + original_data_path)
 print(f'pure_path: {pure_path}')
 assert pure_path.exists(), f'Path {original_data_path} does not exist'
