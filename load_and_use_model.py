@@ -46,7 +46,7 @@ step_2_img_list, _ = data_loading.load_data(
             data_path=global_constants.STEP_2_DATA_PATH,
             verbose=0,
         )
-print(f'step_2_img_list length: {len(step_2_img_list)}')
+# print(f'step_2_img_list length: {len(step_2_img_list)}')
 
 img_list = []
 tag_list = []
@@ -69,7 +69,9 @@ shortened_img_list = [img_list[i] for i in range(0, len(img_list), jump)]
 shortened_step_2_img_list = [step_2_img_list[i] for i in range(0, len(img_list), jump)]
 print(f'shortened_img_list length: {len(shortened_img_list)}')
 shortened_tag_list = [tag_list[i] for i in range(0, len(tag_list), jump)]
-print(f'shortened_step_2_img_list length: {len(shortened_step_2_img_list)}')
+# print(f'shortened_step_2_img_list length: {len(shortened_step_2_img_list)}')
+assert len(img_list) == len(step_2_img_list)
+assert len(shortened_img_list) == len(shortened_step_2_img_list)
 
 # get loss function from string name
 loss_function = getattr(torch.nn, config.LOSS_FUNCTION_NAME)()
@@ -95,7 +97,6 @@ with torch.set_grad_enabled(False):
 
         img = shortened_step_2_img_list[img_index]
         # show image
-        print(img.shape)
         cv2.imshow(
             winname=global_constants.TREE_INFORMATION[shortened_tag_list[img_index]]["japanese_reading"].upper(),
             mat=img,
