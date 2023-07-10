@@ -25,9 +25,10 @@ custom and pre-trained fine-tuned models.
 be used for both custom and pre-trained fine-tuned models.
 
 Saved models are stored in the folder "output/models". They have names chosen by the user (if it is not chosen, the
-default is the type of Neural Network used). Then, they are assigned a sequential ID to avoid overwriting. Also each of
-them as a meta_data file associated, which contains the parameters used to create the model and the results obtained
-during training/fine-tuning and evaluation.
+default is the type of Neural Network used). Then, they are assigned a sequential ID to avoid overwriting. Each of
+them as also a meta_data file associated, which contains the parameters used to create the model and the results
+obtained during training/fine-tuning and evaluation. The meda_data file is saved as a json file, so that it can be read
+directly by humans.
 
 Parameters for the scripts can be modified in the file "config.py".
 
