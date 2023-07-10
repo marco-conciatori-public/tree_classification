@@ -77,12 +77,14 @@ def get_data(batch_size: int,
             verbose=verbose,
         )
 
-    img_list, tag_list = data_augmentation.apply_data_augmentation(
-        img_list=img_list,
-        tag_list=tag_list,
-        augment_data=augment_data,
-        verbose=verbose,
-    )
+    if augment_data > 1:
+        # apply data augmentation
+        img_list, tag_list = data_augmentation.apply_data_augmentation(
+            img_list=img_list,
+            tag_list=tag_list,
+            augment_data=augment_data,
+            verbose=verbose,
+        )
 
     # apply custom transforms
     temp_img_list = []
