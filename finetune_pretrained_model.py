@@ -14,9 +14,9 @@ num_classes = len(global_constants.TREE_INFORMATION)
 augment_data = config.DATA_AUGMENTATION_PROPORTION
 device = utils.get_available_device(verbose=verbose)
 # warning: case-sensitive names
-model_version = 'RegNet_Y_1_6GF'
-# model_version = 'RegNetY_32GF'
-# model_version = 'RegNetY_128GF'
+model_version = 'RegNet_Y_1_6GF'  # small
+# model_version = 'RegNetY_32GF'  # medium
+# model_version = 'RegNetY_128GF'  # big
 
 # load model
 model_found = False
