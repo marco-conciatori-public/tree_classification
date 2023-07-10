@@ -34,7 +34,7 @@ loaded_model, meta_data = model_utils.load_model(
 # print(observation)
 # print(f'dimensions: {observation.shape}')
 train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
-    shuffle=False,
+    shuffle=config.SHUFFLE,
     batch_size=1,
     train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
     # standard_img_dim=config.IMG_DIM,

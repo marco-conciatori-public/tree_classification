@@ -106,7 +106,12 @@ def get_data(batch_size: int,
     total_length = len(ds)
     split_lengths = [int(total_length * proportion) for proportion in train_val_test_proportions]
     split_lengths[2] = total_length - split_lengths[0] - split_lengths[1]
-    train_ds, val_ds, test_ds = ds.random_split(lengths=split_lengths)
+    if shuffle:
+        train_ds, val_ds, test_ds = ds.random_split(lengths=split_lengths)
+    else:
+        train_ds = ds[ : split_lengths[0]]
+        val_ds = ds[split_lengths[0] : split_lengths[0] + split_lengths[1]]
+        test_ds = ds[split_lengths[0] + split_lengths[1] : ]
     if verbose >= 2:
         print('Dataset split')
         print(f'train_ds length: {len(train_ds)}')
