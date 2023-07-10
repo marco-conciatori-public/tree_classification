@@ -1,5 +1,4 @@
 import torch
-import torchvision.transforms.functional as tf
 import cv2
 
 import utils
