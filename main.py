@@ -12,6 +12,7 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     batch_size=config.BATCH_SIZE,
     shuffle=config.SHUFFLE,
     train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
+    # standard_img_dim=config.IMG_DIM,
     tolerance=config.TOLERANCE,
     augment_data=config.DATA_AUGMENTATION_PROPORTION,
     verbose=verbose,

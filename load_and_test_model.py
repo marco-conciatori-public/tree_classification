@@ -37,6 +37,7 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     shuffle=False,
     batch_size=1,
     train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
+    # standard_img_dim=config.IMG_DIM,
     tolerance=config.TOLERANCE,
     augment_data=0,
     verbose=verbose,

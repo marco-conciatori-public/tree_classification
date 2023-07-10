@@ -10,6 +10,7 @@ def get_data(batch_size: int,
              shuffle: bool,
              train_val_test_proportions: list,
              tolerance: float,
+             standard_img_dim: tuple = None,
              custom_transforms: list = None,
              augment_data: int = 1,
              verbose: int = 0,
@@ -52,18 +53,21 @@ def get_data(batch_size: int,
 
     if not step_2_data_loaded:
         img_path_list = data_loading.get_img_path_list(global_constants.STEP_1_DATA_PATH, verbose=verbose)
-        # # get min width and height separately
-        min_width, min_height = standardize_img.get_min_dimensions(img_path_list)
-        if verbose >= 2:
-            print(f'Minimum width: {min_width}, minimum height: {min_height}')
+        if standard_img_dim is None:
+            # # get min width and height separately
+            width, height = standardize_img.get_min_dimensions(img_path_list)
+            if verbose >= 2:
+                print(f'Minimum width: {width}, minimum height: {height}')
+        else:
+            width, height = standard_img_dim
 
         for img_path in img_path_list:
-            # resize images to the smallest width and height found in the dataset
+            # resize images to the width and height
             # also save results in step_2_data folder
             standardize_img.resize_img(
                 img_path=img_path,
-                min_width=min_width,
-                min_height=min_height,
+                min_width=width,
+                min_height=height,
             )
         if verbose >= 1:
             print('Step 2 data saved')
