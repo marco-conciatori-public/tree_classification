@@ -25,7 +25,7 @@ model_path, info_path = utils.get_path_by_id(
     folder_path=global_constants.MODEL_OUTPUT_DIR,
 )
 
-loaded_model, meta_data = model_utils.load_model(
+loaded_model, custom_transforms, meta_data = model_utils.load_model(
     model_path=model_path,
     device=cpu,
     training_mode=False,
@@ -65,7 +65,6 @@ shortened_tag_list = [tag_list[i] for i in range(0, len(tag_list), jump)]
 
 # get loss function from string name
 loss_function = getattr(torch.nn, config.LOSS_FUNCTION_NAME)()
-
 softmax = torch.nn.Softmax(dim=0)
 top_predictions = []
 with torch.set_grad_enabled(False):
@@ -77,18 +76,6 @@ with torch.set_grad_enabled(False):
         # print(f'img shape: {img.shape}')
         # print(f'img type: {type(img)}')
 
-        # show image
-        # cv2.imshow(
-        #     winname=global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"].upper(),
-        #     mat=img,
-        # )
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-        img = tf.to_tensor(img)
-        # print(f'img shape: {img.shape}')
-        # print(f'img type: {type(img)}')
-        img = img.unsqueeze(0)
-        # print(f'img shape: {img.shape}')
         prediction = loaded_model(img)
         # print(f'prediction shape: {prediction.shape}')
         # print(f'prediction: {prediction}')
@@ -105,12 +92,22 @@ with torch.set_grad_enabled(False):
         top_predictions.append(top_class)
         # print(f'top_class: {top_class}')
 
-        # print('-------------------')
-        # print(f'\tTRUE LABEL: {global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"].upper()}')
-        # for tree_class in range(len(prediction)):
-        #     if prediction[tree_class] >= config.TOLERANCE:
-        #         print(f'\t{global_constants.TREE_INFORMATION[tree_class]["japanese_reading"]}: '
-        #               f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
+        print('-------------------')
+        print(f'TRUE LABEL: '
+              f'{global_constants.TREE_INFORMATION[shortened_tag_list[img_index]]["japanese_reading"].upper()}')
+        print('NETWORK EVALUATION:')
+        for tree_class in range(len(prediction)):
+            if prediction[tree_class] >= config.TOLERANCE:
+                print(f' - {global_constants.TREE_INFORMATION[tree_class]["japanese_reading"]}: '
+                      f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
+
+        # show image
+        cv2.imshow(
+            winname=global_constants.TREE_INFORMATION[shortened_tag_list[img_index]]["japanese_reading"].upper(),
+            mat=img.squeeze(0),
+        )
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
         # exit()
 
 # Plot the confusion matrix

@@ -52,11 +52,7 @@ def get_data(batch_size: int,
         print('Step 2 data not found, generating them')
         step_2_data_loaded = False
 
-    if step_2_data_loaded:
-        if len(img_list) == 0:
-            print('Step 2 data found but incorrect, re-generating them')
-            step_2_data_loaded = False
-
+    # step 2
     if not step_2_data_loaded:
         img_path_list = data_loading.get_img_path_list(global_constants.STEP_1_DATA_PATH, verbose=verbose)
         if standard_img_dim is None:
@@ -83,6 +79,7 @@ def get_data(batch_size: int,
             verbose=verbose,
         )
 
+    # step 3
     if augment_data > 1:
         # apply data augmentation
         img_list, tag_list = data_augmentation.apply_data_augmentation(
