@@ -11,7 +11,7 @@ def get_data(batch_size: int,
              train_val_test_proportions: list,
              tolerance: float,
              standard_img_dim: tuple = None,
-             custom_transforms: list = (),
+             custom_transforms: list = None,
              augment_data: int = 1,
              verbose: int = 0,
              ):
@@ -87,14 +87,15 @@ def get_data(batch_size: int,
         )
 
     # apply custom transforms
-    temp_img_list = []
-    for img in img_list:
-        for transform in custom_transforms:
-            img = transform(img)
+    if custom_transforms is not None:
+        temp_img_list = []
+        for img in img_list:
+            for transform in custom_transforms:
+                img = transform(img)
 
-        temp_img_list.append(img)
-    img_list = temp_img_list
-    utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)
+            temp_img_list.append(img)
+        img_list = temp_img_list
+        utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)
 
     # create dataset
     ds = custom_dataset.Dataset_from_obs_targets(
