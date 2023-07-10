@@ -9,8 +9,6 @@ The environment needs to be set up with the following packages:
 - albumentations
 - numpy
 - pathlib
-- pkgutil
-- importlib
 - matplotlib
 - sklearn
 
