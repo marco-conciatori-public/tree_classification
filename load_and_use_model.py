@@ -94,10 +94,5 @@ ConfusionMatrixDisplay.from_predictions(
     display_labels=global_constants.TREE_CATEGORIES_JAPANESE,
     xticks_rotation=45,
 )
-# sns.heatmap(cm,
-#             annot=True,
-#             fmt='g')
-# plt.ylabel('Prediction',fontsize=13)
-# plt.xlabel('Actual',fontsize=13)
 plt.title('Confusion Matrix', fontsize=17)
 plt.show()
