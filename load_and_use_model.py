@@ -17,10 +17,7 @@ cpu = torch.device('cpu')
 verbose = 2
 model_id = 3
 partial_name = 'RegNet_Y_1_6'
-jump = 50
-
-img_list, tag_list = data_loading.load_data(data_path=global_constants.STEP_2_DATA_PATH, verbose=verbose)
-print(f'img_list length: {len(img_list)}')
+jump = 200
 
 model_path, info_path = utils.get_path_by_id(
     partial_name=partial_name,
@@ -36,6 +33,35 @@ loaded_model, meta_data = model_utils.load_model(
     verbose=verbose,
 )
 
+train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
+    shuffle=config.SHUFFLE,
+    batch_size=1,
+    train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
+    # standard_img_dim=config.IMG_DIM,
+    custom_transforms=custom_transforms,
+    tolerance=config.TOLERANCE,
+    augment_data=0,
+    verbose=verbose,
+)
+img_list = []
+tag_list = []
+for batch in train_dl:
+    observation_batch, target_batch = batch
+    img_list.append(observation_batch)
+    tag_list.append(target_batch)
+for batch in val_dl:
+    observation_batch, target_batch = batch
+    img_list.append(observation_batch)
+    tag_list.append(target_batch)
+for batch in test_dl:
+    observation_batch, target_batch = batch
+    img_list.append(observation_batch)
+    tag_list.append(target_batch)
+print(f'img_list length: {len(img_list)}')
+# shortened_img_list = [img_list[0]]
+shortened_img_list = [img_list[i] for i in range(0, len(img_list), jump)]
+print(f'shortened_img_list length: {len(shortened_img_list)}')
+shortened_tag_list = [tag_list[i] for i in range(0, len(tag_list), jump)]
 
 # get loss function from string name
 loss_function = getattr(torch.nn, config.LOSS_FUNCTION_NAME)()

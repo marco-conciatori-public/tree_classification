@@ -20,7 +20,7 @@ model_path, info_path = utils.get_path_by_id(
     folder_path=global_constants.MODEL_OUTPUT_DIR,
 )
 
-loaded_model, meta_data = model_utils.load_model(
+loaded_model, custom_transforms, meta_data = model_utils.load_model(
     model_path=model_path,
     device=cpu,
     training_mode=False,
@@ -38,6 +38,7 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     batch_size=1,
     train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
     # standard_img_dim=config.IMG_DIM,
+    custom_transforms=custom_transforms,
     tolerance=config.TOLERANCE,
     augment_data=0,
     verbose=verbose,

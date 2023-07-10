@@ -50,6 +50,7 @@ def create_model(model_class_name: str,
 
 def save_model_and_meta_data(model: torch.nn.Module,
                              save_path: str,
+                             custom_transforms=(),
                              meta_data: dict = None,
                              verbose: int = 0,
                              ):
@@ -62,7 +63,7 @@ def save_model_and_meta_data(model: torch.nn.Module,
     assert file_name is not None, 'ERROR: unable to retrieve model information'
 
     model_path = save_path + file_name + global_constants.PYTORCH_FILE_EXTENSION
-    torch.save(model, model_path)
+    torch.save(obj=(model, custom_transforms), f=model_path)
     if verbose >= 1:
         print(f'Model saved successfully ({model_path})')
 
@@ -83,7 +84,7 @@ def load_model(model_path: str,
                ) -> (torch.nn.Module, dict):
     if device is None:
         device = utils.get_available_device(verbose=verbose)
-    model = torch.load(model_path, map_location=device)
+    model, custom_transforms = torch.load(model_path, map_location=device)
     # normally, we save trained model, so we want to test or use them, not train them again
     if not training_mode:
         model.eval()
@@ -97,7 +98,7 @@ def load_model(model_path: str,
 
     if verbose >= 1:
         print(f'model name: {model.name}')
-    return model, meta_data
+    return model, custom_transforms, meta_data
 
 
 def print_formatted_results(loss: float, metrics: dict, title: str = 'RESULTS'):

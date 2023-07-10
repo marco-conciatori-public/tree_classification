@@ -60,6 +60,7 @@ training_history = training.train(
     save_model=config.SAVE_MODEL,
     save_path=global_constants.MODEL_OUTPUT_DIR,
     metrics=config.METRICS,
+    custom_transforms=custom_transforms,
 )
 print(f'training_history:\n{training_history}')
 

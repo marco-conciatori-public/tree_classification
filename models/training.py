@@ -18,6 +18,7 @@ def train(model: torch.nn.Module,
           save_model: bool,
           metrics: dict = None,
           save_path=None,
+          custom_transforms=None,
           verbose: int = 0,
           ) -> dict:
 
@@ -184,6 +185,7 @@ def train(model: torch.nn.Module,
     if save_model:
         model_utils.save_model_and_meta_data(
             model=model,
+            custom_transforms=custom_transforms,
             save_path=save_path,
             meta_data=meta_data,
             verbose=verbose,
