@@ -1,11 +1,9 @@
-import pkgutil
-import importlib
 import torchvision.transforms.functional as tf
 
 import utils
 import config
 import global_constants
-from models import training, evaluation, pretrained
+from models import training, evaluation, model_utils
 from data_preprocessing import get_ready_data
 
 
@@ -19,17 +17,7 @@ model_version = 'RegNet_Y_1_6GF'  # small
 # model_version = 'RegNetY_128GF'  # big
 
 # load model
-model_found = False
-last_module_info = None
-for module_info in pkgutil.iter_modules(pretrained.__path__):
-    if module_info.name in model_version.lower():
-        model_found = True
-        last_module_info = module_info
-        break
-assert model_found, f'Model {model_version} not implemented'
-
-module = importlib.import_module(name=f'{pretrained.__name__}.{last_module_info.name}')
-model, preprocess = module.get_model(model_name=model_version, training=True, num_classes=num_classes)
+model, preprocess = model_utils.get_torchvision_model(model_name=model_version, training=True, num_classes=num_classes)
 model.to(device=device)
 # print(f'model:\n{model}')
 
