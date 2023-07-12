@@ -1,8 +1,8 @@
 import torch
 import torchmetrics
 
-import config
 import utils
+import config
 import global_constants
 from models import model_utils
 from data_preprocessing import get_ready_data

@@ -13,17 +13,17 @@ augment_data = config.DATA_AUGMENTATION_PROPORTION
 device = utils.get_available_device(verbose=verbose)
 # warning: case-sensitive names
 # swim model
-model_version = 'swin_v2_b'  # base
-weights_name = 'Swin_V2_B_Weights.IMAGENET1K_V1'
+# model_version = 'swin_v2_b'  # base
+# weights_name = 'Swin_V2_B_Weights.IMAGENET1K_V1'
 # regnet model
 # model_version = 'RegNet_Y_1_6GF'  # small
 # model_version = 'RegNetY_32GF'  # medium
-# model_version = 'RegNetY_128GF'  # big
+model_version = 'RegNetY_128GF'  # big
 
 # load model
 model, preprocess = model_utils.get_torchvision_model(
     model_name=model_version,
-    weights_name=weights_name,
+    # weights_name=weights_name,
     training=True,
     num_classes=num_classes,
 )
