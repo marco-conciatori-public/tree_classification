@@ -11,7 +11,7 @@ from data_preprocessing import get_ready_data
 # PARAMETERS
 verbose = 2
 model_id = 0
-partial_name = 'conv'
+partial_name = 'regnety'
 show_confusion_matrix = True
 device = utils.get_available_device(verbose=verbose)
 

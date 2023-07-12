@@ -13,8 +13,8 @@ cpu = torch.device('cpu')
 # PARAMETERS
 verbose = 2
 model_id = 0
-partial_name = 'regnet_y'
-worst_n_predictions = 20
+partial_name = 'regnety'
+worst_n_predictions = 30
 
 model_path, info_path = utils.get_path_by_id(
     partial_name=partial_name,
