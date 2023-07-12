@@ -3,6 +3,7 @@ import numpy as np
 import torch
 import torchmetrics
 
+import config
 import global_constants
 from models import model_utils
 
@@ -205,6 +206,8 @@ def train(model: torch.nn.Module,
             'epochs': epochs,
             'loss_function_name': loss_function_name,
             'optimizer_name': optimizer_name,
+            'training_length': len(training_data),
+            'augmentation': config.DATA_AUGMENTATION_PROPORTION,
             'history': history,
         }
         model_utils.save_model_and_meta_data(
