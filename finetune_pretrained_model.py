@@ -19,11 +19,12 @@ device = utils.get_available_device(verbose=verbose)
 # model_version = 'RegNet_Y_1_6GF'  # small
 # model_version = 'RegNetY_32GF'  # medium
 model_version = 'RegNetY_128GF'  # big
+weights_name = 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'
 
 # load model
 model, preprocess = model_utils.get_torchvision_model(
     model_name=model_version,
-    # weights_name=weights_name,
+    weights_name=weights_name,
     training=True,
     num_classes=num_classes,
 )
