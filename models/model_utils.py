@@ -114,7 +114,7 @@ def print_formatted_results(loss: float, metrics: dict, title: str = 'RESULTS'):
 
 
 def get_torchvision_model(model_name: str,
-                          weights_name: str = 'DEFAULT',
+                          weights_name: str,
                           training: bool = False,
                           num_classes: int = None,
                           ):
@@ -122,9 +122,9 @@ def get_torchvision_model(model_name: str,
                       f'{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{weights_name}'
     model_id = utils.get_available_id(partial_name=model_full_name, folder_path=global_constants.MODEL_OUTPUT_DIR)
 
-    # Initialize model with the best available weights
-    if weights_name == 'DEFAULT':
-        weights_name = f'{model_name}_Weights.DEFAULT'
+    # Initialize model with the given weights
+    # if weights_name == 'DEFAULT':
+    #     weights_name = f'{model_name}_Weights.DEFAULT'
     weights = models.get_weight(name=weights_name)
     model = models.get_model(name=model_name.lower(), weights=weights)
     # Initialize the inference transforms
