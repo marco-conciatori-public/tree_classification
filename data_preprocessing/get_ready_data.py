@@ -18,7 +18,10 @@ def get_data(batch_size: int,
              verbose: int = 0,
              ):
 
-    # temporary solution: each time delete the step 3 data and compute them again.
+    # TODO: dont resize images in step 2 if fine tuning
+    # TODO: separate resizing from saving in step 2
+    # TODO: maybe dont save step 2 data
+    # TODO: this is a temporary solution. each time delete the step 3 data and compute them again.
     # To load them, step 3 data must be divided in folders based on the custom_transforms applied, batch_size,
     # shuffle, and so on. This is not implemented yet.
     augmentation_path = f'{global_constants.STEP_3_DATA_PATH}augmentation_{augmentation_proportion}/'
