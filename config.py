@@ -29,8 +29,8 @@ MODEL_PARAMETERS: dict = {
 # TRAINING HYPERPARAMETERS
 # width and height of images
 # IMG_DIM: tuple = (95, 95)
-BATCH_SIZE: int = 16
-EPOCHS: int = 5
+BATCH_SIZE: int = 32
+EPOCHS: int = 10
 LEARNING_RATE: float = 0.01
 # OPTIMIZER_NAME: str = 'Adam'
 OPTIMIZER_NAME: str = 'RMSprop'
@@ -55,6 +55,6 @@ TRAIN_VAL_TEST_PROPORTIONS: list = [0.8, 0.1, 0.1]
 RANDOM_SEED: int = 42  # set to None for different results each time
 TOLERANCE: float = 0.01
 # number of times the original dataset is duplicated with random variations
-DATA_AUGMENTATION_PROPORTION: int = 3
-BALANCE_DATA: bool = True
-DISPLAY_CONFUSION_MATRIX: bool = True
+DATA_AUGMENTATION_PROPORTION: int = 1
+BALANCE_DATA: bool = False
+DISPLAY_CONFUSION_MATRIX: bool = False
