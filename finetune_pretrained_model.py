@@ -18,7 +18,7 @@ device = utils.get_available_device(verbose=verbose)
 # regnet model
 # model_version = 'RegNet_Y_1_6GF'  # small
 # model_version = 'RegNetY_32GF'  # medium
-model_version = 'RegNetY_128GF'  # big
+model_version = 'regnet_y_128gf'  # big
 weights_name = 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'
 
 # load model
