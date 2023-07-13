@@ -23,6 +23,9 @@ def train(model: torch.nn.Module,
           verbose: int = 0,
           ) -> dict:
 
+    if verbose >= 1:
+        print('Training started...')
+
     # get loss function from string name
     loss_function = getattr(torch.nn, loss_function_name)()
 

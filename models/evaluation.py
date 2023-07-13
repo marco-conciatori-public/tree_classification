@@ -17,6 +17,9 @@ def eval(model: torch.nn.Module,
          verbose: int = 0,
          ) -> (float, dict):
 
+    if verbose >= 1:
+        print('Evaluation started...')
+
     # get loss function from string name
     loss_function = getattr(torch.nn, loss_function_name)()
 
