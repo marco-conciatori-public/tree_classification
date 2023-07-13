@@ -12,7 +12,6 @@ INFO_FILE_NAME = 'meta_data'
 PYTORCH_FILE_EXTENSION = '.pt'
 DL_FILE_NAME = 'data_loader'
 
-TREE_CATEGORIES_JAPANESE = ('buna', 'matsu', 'minekaede', 'mizunara', 'nanakamado')
 DECIDUOUS = 'deciduous'
 EVERGREEN = 'evergreen'
 TREE_INFORMATION = {
@@ -51,6 +50,13 @@ TREE_INFORMATION = {
         'scientific_name': 'sorbus commixta',
         'japanese_name': 'ナナカマド',
         'type': DECIDUOUS,
+    },
+    5: {
+        'japanese_reading': 'kyaraboku',
+        'common_name': 'japanese yew',
+        'scientific_name': 'taxus cuspidata',
+        'japanese_name': 'キャラボク',
+        'type': EVERGREEN,
     },
 }
 

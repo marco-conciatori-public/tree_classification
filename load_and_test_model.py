@@ -111,12 +111,15 @@ if verbose >= 1:
         metrics=metric_evaluations,
     )
 
+labels = []
+for el in global_constants.TREE_INFORMATION.items():
+    labels.append(el['japanese_reading'])
 if show_confusion_matrix:
     # Plot the confusion matrix
     ConfusionMatrixDisplay.from_predictions(
         y_true=tag_list,
         y_pred=top_predictions,
-        display_labels=global_constants.TREE_CATEGORIES_JAPANESE,
+        display_labels=labels,
         xticks_rotation=45,
     )
     plt.title('Confusion Matrix', fontsize=17)
