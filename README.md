@@ -13,7 +13,7 @@ The environment needs to be set up with the following packages:
 - sklearn (optional, for confusion matrix display)
 
 The scripts to be run are in the main folder, they are:
-- **main**: prepares the data, then creates, trains, saves and tests a custom model, and finally displays the results.
+- **train_custom_model**: prepares the data, then creates, trains, saves and tests a custom model, and finally displays the results.
 - **finetune_pretrained_model**: downloads a pre-trained model (from torchvision models) and prepares the data with the 
 standard procedures plus the specific preprocessing required by the chosen model. Then fine-tunes the NN on the
 dataset, evaluates it on the test set and displays the results.
