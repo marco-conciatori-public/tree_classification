@@ -16,6 +16,7 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     # standard_img_dim=config.IMG_DIM,
     tolerance=config.TOLERANCE,
     augmentation_proportion=config.DATA_AUGMENTATION_PROPORTION,
+    random_seed=config.RANDOM_SEED,
     verbose=verbose,
 )
 

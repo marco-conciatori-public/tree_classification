@@ -42,6 +42,7 @@ _, _, test_dl, img_shape = get_ready_data.get_data(
     custom_transforms=custom_transforms,
     tolerance=config.TOLERANCE,
     augmentation_proportion=1,
+    random_seed=config.RANDOM_SEED,
     verbose=verbose,
 )
 if verbose >= 1:

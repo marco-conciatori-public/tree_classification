@@ -1,6 +1,7 @@
 import torch
 from pathlib import Path
 import shutil
+from sklearn.model_selection import train_test_split
 
 import utils
 import global_constants
@@ -15,6 +16,7 @@ def get_data(batch_size: int,
              standard_img_dim: tuple = None,
              custom_transforms: list = None,
              augmentation_proportion: int = 1,
+             random_seed: int = None,
              verbose: int = 0,
              ):
 
@@ -84,64 +86,99 @@ def get_data(batch_size: int,
         )
 
     # step 3
+    # split dataset
+    utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)
+    total_length = len(img_list)
+    split_lengths = [int(total_length * proportion) for proportion in train_val_test_proportions]
+    split_lengths[2] = total_length - split_lengths[0] - split_lengths[1]
+    if shuffle:
+        # extract training data randomly
+        train_imgs, val_and_test_imgs, train_tags, val_and_test_tags = train_test_split(
+            img_list,
+            tag_list,
+            train_size=split_lengths[0],
+            random_state=random_seed,
+        )
+        # extract validation and test data randomly
+        val_imgs, test_imgs, val_tags, test_tags = train_test_split(
+            val_and_test_imgs,
+            val_and_test_tags,
+            train_size=split_lengths[1],
+            random_state=random_seed,
+        )
+    else:  # not shuffle
+        train_imgs = img_list[ : split_lengths[0]]
+        train_tags = tag_list[ : split_lengths[0]]
+        val_imgs = img_list[split_lengths[0] : split_lengths[0] + split_lengths[1]]
+        val_tags = tag_list[split_lengths[0] : split_lengths[0] + split_lengths[1]]
+        test_imgs = img_list[split_lengths[0] + split_lengths[1] : ]
+        test_tags = tag_list[split_lengths[0] + split_lengths[1] : ]
+
+    if verbose >= 2:
+        print('image list split')
+        print(f'split_lengths: {split_lengths}')
+        print(f'train_imgs length: {len(train_imgs)}')
+        print(f'val_imgs length: {len(val_imgs)}')
+        print(f'test_imgs length: {len(test_imgs)}')
+    assert len(train_imgs) == len(train_tags)
+    assert len(val_imgs) == len(val_tags)
+    assert len(test_imgs) == len(test_tags)
+    
     if balance_data or (augmentation_proportion > 1):
         # apply data balancing/augmentation
-        img_list, tag_list = balancing_augmentation.balance_augment_data(
-            img_list=img_list,
-            tag_list=tag_list,
+        train_imgs, train_tags = balancing_augmentation.balance_augment_data(
+            img_list=train_imgs,
+            tag_list=train_tags,
             balance_data=balance_data,
             augmentation_proportion=augmentation_proportion,
             verbose=verbose,
         )
-
+    
+    train_val_test_img_list = [train_imgs, val_imgs, test_imgs]
+    train_val_test_tags_list = [train_tags, val_tags, test_tags]
+    
     # apply custom transforms
     if custom_transforms is not None:
-        temp_img_list = []
-        for img in img_list:
-            for transform in custom_transforms:
-                img = transform(img)
+        for index in range(len(train_val_test_img_list)):
+            temp_img_list = []
+            for img in train_val_test_img_list[index]:
+                for transform in custom_transforms:
+                    img = transform(img)
+    
+                temp_img_list.append(img)
+            train_val_test_img_list[index] = temp_img_list
+    
+    # create datasets
+    train_val_test_ds = []
+    for index in range(len(train_val_test_img_list)):
+        train_val_test_ds.append(
+            custom_dataset.Dataset_from_obs_targets(
+                obs_list=train_val_test_img_list[index],
+                target_list=train_val_test_tags_list[index],
+                # name='complete_dataset',
+            )
+        )
 
-            temp_img_list.append(img)
-        img_list = temp_img_list
-        utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)
-
-    # create dataset
-    ds = custom_dataset.Dataset_from_obs_targets(
-        obs_list=img_list,
-        target_list=tag_list,
-        # name='complete_dataset',
-    )
     if verbose >= 1:
-        print('Dataset created')
-    # split dataset
-    total_length = len(ds)
-    split_lengths = [int(total_length * proportion) for proportion in train_val_test_proportions]
-    split_lengths[2] = total_length - split_lengths[0] - split_lengths[1]
-    if shuffle:
-        train_ds, val_ds, test_ds = ds.random_split(lengths=split_lengths)
-    else:
-        train_ds = ds.get_subset(idx_max=split_lengths[0])
-        val_ds = ds.get_subset(idx_min=split_lengths[0], idx_max=split_lengths[0] + split_lengths[1])
-        test_ds = ds.get_subset(idx_min=split_lengths[0] + split_lengths[1])
-    if verbose >= 2:
-        print('Dataset split')
-        print(f'train_ds length: {len(train_ds)}')
-        print(f'val_ds length: {len(val_ds)}')
-        print(f'test_ds length: {len(test_ds)}')
+        print('Datasets created')
+        if verbose >= 2:
+            print(f'train_val_test_ds[0] length: {len(train_val_test_ds[0])}')
+            print(f'train_val_test_ds[1] length: {len(train_val_test_ds[1])}')
+            print(f'train_val_test_ds[2] length: {len(train_val_test_ds[2])}')
 
     # create data loaders
     train_dl = torch.utils.data.DataLoader(
-        dataset=train_ds,
+        dataset=train_val_test_ds[0],
         batch_size=batch_size,
         shuffle=shuffle,
     )
     val_dl = torch.utils.data.DataLoader(
-        dataset=val_ds,
+        dataset=train_val_test_ds[1],
         batch_size=batch_size,
         shuffle=shuffle,
     )
     test_dl = torch.utils.data.DataLoader(
-        dataset=test_ds,
+        dataset=train_val_test_ds[2],
         batch_size=batch_size,
         shuffle=shuffle,
     )
