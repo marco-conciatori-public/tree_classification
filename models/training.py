@@ -79,6 +79,7 @@ def train(model: torch.nn.Module,
                 # print(f'target_batch: {target_batch}')
 
                 prediction_batch = model(observation_batch)
+                # print(f'prediction_batch.shape: {prediction_batch.shape}')
                 loss = loss_function(prediction_batch, target_batch)
 
                 # update metrics
