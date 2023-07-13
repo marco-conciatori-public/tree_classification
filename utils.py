@@ -1,6 +1,8 @@
 import torch
-from pathlib import Path
 import warnings
+from pathlib import Path
+import matplotlib.pyplot as plt
+from sklearn.metrics import ConfusionMatrixDisplay
 
 import global_constants
 
@@ -95,3 +97,18 @@ def pretty_print_dict(data, _level: int = 0):
         for i in range(_level):
             print('\t', end='')
         print(data)
+
+
+def display_cm(true_values, predictions, labels=None):
+    # Plot the confusion matrix
+    labels = []
+    for el in global_constants.TREE_INFORMATION.items():
+        labels.append(el['japanese_reading'])
+    ConfusionMatrixDisplay.from_predictions(
+        y_true=true_values,
+        y_pred=predictions,
+        display_labels=labels,
+        xticks_rotation=45,
+    )
+    plt.title('Confusion Matrix', fontsize=17)
+    plt.show()

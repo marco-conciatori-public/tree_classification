@@ -13,7 +13,7 @@ verbose = 2
 model_id = 0
 partial_name = 'regnety'
 device = utils.get_available_device(verbose=verbose)
-show_confusion_matrix = config.SHOW_CONFUSION_MATRIX
+display_confusion_matrix = config.DISPLAY_CONFUSION_MATRIX
 
 model_path, info_path = utils.get_path_by_id(
     partial_name=partial_name,
@@ -57,7 +57,7 @@ for metric_name, metric_args in config.METRICS.items():
     test_metrics[metric_name] = metric_class(**metric_args)
 
 softmax = torch.nn.Softmax(dim=0)
-top_predictions = []
+prediction_list = []
 tag_list = []
 test_loss = 0.0
 loaded_model.eval()
@@ -81,7 +81,7 @@ with torch.set_grad_enabled(False):
 
         test_loss += loss.item()
 
-        if show_confusion_matrix:
+        if display_confusion_matrix:
             # calculations for confusion matrix
             prediction = prediction_batch.squeeze(0)
             # print(f'prediction shape: {prediction.shape}')
@@ -93,7 +93,7 @@ with torch.set_grad_enabled(False):
             # print(f'prediction shape: {prediction.shape}')
             # print(f'prediction: {prediction}')
             top_class = prediction.argmax()
-            top_predictions.append(top_class)
+            prediction_list.append(top_class)
             tag_list.append(target_batch.squeeze(0).item())
 
 test_loss = test_loss / len(test_dl)
@@ -109,19 +109,10 @@ if verbose >= 1:
         metrics=metric_evaluations,
     )
 
-if show_confusion_matrix:
+if display_confusion_matrix:
     # Plot the confusion matrix
-    from sklearn.metrics import ConfusionMatrixDisplay
-    import matplotlib.pyplot as plt
-
     labels = []
-    for el in global_constants.TREE_INFORMATION.items():
+    for el in global_constants.TREE_INFORMATION.values():
+        print(el)
         labels.append(el['japanese_reading'])
-    ConfusionMatrixDisplay.from_predictions(
-        y_true=tag_list,
-        y_pred=top_predictions,
-        display_labels=labels,
-        xticks_rotation=45,
-    )
-    plt.title('Confusion Matrix', fontsize=17)
-    plt.show()
+    utils.display_cm(true_values=tag_list, predictions=prediction_list, labels=labels)

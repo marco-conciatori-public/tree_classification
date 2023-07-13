@@ -1,8 +1,9 @@
 import torch
 import torchmetrics
 
-from models import model_utils
+import utils
 import global_constants
+from models import model_utils
 
 
 def eval(model: torch.nn.Module,
@@ -10,7 +11,7 @@ def eval(model: torch.nn.Module,
          loss_function_name: str,
          device: torch.device,
          metrics: dict = None,
-         show_confusion_matrix: bool = False,
+         display_confusion_matrix: bool = False,
          verbose: int = 0,
          ) -> (float, dict):
 
@@ -56,7 +57,7 @@ def eval(model: torch.nn.Module,
             for metric in test_metrics.values():
                 metric.update(prediction_batch, target_batch)
 
-            if show_confusion_matrix:
+            if display_confusion_matrix:
                 # calculations for confusion matrix
                 # print(f'prediction_batch: {prediction_batch}')
                 # print(f'prediction_batch.shape: {prediction_batch.shape}')
@@ -88,22 +89,12 @@ def eval(model: torch.nn.Module,
             metrics=metric_evaluations,
         )
 
-
-    if show_confusion_matrix:
+    if display_confusion_matrix:
         # Plot the confusion matrix
-        from sklearn.metrics import ConfusionMatrixDisplay
-        import matplotlib.pyplot as plt
         labels = []
-        for el in global_constants.TREE_INFORMATION.items():
+        for el in global_constants.TREE_INFORMATION.values():
+            print(el)
             labels.append(el['japanese_reading'])
-
-        ConfusionMatrixDisplay.from_predictions(
-            y_true=tag_list,
-            y_pred=prediction_list,
-            display_labels=labels,
-            xticks_rotation=45,
-        )
-        plt.title('Confusion Matrix', fontsize=17)
-        plt.show()
+        utils.display_cm(true_values=tag_list, predictions=prediction_list, labels=labels)
 
     return test_loss, metric_evaluations
