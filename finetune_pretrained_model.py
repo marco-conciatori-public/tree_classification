@@ -39,10 +39,11 @@ custom_transforms = [
 train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     batch_size=config.BATCH_SIZE,
     shuffle=config.SHUFFLE,
+    balance_data=config.BALANCE_DATA,
     custom_transforms=custom_transforms,
     train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
     tolerance=config.TOLERANCE,
-    augment_data=config.DATA_AUGMENTATION_PROPORTION,
+    augmentation_proportion=config.DATA_AUGMENTATION_PROPORTION,
     verbose=verbose,
 )
 

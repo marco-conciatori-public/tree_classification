@@ -4,23 +4,24 @@ import shutil
 
 import utils
 import global_constants
-from data_preprocessing import data_loading, standardize_img, custom_dataset, data_augmentation
+from data_preprocessing import data_loading, standardize_img, custom_dataset, balancing_augmentation
 
 
 def get_data(batch_size: int,
              shuffle: bool,
+             balance_data: bool,
              train_val_test_proportions: list,
              tolerance: float,
              standard_img_dim: tuple = None,
              custom_transforms: list = None,
-             augment_data: int = 1,
+             augmentation_proportion: int = 1,
              verbose: int = 0,
              ):
 
     # temporary solution: each time delete the step 3 data and compute them again.
     # To load them, step 3 data must be divided in folders based on the custom_transforms applied, batch_size,
     # shuffle, and so on. This is not implemented yet.
-    augmentation_path = f'{global_constants.STEP_3_DATA_PATH}augmentation_{augment_data}/'
+    augmentation_path = f'{global_constants.STEP_3_DATA_PATH}augmentation_{augmentation_proportion}/'
     shutil.rmtree(path=global_constants.STEP_3_DATA_PATH, ignore_errors=True)
 
     if verbose >= 1:
@@ -80,12 +81,13 @@ def get_data(batch_size: int,
         )
 
     # step 3
-    if augment_data > 1:
-        # apply data augmentation
-        img_list, tag_list = data_augmentation.apply_data_augmentation(
+    if balance_data or (augmentation_proportion > 1):
+        # apply data balancing/augmentation
+        img_list, tag_list = balancing_augmentation.balance_augment_data(
             img_list=img_list,
             tag_list=tag_list,
-            augment_data=augment_data,
+            balance_data=balance_data,
+            augmentation_proportion=augmentation_proportion,
             verbose=verbose,
         )
 
