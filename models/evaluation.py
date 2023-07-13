@@ -84,13 +84,14 @@ def eval(model: torch.nn.Module,
     metric_evaluations = {}
     for metric_name in test_metrics:
         metric = test_metrics[metric_name]
-        metric_evaluations[metric_name] = metric.compute()
+        metric_evaluations[metric_name] = metric.compute().item()
 
     if verbose >= 1:
         model_utils.print_formatted_results(
             title='TEST RESULTS',
             loss=test_loss,
             metrics=metric_evaluations,
+            metrics_in_percentage=True,
         )
 
     if display_confusion_matrix:

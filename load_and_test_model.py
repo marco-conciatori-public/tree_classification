@@ -107,6 +107,7 @@ if verbose >= 1:
         title='TEST RESULTS',
         loss=test_loss,
         metrics=metric_evaluations,
+        metrics_in_percentage=True,
     )
 
 if display_confusion_matrix:

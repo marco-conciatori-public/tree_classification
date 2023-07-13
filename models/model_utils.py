@@ -101,16 +101,19 @@ def load_model(model_path: str,
     return model, custom_transforms, meta_data
 
 
-def print_formatted_results(loss: float, metrics: dict, title: str = 'RESULTS'):
+def print_formatted_results(loss: float,
+                            metrics: dict,
+                            metrics_in_percentage: bool = False,
+                            title: str = 'RESULTS'
+                            ):
     print(title)
     print(f'- Loss: {loss}')
     for metric_name in metrics:
         result = metrics[metric_name]
-        try:
-            content_result = result.item()
-        except AttributeError:
-            content_result = result
-        print(f'- {metric_name}: {round(content_result, global_constants.MAX_DECIMAL_PLACES)}')
+        if metrics_in_percentage:
+            print(f'- {metric_name}: {round(result * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))} %')
+        else:
+            print(f'- {metric_name}: {round(result, global_constants.MAX_DECIMAL_PLACES)}')
 
 
 def get_torchvision_model(model_name: str,
