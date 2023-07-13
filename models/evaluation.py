@@ -97,13 +97,6 @@ def eval(model: torch.nn.Module,
             metrics_in_percentage=True,
         )
 
-    if display_confusion_matrix:
-        # Plot the confusion matrix
-        labels = []
-        for el in global_constants.TREE_INFORMATION.values():
-            labels.append(el['japanese_reading'])
-        utils.display_cm(true_values=tag_list, predictions=prediction_list, labels=labels)
-
     if save_results:
         # add test loss and metrics to meta_data file
         # also add confusion matrix
@@ -116,5 +109,12 @@ def eval(model: torch.nn.Module,
             test_loss=test_loss,
             metric_evaluations=metric_evaluations,
         )
+
+    if display_confusion_matrix:
+        # Plot the confusion matrix
+        labels = []
+        for el in global_constants.TREE_INFORMATION.values():
+            labels.append(el['japanese_reading'])
+        utils.display_cm(true_values=tag_list, predictions=prediction_list, labels=labels)
 
     return test_loss, metric_evaluations
