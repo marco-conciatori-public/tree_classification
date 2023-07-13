@@ -152,3 +152,37 @@ def get_torchvision_model(model_name: str,
 
     # print(f'model:\n{model}')
     return model, preprocess
+
+
+def save_test_results(cm_true_values: list,
+                      cm_predictions: list,
+                      model: torch.nn.Module,
+                      save_path: str,
+                      test_loss: float,
+                      metric_evaluations: dict,
+                      verbose: int = 0,
+                      ):
+    if verbose >= 1:
+        print(f'Updating meta data information with test results...')
+
+    file_name = f'{model.name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{model.id}'
+    assert file_name is not None, 'ERROR: unable to retrieve model information'
+    meta_data_path = f'{save_path}{file_name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}' \
+                     f'{global_constants.INFO_FILE_NAME}.json'
+    if verbose >= 2:
+        print(f'meta data path: "{meta_data_path}"')
+
+    with open(meta_data_path, 'r') as json_file:
+        meta_data = json.load(json_file)
+        meta_data['history']['loss']['test'] = [test_loss]
+        meta_data['history']['metrics']['test'] = {}
+        for metric_name in metric_evaluations:
+            meta_data['history']['metrics']['test'][metric_name] = metric_evaluations[metric_name]
+        meta_data['test_confusion_matrix'] = {}
+        meta_data['test_confusion_matrix']['true_values'] = cm_true_values
+        meta_data['test_confusion_matrix']['predictions'] = cm_predictions
+
+    with open(meta_data_path, 'w') as json_file:
+        json.dump(meta_data, json_file, default=str)
+    if verbose >= 1:
+        print(f'Meta data updated successfully')

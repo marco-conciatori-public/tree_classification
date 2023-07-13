@@ -66,6 +66,8 @@ test_loss, metric_evaluations = evaluation.eval(
     device=device,
     display_confusion_matrix=config.DISPLAY_CONFUSION_MATRIX,
     metrics=config.METRICS,
+    save_results=True,
+    save_path=global_constants.MODEL_OUTPUT_DIR,
     verbose=verbose,
 )
 print(f'test_loss: {test_loss}')

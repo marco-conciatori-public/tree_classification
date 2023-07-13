@@ -12,6 +12,8 @@ def eval(model: torch.nn.Module,
          device: torch.device,
          metrics: dict = None,
          display_confusion_matrix: bool = False,
+         save_results: bool = False,
+         save_path=None,
          verbose: int = 0,
          ) -> (float, dict):
 
@@ -59,7 +61,7 @@ def eval(model: torch.nn.Module,
             for metric in test_metrics.values():
                 metric.update(prediction_batch, target_batch)
 
-            if display_confusion_matrix:
+            if display_confusion_matrix or save_results:
                 # calculations for confusion matrix
                 # print(f'prediction_batch: {prediction_batch}')
                 # print(f'prediction_batch.shape: {prediction_batch.shape}')
@@ -97,5 +99,18 @@ def eval(model: torch.nn.Module,
         for el in global_constants.TREE_INFORMATION.values():
             labels.append(el['japanese_reading'])
         utils.display_cm(true_values=tag_list, predictions=prediction_list, labels=labels)
+
+    if save_results:
+        # add test loss and metrics to meta_data file
+        # also add confusion matrix
+        assert save_path is not None
+        model_utils.save_test_results(
+            model=model,
+            cm_true_values=tag_list,
+            cm_predictions=prediction_list,
+            save_path=save_path,
+            test_loss=test_loss,
+            metric_evaluations=metric_evaluations,
+        )
 
     return test_loss, metric_evaluations
