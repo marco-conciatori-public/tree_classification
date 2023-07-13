@@ -28,6 +28,9 @@ def train(model: torch.nn.Module,
 
     # get optimizer from string name
     optimizer = getattr(torch.optim, optimizer_name)(params=model.parameters(), lr=learning_rate)
+    classes = []
+    for tree_info in global_constants.TREE_INFORMATION.values():
+        classes.append(tree_info['japanese_reading'])
 
     training_metrics = {}
     validation_metrics = {}
@@ -182,7 +185,7 @@ def train(model: torch.nn.Module,
     # if training is interrupted, save the best model obtained so far
     except KeyboardInterrupt:
         print('Training interrupted')
-        if save_model:
+        if save_model and best_model_weights is not None:
             print('Saving model before exiting...')
             print(f'With validation loss: {min_valid_loss}')
             model.load_state_dict(best_model_weights)
@@ -191,6 +194,17 @@ def train(model: torch.nn.Module,
                 'epochs': epochs,
                 'loss_function_name': loss_function_name,
                 'optimizer_name': optimizer_name,
+                'training_length': len(training_data),
+                'interrupted': True,
+                'shuffle': config.SHUFFLE,
+                'random_seed': config.RANDOM_SEED,
+                'batch_size': batch_size,
+                'num_classes': num_classes,
+                'classes': classes,
+                'train_val_test_proportions': config.TRAIN_VAL_TEST_PROPORTIONS,
+                'last_complete_epoch': epoch - 1,
+                'augmentation_proportion': config.DATA_AUGMENTATION_PROPORTION,
+                'balance_classes': config.BALANCE_DATA,
                 'history': history,
             }
             model_utils.save_model_and_meta_data(
@@ -210,7 +224,16 @@ def train(model: torch.nn.Module,
             'loss_function_name': loss_function_name,
             'optimizer_name': optimizer_name,
             'training_length': len(training_data),
-            'augmentation': config.DATA_AUGMENTATION_PROPORTION,
+            'interrupted': False,
+            'shuffle': config.SHUFFLE,
+            'random_seed': config.RANDOM_SEED,
+            'batch_size': batch_size,
+            'num_classes': num_classes,
+            'classes': classes,
+            'train_val_test_proportions': config.TRAIN_VAL_TEST_PROPORTIONS,
+            'last_complete_epoch': epoch,
+            'augmentation_proportion': config.DATA_AUGMENTATION_PROPORTION,
+            'balance_classes': config.BALANCE_DATA,
             'history': history,
         }
         model_utils.save_model_and_meta_data(
