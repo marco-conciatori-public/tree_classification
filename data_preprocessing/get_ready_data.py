@@ -116,7 +116,7 @@ def get_data(batch_size: int,
 
     if verbose >= 2:
         print('image list split')
-        print(f'split_lengths: {split_lengths}')
+        # print(f'split_lengths: {split_lengths}')
         print(f'train_imgs length: {len(train_imgs)}')
         print(f'val_imgs length: {len(val_imgs)}')
         print(f'test_imgs length: {len(test_imgs)}')
