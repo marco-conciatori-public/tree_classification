@@ -31,12 +31,14 @@ def train(model: torch.nn.Module,
 
     training_metrics = {}
     validation_metrics = {}
+    num_classes = len(global_constants.TREE_INFORMATION)
     for metric_name, metric_args in metrics.items():
         try:
             metric_class = getattr(torchmetrics, metric_name)
         except AttributeError:
             raise AttributeError(f'metric {metric_name} not found in torchmetrics')
 
+        metric_args['num_classes'] = num_classes
         training_metrics[metric_name] = metric_class(**metric_args)
         validation_metrics[metric_name] = metric_class(**metric_args)
 

@@ -19,12 +19,14 @@ def eval(model: torch.nn.Module,
     loss_function = getattr(torch.nn, loss_function_name)()
 
     test_metrics = {}
+    num_classes = len(global_constants.TREE_INFORMATION)
     for metric_name, metric_args in metrics.items():
         try:
             metric_class = getattr(torchmetrics, metric_name)
         except AttributeError:
             raise AttributeError(f'metric {metric_name} not found in torchmetrics')
 
+        metric_args['num_classes'] = num_classes
         test_metrics[metric_name] = metric_class(**metric_args)
 
     test_loss = 0.0

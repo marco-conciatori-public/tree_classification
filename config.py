@@ -38,7 +38,7 @@ LOSS_FUNCTION_NAME: str = 'CrossEntropyLoss'
 SHUFFLE: bool = True
 STANDARD_METRIC_ARGS: dict = {
     'task': 'multiclass',
-    'num_classes': 5,
+    # 'num_classes': 5,
     'average': 'weighted',
 }
 METRICS: dict = {
