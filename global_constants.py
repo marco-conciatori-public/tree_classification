@@ -51,12 +51,19 @@ TREE_INFORMATION = {
         'japanese_name': 'ナナカマド',
         'type': DECIDUOUS,
     },
-    # 5: {
-    #     'japanese_reading': 'kyaraboku',
-    #     'common_name': 'japanese yew',
-    #     'scientific_name': 'taxus cuspidata',
-    #     'japanese_name': 'キャラボク',
-    #     'type': EVERGREEN,
-    # },
+    5: {
+        'japanese_reading': 'kyaraboku',
+        'common_name': 'japanese yew',
+        'scientific_name': 'taxus cuspidata',
+        'japanese_name': 'キャラボク',
+        'type': EVERGREEN,
+    },
+    6: {
+        'japanese_reading': 'inutsuge',
+        'common_name': 'japanese holly',
+        'scientific_name': 'ilex crenata',
+        'japanese_name': 'イヌツゲ',
+        'type': EVERGREEN,
+    },
 }
 
