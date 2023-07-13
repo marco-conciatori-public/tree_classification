@@ -13,6 +13,7 @@ verbose = 2
 model_id = 0
 partial_name = 'regnety'
 device = utils.get_available_device(verbose=verbose)
+show_confusion_matrix = config.SHOW_CONFUSION_MATRIX
 
 model_path, info_path = utils.get_path_by_id(
     partial_name=partial_name,
@@ -80,18 +81,20 @@ with torch.set_grad_enabled(False):
 
         test_loss += loss.item()
 
-        prediction = prediction_batch.squeeze(0)
-        # print(f'prediction shape: {prediction.shape}')
-        # print(f'prediction: {prediction}')
-        prediction = softmax(prediction)
-        # print(f'prediction shape: {prediction.shape}')
-        # print(f'prediction: {prediction}')
-        prediction = prediction.numpy()
-        # print(f'prediction shape: {prediction.shape}')
-        # print(f'prediction: {prediction}')
-        top_class = prediction.argmax()
-        top_predictions.append(top_class)
-        tag_list.append(target_batch.squeeze(0).item())
+        if show_confusion_matrix:
+            # calculations for confusion matrix
+            prediction = prediction_batch.squeeze(0)
+            # print(f'prediction shape: {prediction.shape}')
+            # print(f'prediction: {prediction}')
+            prediction = softmax(prediction)
+            # print(f'prediction shape: {prediction.shape}')
+            # print(f'prediction: {prediction}')
+            prediction = prediction.numpy()
+            # print(f'prediction shape: {prediction.shape}')
+            # print(f'prediction: {prediction}')
+            top_class = prediction.argmax()
+            top_predictions.append(top_class)
+            tag_list.append(target_batch.squeeze(0).item())
 
 test_loss = test_loss / len(test_dl)
 metric_evaluations = {}
@@ -106,8 +109,7 @@ if verbose >= 1:
         metrics=metric_evaluations,
     )
 
-
-if config.SHOW_CONFUSION_MATRIX:
+if show_confusion_matrix:
     # Plot the confusion matrix
     from sklearn.metrics import ConfusionMatrixDisplay
     import matplotlib.pyplot as plt

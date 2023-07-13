@@ -56,20 +56,21 @@ def eval(model: torch.nn.Module,
             for metric in test_metrics.values():
                 metric.update(prediction_batch, target_batch)
 
-            # calculations for confusion matrix
-            # print(f'prediction_batch: {prediction_batch}')
-            # print(f'prediction_batch.shape: {prediction_batch.shape}')
-            # print(f'target_batch: {target_batch}')
-            # print(f'target_batch.shape: {target_batch.shape}')
-            tag_list.extend(target_batch.tolist())
-            prediction_batch = softmax(prediction_batch)
-            # print(f'prediction_batch: {prediction_batch}')
-            # print(f'prediction_batch.shape: {prediction_batch.shape}')
-            top_class_batch = prediction_batch.argmax(dim=1)
-            # print(f'top_class_batch: {top_class_batch}')
-            # print(f'top_class_batch.shape: {top_class_batch.shape}')
-            prediction_list.extend(top_class_batch.tolist())
-            # exit()
+            if show_confusion_matrix:
+                # calculations for confusion matrix
+                # print(f'prediction_batch: {prediction_batch}')
+                # print(f'prediction_batch.shape: {prediction_batch.shape}')
+                # print(f'target_batch: {target_batch}')
+                # print(f'target_batch.shape: {target_batch.shape}')
+                tag_list.extend(target_batch.tolist())
+                prediction_batch = softmax(prediction_batch)
+                # print(f'prediction_batch: {prediction_batch}')
+                # print(f'prediction_batch.shape: {prediction_batch.shape}')
+                top_class_batch = prediction_batch.argmax(dim=1)
+                # print(f'top_class_batch: {top_class_batch}')
+                # print(f'top_class_batch.shape: {top_class_batch.shape}')
+                prediction_list.extend(top_class_batch.tolist())
+                # exit()
 
             test_loss += loss.item()
             batch_counter += 1
