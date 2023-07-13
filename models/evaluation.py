@@ -2,6 +2,7 @@ import torch
 import torchmetrics
 
 from models import model_utils
+import global_constants
 
 
 def eval(model: torch.nn.Module,
@@ -9,6 +10,7 @@ def eval(model: torch.nn.Module,
          loss_function_name: str,
          device: torch.device,
          metrics: dict = None,
+         show_confusion_matrix: bool = False,
          verbose: int = 0,
          ) -> (float, dict):
 
@@ -27,6 +29,9 @@ def eval(model: torch.nn.Module,
     test_loss = 0.0
     batch_counter = 0
     model.eval()
+    tag_list = []
+    prediction_list = []
+    softmax = torch.nn.Softmax(dim=1)
     with torch.set_grad_enabled(False):
         for batch in test_data:
             observation_batch, target_batch = batch
@@ -45,9 +50,26 @@ def eval(model: torch.nn.Module,
             prediction_batch = model(observation_batch)
             loss = loss_function(prediction_batch, target_batch)
 
+            prediction_batch = prediction_batch.cpu()
+            target_batch = target_batch.cpu()
             # update metrics
             for metric in test_metrics.values():
-                metric.update(prediction_batch.cpu(), target_batch.cpu())
+                metric.update(prediction_batch, target_batch)
+
+            # calculations for confusion matrix
+            # print(f'prediction_batch: {prediction_batch}')
+            # print(f'prediction_batch.shape: {prediction_batch.shape}')
+            # print(f'target_batch: {target_batch}')
+            # print(f'target_batch.shape: {target_batch.shape}')
+            tag_list.extend(target_batch.tolist())
+            prediction_batch = softmax(prediction_batch)
+            # print(f'prediction_batch: {prediction_batch}')
+            # print(f'prediction_batch.shape: {prediction_batch.shape}')
+            top_class_batch = prediction_batch.argmax(dim=1)
+            # print(f'top_class_batch: {top_class_batch}')
+            # print(f'top_class_batch.shape: {top_class_batch.shape}')
+            prediction_list.extend(top_class_batch.tolist())
+            # exit()
 
             test_loss += loss.item()
             batch_counter += 1
@@ -64,5 +86,23 @@ def eval(model: torch.nn.Module,
             loss=test_loss,
             metrics=metric_evaluations,
         )
+
+
+    if show_confusion_matrix:
+        # Plot the confusion matrix
+        from sklearn.metrics import ConfusionMatrixDisplay
+        import matplotlib.pyplot as plt
+        labels = []
+        for el in global_constants.TREE_INFORMATION.items():
+            labels.append(el['japanese_reading'])
+
+        ConfusionMatrixDisplay.from_predictions(
+            y_true=tag_list,
+            y_pred=prediction_list,
+            display_labels=labels,
+            xticks_rotation=45,
+        )
+        plt.title('Confusion Matrix', fontsize=17)
+        plt.show()
 
     return test_loss, metric_evaluations

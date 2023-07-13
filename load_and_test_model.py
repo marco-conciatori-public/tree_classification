@@ -12,12 +12,7 @@ from data_preprocessing import get_ready_data
 verbose = 2
 model_id = 0
 partial_name = 'regnety'
-show_confusion_matrix = True
 device = utils.get_available_device(verbose=verbose)
-
-if show_confusion_matrix:
-    from sklearn.metrics import ConfusionMatrixDisplay
-    import matplotlib.pyplot as plt
 
 model_path, info_path = utils.get_path_by_id(
     partial_name=partial_name,
@@ -111,11 +106,15 @@ if verbose >= 1:
         metrics=metric_evaluations,
     )
 
-labels = []
-for el in global_constants.TREE_INFORMATION.items():
-    labels.append(el['japanese_reading'])
-if show_confusion_matrix:
+
+if config.SHOW_CONFUSION_MATRIX:
     # Plot the confusion matrix
+    from sklearn.metrics import ConfusionMatrixDisplay
+    import matplotlib.pyplot as plt
+
+    labels = []
+    for el in global_constants.TREE_INFORMATION.items():
+        labels.append(el['japanese_reading'])
     ConfusionMatrixDisplay.from_predictions(
         y_true=tag_list,
         y_pred=top_predictions,

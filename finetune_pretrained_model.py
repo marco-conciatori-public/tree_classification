@@ -81,6 +81,7 @@ test_loss, metric_evaluations = evaluation.eval(
     test_data=test_dl,
     loss_function_name=config.LOSS_FUNCTION_NAME,
     device=device,
+    show_confusion_matrix=config.SHOW_CONFUSION_MATRIX,
     metrics=config.METRICS,
     verbose=verbose,
 )

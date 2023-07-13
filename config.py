@@ -57,3 +57,4 @@ TOLERANCE: float = 0.01
 # number of times the original dataset is duplicated with random variations
 DATA_AUGMENTATION_PROPORTION: int = 3
 BALANCE_DATA: bool = True
+SHOW_CONFUSION_MATRIX: bool = True
