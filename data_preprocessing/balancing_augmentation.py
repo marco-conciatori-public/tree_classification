@@ -84,10 +84,11 @@ def balance_augment_data(img_list: list,
                          augmentation_proportion: int,
                          verbose: int = 0,
                          ):
-    if balance_data < 1:
-        warnings.warn(f'balance_data = {balance_data} < 1, balance_data should be an integer >= 1.')
-        print('Setting balance_data = 1.')
-        balance_data = 1
+    if augmentation_proportion < 1:
+        warnings.warn(f'augmentation_proportion = {augmentation_proportion} < 1,'
+                      ' augmentation_proportion should be an integer >= 1.')
+        print('Setting augmentation_proportion = 1.')
+        augmentation_proportion = 1
     if verbose >= 1:
         print(f'Applying data balancing ({balance_data}) and augmentation ({augmentation_proportion}).'
               f' Num original obs: {len(img_list)}')
