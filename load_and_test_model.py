@@ -113,6 +113,5 @@ if display_confusion_matrix:
     # Plot the confusion matrix
     labels = []
     for el in global_constants.TREE_INFORMATION.values():
-        print(el)
         labels.append(el['japanese_reading'])
     utils.display_cm(true_values=tag_list, predictions=prediction_list, labels=labels)
