@@ -13,15 +13,13 @@ def get_data(batch_size: int,
              balance_data: bool,
              train_val_test_proportions: list,
              tolerance: float,
+             no_resizing: bool = False,
              standard_img_dim: tuple = None,
              custom_transforms: list = None,
              augmentation_proportion: int = 1,
              random_seed: int = None,
              verbose: int = 0,
              ):
-
-    # TODO: dont resize images in step 2 if fine tuning
-    # TODO: separate resizing from saving in step 2
     # TODO: maybe dont save step 2 data
     # TODO: this is a temporary solution. each time delete the step 3 data and compute them again.
     # To load them, step 3 data must be divided in folders based on the custom_transforms applied, batch_size,
@@ -47,19 +45,20 @@ def get_data(batch_size: int,
     # except Exception:
     #     print('Step 3 data not found, generating them')
     #
-    step_2_data_loaded = True
-    try:
-        img_list, tag_list = data_loading.load_data(
-            data_path=global_constants.STEP_2_DATA_PATH,
-            verbose=verbose,
-        )
-        print('Step 2 data found and loaded')
-    except Exception:
-        print('Step 2 data not found, generating them')
-        step_2_data_loaded = False
+    # step_2_data_loaded = True
+    # try:
+    #     img_list, tag_list = data_loading.load_data(
+    #         data_path=global_constants.STEP_2_DATA_PATH,
+    #         verbose=verbose,
+    #     )
+    #     print('Step 2 data found and loaded')
+    # except Exception:
+    #     print('Step 2 data not found, generating them')
+    #     step_2_data_loaded = False
 
     # step 2
-    if not step_2_data_loaded:
+    # if not step_2_data_loaded:
+    if not no_resizing:  # resize images
         img_path_list = data_loading.get_img_path_list(global_constants.STEP_1_DATA_PATH, verbose=verbose)
         if standard_img_dim is None:
             # # get min width and height separately
@@ -82,6 +81,11 @@ def get_data(batch_size: int,
 
         img_list, tag_list = data_loading.load_data(
             data_path=global_constants.STEP_2_DATA_PATH,
+            verbose=verbose,
+        )
+    else:  # no_resizing, directly use step_1 data
+        img_list, tag_list = data_loading.load_data(
+            data_path=global_constants.STEP_1_DATA_PATH,
             verbose=verbose,
         )
 

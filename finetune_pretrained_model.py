@@ -30,6 +30,14 @@ model, preprocess = model_utils.get_torchvision_model(
 )
 model.to(device=device)
 # print(f'model:\n{model}')
+attributes = dir(preprocess)
+resize_in_attributes = False
+for attribute in attributes:
+    if 'resize' in attribute.lower():
+        resize_in_attributes = True
+        break
+if verbose >=2:
+    print(f'resize_in_attributes: {resize_in_attributes}')
 
 custom_transforms = [
     tf.to_tensor,
@@ -42,6 +50,7 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     balance_data=config.BALANCE_DATA,
     custom_transforms=custom_transforms,
     train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
+    no_resizing=resize_in_attributes,
     tolerance=config.TOLERANCE,
     augmentation_proportion=config.DATA_AUGMENTATION_PROPORTION,
     random_seed=config.RANDOM_SEED,
