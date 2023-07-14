@@ -1,11 +1,11 @@
 import torch
-from pathlib import Path
 import shutil
+from pathlib import Path
 from sklearn.model_selection import train_test_split
 
 import utils
 import global_constants
-from data_preprocessing import data_loading, standardize_img, custom_dataset, balancing_augmentation
+from data_preprocessing import data_loading, standardize_img, custom_dataset, balancing_augmentation, get_class
 
 
 def get_data(batch_size: int,
@@ -20,7 +20,6 @@ def get_data(batch_size: int,
              random_seed: int = None,
              verbose: int = 0,
              ):
-    # TODO: maybe dont save step 2 data
     # TODO: this is a temporary solution. each time delete the step 3 data and compute them again.
     # To load them, step 3 data must be divided in folders based on the custom_transforms applied, batch_size,
     # shuffle, and so on. This is not implemented yet.
@@ -56,36 +55,16 @@ def get_data(batch_size: int,
     #     print('Step 2 data not found, generating them')
     #     step_2_data_loaded = False
 
-    # step 2
     # if not step_2_data_loaded:
-    if not no_resizing:  # resize images
-        img_path_list = data_loading.get_img_path_list(global_constants.STEP_1_DATA_PATH, verbose=verbose)
-        if standard_img_dim is None:
-            # # get min width and height separately
-            width, height = standardize_img.get_min_dimensions(img_path_list)
-            if verbose >= 2:
-                print(f'Minimum width: {width}, minimum height: {height}')
-        else:
-            width, height = standard_img_dim
-
-        for img_path in img_path_list:
-            # resize images to the width and height
-            # also save results in step_2 folder
-            standardize_img.resize_img(
-                img_path=img_path,
-                min_width=width,
-                min_height=height,
-            )
-        if verbose >= 1:
-            print('Step 2 data saved')
-
-        img_list, tag_list = data_loading.load_data(
-            data_path=global_constants.STEP_2_DATA_PATH,
-            verbose=verbose,
-        )
-    else:  # no_resizing, directly use step_1 data
-        img_list, tag_list = data_loading.load_data(
-            data_path=global_constants.STEP_1_DATA_PATH,
+    img_list, tag_list = data_loading.load_data(
+        data_path=global_constants.STEP_1_DATA_PATH,
+        verbose=verbose,
+    )
+    if not no_resizing:
+        # resize images
+        img_list = standardize_img.resize_imgs(
+            img_list=img_list,
+            standard_img_dim=standard_img_dim,
             verbose=verbose,
         )
 

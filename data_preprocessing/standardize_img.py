@@ -1,19 +1,11 @@
 import cv2
-from pathlib import Path
-
-import global_constants
+import warnings
 
 
 def get_min_dimensions(img_list: list) -> (int, int):
     min_width = 1000000
     min_height = 1000000
-    for img_path in img_list:
-        img_path = str(img_path)
-        try:
-            img = cv2.imread(img_path)
-        except Exception as e:
-            print(f'ERROR: could not load image {img_path}. Exception: {e}')
-            continue
+    for img in img_list:
         try:
             width, height = img.shape[:2]
             if width < min_width:
@@ -21,34 +13,25 @@ def get_min_dimensions(img_list: list) -> (int, int):
             if height < min_height:
                 min_height = height
         except Exception as e:
-            print(f'ERROR: could not get shape of image {img_path}. Exception: {e}')
+            warnings.warn(f'WARNING: could not get shape of image. Exception: {e}')
             continue
     return min_width, min_height
 
 
-def resize_img(img_path, min_width: int, min_height: int):
-    save_folder_path = Path(global_constants.STEP_2_DATA_PATH)
-    if not save_folder_path.exists():
-        save_folder_path.mkdir(parents=False)
+def resize_imgs(img_list: list, standard_img_dim: (int, int) = None, verbose: int = 0) -> list:
+    resized_img_list = []
+    if standard_img_dim is None:
+        # get min width and height
+        standard_img_dim = get_min_dimensions(img_list)
+    if verbose >= 2:
+        print(f'resizing images to ({standard_img_dim[0]}, {standard_img_dim[1]})')
 
-    img_name = img_path.name
-    img_path = str(img_path)
-    try:
-        img = cv2.imread(img_path)
-    except Exception as e:
-        print(f'ERROR: could not load image {img_path}. Exception: {e}')
-        return
-    try:
-        img = cv2.resize(img, (min_width, min_height))
-    except Exception as e:
-        print(f'ERROR: could not resize image {img_path}. Exception: {e}')
-        return
-    img_path = f'{global_constants.STEP_2_DATA_PATH}{img_name}'
-    # print(f'Saving image to "{img_path}"')
-    try:
-        cv2.imwrite(img_path, img)
-    except Exception as e:
-        print(f'ERROR: could not save image {img_path}. Exception: {e}')
-        return
-
-    return
+    for img in img_list:
+        # resize images to standard_img_dim
+        try:
+            img = cv2.resize(img, standard_img_dim)
+        except Exception as e:
+            warnings.warn(f'Error while resizing image: {e}')
+            continue
+        resized_img_list.append(img)
+    return resized_img_list
