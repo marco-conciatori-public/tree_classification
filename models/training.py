@@ -15,7 +15,7 @@ def train(model: torch.nn.Module,
           optimizer_name: str,
           learning_rate: float,
           device: torch.device,
-          epochs: int,
+          num_epochs: int,
           save_model: bool,
           metrics: dict = None,
           save_path=None,
@@ -58,11 +58,11 @@ def train(model: torch.nn.Module,
     history['metrics']['validation'] = {}
 
     try:
-        # loop over the dataset 'epochs' times
+        # loop over the dataset 'num_epochs' times
         best_model_weights = None
         min_valid_loss = np.inf
         batch_size = 0
-        for epoch in range(epochs):
+        for epoch in range(num_epochs):
             batch_counter = 0
             # TRAINING
             training_loss = 0.0
@@ -196,7 +196,7 @@ def train(model: torch.nn.Module,
             model.load_state_dict(best_model_weights)
             meta_data = {
                 'learning_rate': learning_rate,
-                'epochs': epochs,
+                'num_epochs': num_epochs,
                 'loss_function_name': loss_function_name,
                 'optimizer_name': optimizer_name,
                 'training_length': len(training_data),
@@ -225,7 +225,7 @@ def train(model: torch.nn.Module,
     if save_model:
         meta_data = {
             'learning_rate': learning_rate,
-            'epochs': epochs,
+            'num_epochs': num_epochs,
             'loss_function_name': loss_function_name,
             'optimizer_name': optimizer_name,
             'training_length': len(training_data),
