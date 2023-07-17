@@ -36,7 +36,7 @@ for attribute in attributes:
     if 'resize' in attribute.lower():
         resize_in_attributes = True
         break
-if verbose >=2:
+if verbose >= 2:
     print(f'resize_in_attributes: {resize_in_attributes}')
 
 custom_transforms = [
