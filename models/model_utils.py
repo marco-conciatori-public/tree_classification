@@ -118,6 +118,7 @@ def print_formatted_results(loss: float,
 
 def get_torchvision_model(model_name: str,
                           weights_name: str,
+                          device: torch.device,
                           training: bool = False,
                           num_classes: int = None,
                           ):
@@ -154,6 +155,7 @@ def get_torchvision_model(model_name: str,
             param.requires_grad = False
 
     # print(f'model:\n{model}')
+    model.to(device=device)
     return model, preprocess
 
 

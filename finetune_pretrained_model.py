@@ -28,7 +28,6 @@ model, preprocess = model_utils.get_torchvision_model(
     training=True,
     num_classes=num_classes,
 )
-model.to(device=device)
 # print(f'model:\n{model}')
 attributes = dir(preprocess)
 resize_in_attributes = False
