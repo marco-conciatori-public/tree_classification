@@ -22,26 +22,18 @@ model_version = 'regnet_y_128gf'  # big
 weights_name = 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'
 
 # load model
-model, preprocess = model_utils.get_torchvision_model(
+model = model_utils.get_torchvision_model(
     model_name=model_version,
     weights_name=weights_name,
+    device=device,
     training=True,
     num_classes=num_classes,
 )
 # print(f'model:\n{model}')
-attributes = dir(preprocess)
-resize_in_attributes = False
-for attribute in attributes:
-    if 'resize' in attribute.lower():
-        resize_in_attributes = True
-        break
-if verbose >= 2:
-    print(f'resize_in_attributes: {resize_in_attributes}')
-
-custom_transforms = [
-    tf.to_tensor,
-    preprocess,
-]
+custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
+    weights_name=weights_name,
+    verbose=verbose,
+)
 
 train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     batch_size=config.BATCH_SIZE,
