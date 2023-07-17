@@ -16,10 +16,10 @@ device = utils.get_available_device(verbose=verbose)
 # model_version = 'swin_v2_b'  # base
 # weights_name = 'Swin_V2_B_Weights.IMAGENET1K_V1'
 # regnet model
-# model_version = 'RegNet_Y_1_6GF'  # small
-# model_version = 'RegNetY_32GF'  # medium
-model_version = 'regnet_y_128gf'  # big
-weights_name = 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'
+model_version = 'regnet_y_1_6gf'  # small
+weights_name = 'RegNet_Y_1_6GF_Weights.IMAGENET1K_V1'
+# model_version = 'regnet_y_128gf'  # big
+# weights_name = 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'
 
 # load model
 model = model_utils.get_torchvision_model(
