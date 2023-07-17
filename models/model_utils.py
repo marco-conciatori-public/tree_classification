@@ -2,6 +2,7 @@ import json
 import torch
 from pathlib import Path
 from torchvision import models
+import torchvision.transforms.functional as tf
 
 import utils
 import global_constants
@@ -156,7 +157,30 @@ def get_torchvision_model(model_name: str,
 
     # print(f'model:\n{model}')
     model.to(device=device)
-    return model, preprocess
+    return model
+
+
+def get_custom_transforms(weights_name: str,
+                          verbose: int = 0,
+                          ):
+
+    weights = models.get_weight(name=weights_name)
+    preprocess =weights.transforms(antialias=True)
+    attributes = dir(preprocess)
+    resize_in_attributes = False
+    for attribute in attributes:
+        if 'resize' in attribute.lower():
+            resize_in_attributes = True
+            break
+
+    custom_transforms = [
+        tf.to_tensor,
+        preprocess,
+    ]
+    if verbose >= 2:
+        print(f'resize_in_attributes: {resize_in_attributes}')
+        print(f'custom_transforms: {custom_transforms}')
+    return custom_transforms, resize_in_attributes
 
 
 def save_test_results(cm_true_values: list,

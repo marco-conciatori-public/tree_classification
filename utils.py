@@ -1,4 +1,5 @@
 import torch
+import datetime
 import warnings
 from pathlib import Path
 import matplotlib.pyplot as plt
@@ -112,3 +113,11 @@ def display_cm(true_values, predictions, labels=None):
     )
     plt.title('Confusion Matrix', fontsize=17)
     plt.show()
+
+
+def timedelta_format(initial_time, final_time, truncate_seconds: bool = True):
+    time_delta = final_time - initial_time
+    if truncate_seconds:
+        # remove times below seconds
+        time_delta = time_delta - datetime.timedelta(microseconds=time_delta.microseconds)
+    return time_delta
