@@ -30,7 +30,7 @@ MODEL_PARAMETERS: dict = {
 # width and height of images
 # IMG_DIM: tuple = (95, 95)
 BATCH_SIZE: int = 32
-NUM_EPOCHS: int = 10
+NUM_EPOCHS: int = 3
 LEARNING_RATE: float = 0.01
 # OPTIMIZER_NAME: str = 'Adam'
 OPTIMIZER_NAME: str = 'RMSprop'
@@ -47,7 +47,7 @@ METRICS: dict = {
     'Recall': STANDARD_METRIC_ARGS,
     'F1Score': STANDARD_METRIC_ARGS,
 }
-SAVE_MODEL: bool = True
+SAVE_MODEL: bool = False
 
 # must add up to 1 +/- TOLERANCE
 TRAIN_VAL_TEST_PROPORTIONS: list = [0.8, 0.1, 0.1]

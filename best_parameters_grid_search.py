@@ -27,22 +27,24 @@ num_tests_for_configuration: int = 5
 # and the average performance will be used to select the best configuration.
 # use lists of one element to test only one value for that variable.
 search_space = {
-    # 'data_augmentation_proportion_list': [1, 5, 20],
-    'data_augmentation_proportion_list': [1],
-    # 'batch_size_list': [8, 16, 32, 64],
-    'batch_size_list': [16],
-    # 'learning_rate_list': [0.001, 0.0005, 0.0001],
-    'learning_rate_list': [0.001],
-    # 'num_epochs_list': [5, 10, 20],
-    'num_epochs_list': [5],
+    'data_augmentation_proportion_list': [1, 5, 20],
+    # 'data_augmentation_proportion_list': [1],
+    'batch_size_list': [8, 16, 32],
+    # 'batch_size_list': [16],
+    'learning_rate_list': [0.001, 0.0001],
+    # 'learning_rate_list': [0.001],
+    'num_epochs_list': [5, 10, 20],
+    # 'num_epochs_list': [5],
     'optimizer_name_list': ['Adam', 'RMSprop'],
-    # 'balance_data_list': [True, False],
-    'balance_data_list': [False],
+    'balance_data_list': [True, False],
+    # 'balance_data_list': [False],
     'model_spec_list': [  # warning: case-sensitive names (model_name, weights_name)
         ('regnet_y_1_6gf', 'RegNet_Y_1_6GF_Weights.IMAGENET1K_V1'),
+        ('regnet_y_1_6gf', None),
         # ('regnet_y_128gf', 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'),
     ],
-    'use_new_weights_list': [True, False],
+    # to train a model from scratch, set weights_name to None
+    'freeze_layers_list': [True, False],
 }
 
 utils.pretty_print_dict(data=search_space)
