@@ -158,8 +158,9 @@ try:
                                     print(f'\t\t\t\t\t\t\t\tconfiguration_loss_test_no_nan:'
                                           f' {configuration_loss_test_no_nan}')
                                     end_time = datetime.datetime.now()
+                                    time_delta = utils.timedelta_format(start_time, end_time)
                                     print(f'\t\t\t\t\t\t\t\t{num_tests_for_configuration} identical models trained'
-                                          f' and tested in: {utils.timedelta_format(start_time, end_time)}')
+                                          f' and tested in: {time_delta}')
                                     results.append(
                                         {
                                             'test_loss': configuration_loss_test,
@@ -173,7 +174,7 @@ try:
                                             'num_epochs': num_epochs,
                                             'model': (model_name, weights_name),
                                             'freeze_layers': freeze_layers,
-                                            'time_used': start_time - end_time,
+                                            'time_used': str(time_delta),
                                         },
                                     )
 
