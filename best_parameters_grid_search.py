@@ -31,7 +31,7 @@ search_space = {
     # 'data_augmentation_proportion_list': [1],
     'batch_size_list': [8, 16, 32],
     # 'batch_size_list': [16],
-    'learning_rate_list': [0.001, 0.0001],
+    'learning_rate_list': [0.01, 0.001, 0.0001],
     # 'learning_rate_list': [0.001],
     'num_epochs_list': [5, 10, 20],
     # 'num_epochs_list': [5],
