@@ -170,7 +170,7 @@ def get_custom_transforms(weights_name: str | None,
     if weights_name is None:
         return None, False
     weights = models.get_weight(name=weights_name)
-    preprocess =weights.transforms(antialias=True)
+    preprocess = weights.transforms(antialias=True)
     attributes = dir(preprocess)
     resize_in_attributes = False
     for attribute in attributes:

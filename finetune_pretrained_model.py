@@ -1,5 +1,3 @@
-import torchvision.transforms.functional as tf
-
 import utils
 import config
 import global_constants
