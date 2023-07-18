@@ -11,7 +11,7 @@ from models import training, evaluation, model_utils
 
 
 # for fine-tuning pretrained models, not for training new custom models
-verbose = 2
+verbose = 0
 device = utils.get_available_device(verbose=verbose)
 num_classes = len(global_constants.TREE_INFORMATION)
 interrupted = False
