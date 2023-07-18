@@ -120,8 +120,8 @@ def print_formatted_results(loss: float,
 
 def get_torchvision_model(model_name: str,
                           device: torch.device,
-                          use_new_weights: bool = False,
                           weights_name: str = None,
+                          freeze_layers: bool = False,
                           training: bool = False,
                           num_classes: int = None,
                           verbose: int = 0,
@@ -131,19 +131,15 @@ def get_torchvision_model(model_name: str,
             warnings.warn(f'use_new_weights is True, but weights_name {weights_name} is given. weights_name will'
                           f' be ignored and new weights will be used')
 
-    if weights_name is None and not use_new_weights:
-        raise ValueError('weights_name must be specified when use_new_weights = False. Otherwise, use_new_weights'
-                         ' must be set to True')
+    if freeze_layers and weights_name is None:
+        raise ValueError('weights_name must be specified when freeze_layers = True')
 
     model_full_name = f'{model_name}{global_constants.INTERNAL_PARAMETER_SEPARATOR}Weights' \
                       f'{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{weights_name}'
     model_id = utils.get_available_id(partial_name=model_full_name, folder_path=global_constants.MODEL_OUTPUT_DIR)
 
     # Initialize model with the given weights
-    # if weights_name == 'DEFAULT':
-    #     weights_name = f'{model_name}_Weights.DEFAULT'
-    weights = models.get_weight(name=weights_name)
-    model = models.get_model(name=model_name.lower(), weights=weights)
+    model = models.get_model(name=model_name.lower(), weights=weights_name)
     model.name = model_full_name
     model.id = model_id
 
@@ -151,9 +147,11 @@ def get_torchvision_model(model_name: str,
         assert num_classes is not None, 'num_classes must be specified when training = True'
         model.train()
 
-        # Freeze all layers weights
-        for param in model.parameters():
-            param.requires_grad = False
+        if freeze_layers:
+            # Freeze all layers weights
+            for param in model.parameters():
+                param.requires_grad = False
+
         # Replace the last layer with a new, untrained layer that has num_classes outputs
         model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
         # unfreeze the last layer
@@ -170,10 +168,11 @@ def get_torchvision_model(model_name: str,
     return model
 
 
-def get_custom_transforms(weights_name: str,
+def get_custom_transforms(weights_name: str | None,
                           verbose: int = 0,
                           ):
-
+    if weights_name is None:
+        return None, False
     weights = models.get_weight(name=weights_name)
     preprocess =weights.transforms(antialias=True)
     attributes = dir(preprocess)

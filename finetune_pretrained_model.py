@@ -12,21 +12,21 @@ num_classes = len(global_constants.TREE_INFORMATION)
 augment_data = config.DATA_AUGMENTATION_PROPORTION
 device = utils.get_available_device(verbose=verbose)
 # warning: case-sensitive names
-# swim model
-# model_version = 'swin_v2_b'  # base
-# weights_name = 'Swin_V2_B_Weights.IMAGENET1K_V1'
 # regnet model
 model_version = 'regnet_y_1_6gf'  # small
-weights_name = 'RegNet_Y_1_6GF_Weights.IMAGENET1K_V1'
+# weights_name = 'RegNet_Y_1_6GF_Weights.IMAGENET1K_V1'
+# weights_name = 'RegNet_Y_1_6GF_Weights.DEFAULT'
+weights_name = None
 # model_version = 'regnet_y_128gf'  # big
 # weights_name = 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'
-use_new_weights = True
+# freeze_layers = True
+freeze_layers = False
 
 # load model
 model = model_utils.get_torchvision_model(
     model_name=model_version,
     weights_name=weights_name,
-    use_new_weights=use_new_weights,
+    freeze_layers=freeze_layers,
     device=device,
     training=True,
     num_classes=num_classes,
@@ -86,7 +86,7 @@ test_loss, metric_evaluations = evaluation.eval(
     device=device,
     display_confusion_matrix=config.DISPLAY_CONFUSION_MATRIX,
     metrics=config.METRICS,
-    save_results=True,
+    save_results=config.SAVE_MODEL,
     save_path=global_constants.MODEL_OUTPUT_DIR,
     verbose=verbose,
 )
