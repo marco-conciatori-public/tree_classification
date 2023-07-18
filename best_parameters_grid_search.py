@@ -92,8 +92,8 @@ try:
                                 for freeze_layers in search_space['freeze_layers_list']:
                                     print(f'\t\t\t\t\t\t\tfreeze_layers: {freeze_layers}')
                                     if freeze_layers and weights_name is None:
-                                        print('\t\t\t\t\t\t\tSkipping this configuration because incompatible parameter'
-                                              ' values (freeze_layers=True and weights_name=None)')
+                                        print('\t\t\t\t\t\t\t\tSkipping this configuration because incompatible'
+                                              ' parameter values (freeze_layers=True and weights_name=None)')
                                         continue
                                     start_time = datetime.datetime.now()
 
@@ -154,11 +154,11 @@ try:
                                     else:
                                         configuration_loss_test_no_nan = 99.
 
-                                    print(f'\t\t\t\t\t\t\tconfiguration_loss_test: {configuration_loss_test}')
-                                    print(f'\t\t\t\t\t\t\tconfiguration_loss_test_no_nan:'
+                                    print(f'\t\t\t\t\t\t\t\tconfiguration_loss_test: {configuration_loss_test}')
+                                    print(f'\t\t\t\t\t\t\t\tconfiguration_loss_test_no_nan:'
                                           f' {configuration_loss_test_no_nan}')
                                     end_time = datetime.datetime.now()
-                                    print(f'\t\t\t\t\t\t\t{num_tests_for_configuration} identical models trained'
+                                    print(f'\t\t\t\t\t\t\t\t{num_tests_for_configuration} identical models trained'
                                           f' and tested in: {utils.timedelta_format(start_time, end_time)}')
                                     results.append(
                                         {
