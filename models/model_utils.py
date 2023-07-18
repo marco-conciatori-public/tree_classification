@@ -126,10 +126,6 @@ def get_torchvision_model(model_name: str,
                           num_classes: int = None,
                           verbose: int = 0,
                           ) -> torch.nn.Module:
-    if verbose >= 1:
-        if use_new_weights and weights_name is not None:
-            warnings.warn(f'use_new_weights is True, but weights_name {weights_name} is given. weights_name will'
-                          f' be ignored and new weights will be used')
 
     if freeze_layers and weights_name is None:
         raise ValueError('weights_name must be specified when freeze_layers = True')
