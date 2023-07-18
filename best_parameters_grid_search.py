@@ -46,10 +46,16 @@ search_space = {
     # to train a model from scratch, set weights_name to None
     'freeze_layers_list': [True, False],
 }
+# num combinations
+num_different_configurations = 1
+for value in search_space.values():
+    num_different_configurations *= len(value)
+print(f'num_different_configurations: {num_different_configurations}')
 
 utils.pretty_print_dict(data=search_space)
 print(f'num_tests_for_configuration: {num_tests_for_configuration}')
 
+configuration_counter = 1
 results = []
 try:
     print('\nStarting grid search...')
@@ -91,6 +97,8 @@ try:
                                 print(f'\t\t\t\t\t\tnum_epochs: {num_epochs}')
                                 for freeze_layers in search_space['freeze_layers_list']:
                                     print(f'\t\t\t\t\t\t\tfreeze_layers: {freeze_layers}')
+                                    print(f'\t\t\t\t\t\t\t\tconfiguration {configuration_counter} / '
+                                          f'{num_different_configurations}')
                                     if freeze_layers and weights_name is None:
                                         print('\t\t\t\t\t\t\t\tSkipping this configuration because incompatible'
                                               ' parameter values (freeze_layers=True and weights_name=None)')
@@ -177,6 +185,7 @@ try:
                                             'time_used': str(time_delta),
                                         },
                                     )
+                                    configuration_counter += 1
 
 except Exception as e:
     print(e)
