@@ -25,6 +25,8 @@ def eval(model: torch.nn.Module,
 
     test_metrics = {}
     num_classes = len(global_constants.TREE_INFORMATION)
+    if metrics is None:
+        metrics = {}
     for metric_name, metric_args in metrics.items():
         try:
             metric_class = getattr(torchmetrics, metric_name)

@@ -38,6 +38,8 @@ def train(model: torch.nn.Module,
     training_metrics = {}
     validation_metrics = {}
     num_classes = len(global_constants.TREE_INFORMATION)
+    if metrics is None:
+        metrics = {}
     for metric_name, metric_args in metrics.items():
         try:
             metric_class = getattr(torchmetrics, metric_name)
