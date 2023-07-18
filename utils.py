@@ -102,9 +102,10 @@ def pretty_print_dict(data, _level: int = 0):
 
 def display_cm(true_values, predictions, labels=None):
     # Plot the confusion matrix
-    labels = []
-    for el in global_constants.TREE_INFORMATION.values():
-        labels.append(el['japanese_reading'])
+    if labels is None:
+        labels = []
+        for el in global_constants.TREE_INFORMATION.values():
+            labels.append(el['japanese_reading'])
     ConfusionMatrixDisplay.from_predictions(
         y_true=true_values,
         y_pred=predictions,
