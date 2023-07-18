@@ -1,5 +1,6 @@
 import json
 import torch
+import warnings
 from pathlib import Path
 from torchvision import models
 import torchvision.transforms.functional as tf
@@ -118,11 +119,22 @@ def print_formatted_results(loss: float,
 
 
 def get_torchvision_model(model_name: str,
-                          weights_name: str,
                           device: torch.device,
+                          use_new_weights: bool = False,
+                          weights_name: str = None,
                           training: bool = False,
                           num_classes: int = None,
+                          verbose: int = 0,
                           ) -> torch.nn.Module:
+    if verbose >= 1:
+        if use_new_weights and weights_name is not None:
+            warnings.warn(f'use_new_weights is True, but weights_name {weights_name} is given. weights_name will'
+                          f' be ignored and new weights will be used')
+
+    if weights_name is None and not use_new_weights:
+        raise ValueError('weights_name must be specified when use_new_weights = False. Otherwise, use_new_weights'
+                         ' must be set to True')
+
     model_full_name = f'{model_name}{global_constants.INTERNAL_PARAMETER_SEPARATOR}Weights' \
                       f'{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{weights_name}'
     model_id = utils.get_available_id(partial_name=model_full_name, folder_path=global_constants.MODEL_OUTPUT_DIR)

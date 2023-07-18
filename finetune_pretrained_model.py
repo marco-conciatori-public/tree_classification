@@ -20,14 +20,17 @@ model_version = 'regnet_y_1_6gf'  # small
 weights_name = 'RegNet_Y_1_6GF_Weights.IMAGENET1K_V1'
 # model_version = 'regnet_y_128gf'  # big
 # weights_name = 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'
+use_new_weights = True
 
 # load model
 model = model_utils.get_torchvision_model(
     model_name=model_version,
     weights_name=weights_name,
+    use_new_weights=use_new_weights,
     device=device,
     training=True,
     num_classes=num_classes,
+    verbose=verbose,
 )
 # print(f'model:\n{model}')
 custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
