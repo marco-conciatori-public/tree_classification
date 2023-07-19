@@ -1,8 +1,8 @@
 import torch
-import datetime
 import warnings
+import datetime
+import numpy as np
 from pathlib import Path
-import matplotlib.pyplot as plt
 
 import global_constants
 
@@ -100,18 +100,37 @@ def pretty_print_dict(data, _level: int = 0):
 
 
 def display_cm(true_values, predictions, labels=None):
-    from sklearn.metrics import ConfusionMatrixDisplay
     # Plot the confusion matrix
+    import matplotlib.pyplot as plt
+    import matplotlib.colors as colors
     if labels is None:
         labels = []
         for el in global_constants.TREE_INFORMATION.values():
             labels.append(el['japanese_reading'])
-    ConfusionMatrixDisplay.from_predictions(
-        y_true=true_values,
-        y_pred=predictions,
-        display_labels=labels,
-        xticks_rotation=45,
+
+    num_classes = len(global_constants.TREE_INFORMATION)
+    true_values = np.array(true_values)
+    predictions = np.array(predictions)
+    confusion_matrix = np.zeros((num_classes, num_classes), dtype=np.int64)
+    for i in range(len(true_values)):
+        confusion_matrix[true_values[i], predictions[i]] += 1
+
+    fig, ax = plt.subplots(figsize=(6, 6))
+    ax.matshow(
+        confusion_matrix,
+        cmap=plt.cm.Blues,
+        alpha=0.8,
+        norm=colors.LogNorm(vmin=confusion_matrix.min(), vmax=confusion_matrix.max()),
     )
+    for i in range(confusion_matrix.shape[0]):
+        for j in range(confusion_matrix.shape[1]):
+            ax.text(x=j, y=i, s=int(confusion_matrix[i, j]), va='center', ha='center', size=10)
+
+    ax.xaxis.set_ticks_position("bottom")
+    plt.xticks(range(num_classes), labels, rotation=60, fontsize=10)
+    plt.yticks(range(num_classes), labels, fontsize=10)
+    plt.xlabel('Predictions', fontsize=17)
+    plt.ylabel('True values', fontsize=17)
     plt.title('Confusion Matrix', fontsize=17)
     plt.show()
 
