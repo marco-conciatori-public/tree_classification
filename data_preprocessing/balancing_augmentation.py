@@ -2,77 +2,48 @@ import cv2
 import copy
 import random
 import warnings
-import albumentations as ab
-from albumentations.augmentations import transforms as ab_transforms
 
 import global_constants
+from data_preprocessing import image_utils
 
 
-def random_transform_img(img, apply_probability: float = 0.5):
-    temp_img = copy.deepcopy(img)
+def random_transform_img(img, apply_probability: float = 0.5, show_img: bool = False):
+    transformed_img = copy.deepcopy(img)
     # not clear if this is necessary
-    # temp_img = cv2.cvtColor(temp_img, cv2.COLOR_BGR2RGB)
+    # transformed_img = cv2.cvtColor(transformed_img, cv2.COLOR_BGR2RGB)
     if random.uniform(0, 1) < apply_probability:
-        temp_img = cv2.flip(temp_img, 1)
+        transformed_img = cv2.flip(transformed_img, 1)
     if random.uniform(0, 1) < apply_probability:
-        temp_img = cv2.flip(temp_img, 0)
+        transformed_img = cv2.flip(transformed_img, 0)
     if random.uniform(0, 1) < apply_probability:
-        temp_img = cv2.rotate(temp_img, cv2.ROTATE_90_CLOCKWISE)
+        transformed_img = cv2.rotate(transformed_img, cv2.ROTATE_90_CLOCKWISE)
     if random.uniform(0, 1) < apply_probability:
-        temp_img = cv2.rotate(temp_img, cv2.ROTATE_180)
+        transformed_img = cv2.rotate(transformed_img, cv2.ROTATE_180)
     if random.uniform(0, 1) < apply_probability:
-        temp_img = cv2.rotate(temp_img, cv2.ROTATE_90_COUNTERCLOCKWISE)
-    partial_transform = ab.Compose([
-        ab_transforms.HueSaturationValue(
-            hue_shift_limit=20,
-            sat_shift_limit=30,
-            val_shift_limit=20,
-            p=apply_probability,
-        ),
-        ab_transforms.RandomBrightnessContrast(
-            brightness_limit=0.2,
-            contrast_limit=0.2,
-            p=apply_probability,
-        ),
-    ])
-    temp_img = partial_transform(image=temp_img)['image']
-    return temp_img
+        transformed_img = cv2.rotate(transformed_img, cv2.ROTATE_90_COUNTERCLOCKWISE)
+
+    transformed_img = image_utils.brightness(transformed_img, low=0.4, high=1.8, apply_probability=apply_probability)
+    # transformed_img = image_utils.channel_shift(transformed_img, value=10, apply_probability=apply_probability)
+    if show_img:
+        # show original image and transformed image in the same window
+        show_img = cv2.hconcat([img, transformed_img])
+        cv2.imshow(f'original - transformed', show_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+    return transformed_img
 
 
-def random_transform_img_list(img_list: list, tag_list: list, apply_probability: float = 0.5) -> (list, list):
+def random_transform_img_list(img_list: list,
+                              tag_list: list,
+                              apply_probability: float = 0.5,
+                              show_img: bool = False,
+                              ) -> (list, list):
     transformed_img_list = []
     corresponding_tag_list = []
-    partial_transform = ab.Compose([
-        ab_transforms.HueSaturationValue(
-            hue_shift_limit=3,
-            sat_shift_limit=20,
-            val_shift_limit=10,
-            p=apply_probability,
-        ),
-        ab_transforms.RandomBrightnessContrast(
-            brightness_limit=0.2,
-            contrast_limit=0.2,
-            p=apply_probability,
-        ),
-    ])
-
     for index in range(len(img_list)):
         img = img_list[index]
-        temp_img = copy.deepcopy(img)
-        # not clear if this is necessary
-        # temp_img = cv2.cvtColor(temp_img, cv2.COLOR_BGR2RGB)
-        if random.uniform(0, 1) < apply_probability:
-            temp_img = cv2.flip(temp_img, 1)
-        if random.uniform(0, 1) < apply_probability:
-            temp_img = cv2.flip(temp_img, 0)
-        if random.uniform(0, 1) < apply_probability:
-            temp_img = cv2.rotate(temp_img, cv2.ROTATE_90_CLOCKWISE)
-        if random.uniform(0, 1) < apply_probability:
-            temp_img = cv2.rotate(temp_img, cv2.ROTATE_180)
-        if random.uniform(0, 1) < apply_probability:
-            temp_img = cv2.rotate(temp_img, cv2.ROTATE_90_COUNTERCLOCKWISE)
-        temp_img = partial_transform(image=temp_img)['image']
-        transformed_img_list.append(temp_img)
+        transformed_img = random_transform_img(img=img, apply_probability=apply_probability, show_img=show_img)
+        transformed_img_list.append(transformed_img)
         corresponding_tag_list.append(tag_list[index])
 
     return transformed_img_list, corresponding_tag_list

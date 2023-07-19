@@ -6,7 +6,6 @@ The environment needs to be set up with the following packages:
 - pytorch (gpu version if hardware supports it)
 - torchvision
 - openCV
-- albumentations
 - numpy
 - pathlib
 - matplotlib (optional, for confusion matrix display)
