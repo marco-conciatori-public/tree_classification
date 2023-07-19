@@ -3,7 +3,6 @@ import datetime
 import warnings
 from pathlib import Path
 import matplotlib.pyplot as plt
-from sklearn.metrics import ConfusionMatrixDisplay
 
 import global_constants
 
@@ -101,6 +100,7 @@ def pretty_print_dict(data, _level: int = 0):
 
 
 def display_cm(true_values, predictions, labels=None):
+    from sklearn.metrics import ConfusionMatrixDisplay
     # Plot the confusion matrix
     if labels is None:
         labels = []

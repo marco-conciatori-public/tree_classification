@@ -1,11 +1,11 @@
 import torch
 import shutil
+import random
 from pathlib import Path
-from sklearn.model_selection import train_test_split
 
 import utils
 import global_constants
-from data_preprocessing import data_loading, standardize_img, custom_dataset, balancing_augmentation, get_class
+from data_preprocessing import data_loading, standardize_img, custom_dataset, balancing_augmentation
 
 
 def get_data(batch_size: int,
@@ -74,21 +74,27 @@ def get_data(batch_size: int,
     total_length = len(img_list)
     split_lengths = [int(total_length * proportion) for proportion in train_val_test_proportions]
     split_lengths[2] = total_length - split_lengths[0] - split_lengths[1]
+    indices = list(range(total_length))
     if shuffle:
-        # extract training data randomly
-        train_imgs, val_and_test_imgs, train_tags, val_and_test_tags = train_test_split(
-            img_list,
-            tag_list,
-            train_size=split_lengths[0],
-            random_state=random_seed,
-        )
-        # extract validation and test data randomly
-        val_imgs, test_imgs, val_tags, test_tags = train_test_split(
-            val_and_test_imgs,
-            val_and_test_tags,
-            train_size=split_lengths[1],
-            random_state=random_seed,
-        )
+        train_imgs = []
+        train_tags = []
+        val_imgs = []
+        val_tags = []
+        test_imgs = []
+        test_tags = []
+        random.shuffle(indices)
+        # extract training, validation, and test data randomly
+        for index in indices:
+            if len(train_imgs) < split_lengths[0]:
+                train_imgs.append(img_list[index])
+                train_tags.append(tag_list[index])
+            elif len(val_imgs) < split_lengths[1]:
+                val_imgs.append(img_list[index])
+                val_tags.append(tag_list[index])
+            else:
+                test_imgs.append(img_list[index])
+                test_tags.append(tag_list[index])
+
     else:  # not shuffle
         train_imgs = img_list[ : split_lengths[0]]
         train_tags = tag_list[ : split_lengths[0]]
@@ -106,7 +112,7 @@ def get_data(batch_size: int,
     assert len(train_imgs) == len(train_tags)
     assert len(val_imgs) == len(val_tags)
     assert len(test_imgs) == len(test_tags)
-    
+
     if balance_data or (augmentation_proportion > 1):
         # apply data balancing/augmentation
         train_imgs, train_tags = balancing_augmentation.balance_augment_data(
