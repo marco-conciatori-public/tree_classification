@@ -13,6 +13,7 @@ INTERNAL_PARAMETER_SEPARATOR = '_'
 INFO_FILE_NAME = 'meta_data'
 PYTORCH_FILE_EXTENSION = '.pt'
 DL_FILE_NAME = 'data_loader'
+ORTHOMOSAIC_DATA_PATH = DATA_PATH + 'orthomosaic/'
 
 DECIDUOUS = 'deciduous'
 EVERGREEN = 'evergreen'
