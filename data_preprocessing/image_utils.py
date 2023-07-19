@@ -23,3 +23,14 @@ def channel_shift(img, value: int, apply_probability: float = 1.0):
     img[:, :, :][img[:, :, :] < 0] = 0
     img = img.astype(np.uint8)
     return img
+
+
+def get_patch(img, size: int, top_left_coord: tuple):
+    """
+        Function to extract a patch form an image given pixel coordinates and size
+    """
+    patch = img[
+            top_left_coord[1] : top_left_coord[1] + size,
+            top_left_coord[0] : top_left_coord[0] + size,
+    ].copy()
+    return patch
