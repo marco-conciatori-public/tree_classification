@@ -1,4 +1,5 @@
 import json
+import copy
 import datetime
 from pathlib import Path
 
@@ -180,12 +181,11 @@ total_duration = utils.timedelta_format(global_start_time, global_end_time)
 print(f'Total duration: {total_duration}')
 
 # numpy numbers/arrays are not json serializable
-content = {
-    'total_duration': f'{partial_content["total_duration"]} + {total_duration}',
-    'conclusion_date': global_end_time.strftime('%Y-%m-%d-%H:%M:%S'),
-    'interrupted': interrupted,
-    'results': results,
-}
+content = copy.deepcopy(partial_content)
+content['total_duration'] = f'{partial_content["total_duration"]} + {total_duration}'
+content['conclusion_date'] = global_end_time.strftime('%Y-%m-%d-%H:%M:%S')
+content['interrupted'] = interrupted
+content['results'] = results
 
 # save results
 Path(global_constants.PARAMETER_SEARCH_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
