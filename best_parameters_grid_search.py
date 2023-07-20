@@ -201,7 +201,7 @@ content = {
     'tolerance': config.TOLERANCE,
     'random_seed': config.RANDOM_SEED,
     'metrics': config.METRICS,
-    **search_space,
+    'search_space': search_space,
     'results': results,
 }
 
