@@ -99,13 +99,14 @@ try:
                                     print(f'\t\t\t\t\t\t\tfreeze_layers: {freeze_layers}')
                                     print(f'\t\t\t\t\t\t\t\tconfiguration {configuration_counter} / '
                                           f'{num_different_configurations}')
+
                                     if freeze_layers and weights_name is None:
                                         print('\t\t\t\t\t\t\t\tSkipping this configuration because incompatible'
                                               ' parameter values (freeze_layers=True and weights_name=None)')
                                         configuration_counter += 1
                                         continue
-                                    start_time = datetime.datetime.now()
 
+                                    start_time = datetime.datetime.now()
                                     configuration_loss_test = 0
                                     configuration_loss_test_no_nan = 0
                                     no_nan_counter = 0
@@ -198,7 +199,7 @@ except Exception as e:
 
 print('Test ended')
 print('Results:')
-print(results)
+utils.pretty_print_dict(results)
 global_end_time = datetime.datetime.now()
 total_duration = utils.timedelta_format(global_start_time, global_end_time)
 print(f'Total duration: {total_duration}')
