@@ -1,6 +1,5 @@
 import json
 import datetime
-import numpy as np
 from pathlib import Path
 
 import utils
@@ -46,16 +45,15 @@ search_space = {
     # to train a model from scratch, set weights_name to None
     'freeze_layers_list': [True, False],
 }
-# num combinations
+# compute number of combinations
 num_different_configurations = 1
 for value in search_space.values():
     num_different_configurations *= len(value)
 print(f'num_different_configurations: {num_different_configurations}')
-
 utils.pretty_print_dict(data=search_space)
 print(f'num_tests_for_configuration: {num_tests_for_configuration}')
 
-configuration_counter = 1
+configuration_counter = 0
 results = []
 try:
     print('\nStarting grid search...')
@@ -97,7 +95,7 @@ try:
                                 print(f'\t\t\t\t\t\tnum_epochs: {num_epochs}')
                                 for freeze_layers in search_space['freeze_layers_list']:
                                     print(f'\t\t\t\t\t\t\tfreeze_layers: {freeze_layers}')
-                                    print(f'\t\t\t\t\t\t\t\tconfiguration {configuration_counter} / '
+                                    print(f'\t\t\t\t\t\t\t\tconfiguration {configuration_counter + 1} / '
                                           f'{num_different_configurations}')
 
                                     if freeze_layers and weights_name is None:
