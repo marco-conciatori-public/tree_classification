@@ -198,7 +198,9 @@ content = {
     'interrupted': interrupted,
     'loss_function_name': config.LOSS_FUNCTION_NAME,
     'train_val_test_proportions': config.TRAIN_VAL_TEST_PROPORTIONS,
+    'tolerance': config.TOLERANCE,
     'random_seed': config.RANDOM_SEED,
+    'metrics': config.METRICS,
     **search_space,
     'results': results,
 }
