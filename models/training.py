@@ -221,7 +221,7 @@ def train(model: torch.nn.Module,
                 meta_data=meta_data,
                 verbose=verbose,
             )
-        raise
+        raise KeyboardInterrupt
 
     # save model (weights and configuration) and other useful information
     if save_model:

@@ -174,7 +174,7 @@ try:
                                     )
                                     configuration_counter += 1
 
-except Exception as e:
+except KeyboardInterrupt as e:
     print(e)
     interrupted = True
     end_time = datetime.datetime.now()
