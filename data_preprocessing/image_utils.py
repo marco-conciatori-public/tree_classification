@@ -3,7 +3,7 @@ import cv2
 import random
 
 
-def brightness(img, low: float, high: float, apply_probability: float = 1.0):
+def brightness(img, low: float, high: float):
     value = random.uniform(low, high)
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     hsv = np.array(hsv, dtype=np.float64)
@@ -16,7 +16,7 @@ def brightness(img, low: float, high: float, apply_probability: float = 1.0):
     return img
 
 
-def channel_shift(img, value: int, apply_probability: float = 1.0):
+def channel_shift(img, value: int):
     value = random.randint(-value, value)
     img = img + value
     img[:, :, :][img[:, :, :] > 255] = 255

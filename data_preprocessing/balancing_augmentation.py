@@ -22,8 +22,10 @@ def random_transform_img(img, apply_probability: float = 0.5, show_img: bool = F
     if random.uniform(0, 1) < apply_probability:
         transformed_img = cv2.rotate(transformed_img, cv2.ROTATE_90_COUNTERCLOCKWISE)
 
-    transformed_img = image_utils.brightness(transformed_img, low=0.4, high=1.8, apply_probability=apply_probability)
-    # transformed_img = image_utils.channel_shift(transformed_img, value=10, apply_probability=apply_probability)
+    if random.uniform(0, 1) < apply_probability:
+        transformed_img = image_utils.brightness(transformed_img, low=0.4, high=1.8)
+    # if random.uniform(0, 1) < apply_probability:
+    #     transformed_img = image_utils.channel_shift(transformed_img, value=10)
     if show_img:
         # show original image and transformed image in the same window
         show_img = cv2.hconcat([img, transformed_img])
