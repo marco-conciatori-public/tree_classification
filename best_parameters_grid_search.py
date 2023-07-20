@@ -105,9 +105,8 @@ try:
                                         continue
 
                                     start_time = datetime.datetime.now()
-                                    configuration_loss_test = 0
-                                    configuration_loss_test_no_nan = 0
-                                    no_nan_counter = 0
+                                    average_loss_test = 0
+                                    average_metrics_test = {metric_name: 0 for metric_name in config.METRICS}
                                     for i in range(num_tests_for_configuration):
                                         model = model_utils.get_torchvision_model(
                                             model_name=model_name,
@@ -143,37 +142,24 @@ try:
                                             save_results=False,
                                             verbose=verbose,
                                         )
-                                        configuration_loss_test += test_loss
-                                        is_nan = False
-                                        no_nan_counter += 1
-                                        for metric_name in metric_evaluations:
-                                            metric_result = metric_evaluations[metric_name]
-                                            if np.isnan(metric_result):
-                                                is_nan = True
-                                                no_nan_counter -= 1
-                                                break
+                                        average_loss_test += test_loss
+                                        for metric_name, metric_evaluation in metric_evaluations.items():
+                                            average_metrics_test[metric_name] += metric_evaluation
 
-                                        if not is_nan:
-                                            configuration_loss_test_no_nan += test_loss
+                                    average_loss_test = average_loss_test / num_tests_for_configuration
+                                    for metric_name in config.METRICS:
+                                        average_metrics_test[metric_name] = average_metrics_test[metric_name] / \
+                                                                                num_tests_for_configuration
 
-                                    configuration_loss_test = configuration_loss_test / num_tests_for_configuration
-                                    if no_nan_counter > 0:
-                                        configuration_loss_test_no_nan = configuration_loss_test_no_nan / no_nan_counter
-                                    else:
-                                        configuration_loss_test_no_nan = 99.
-
-                                    print(f'\t\t\t\t\t\t\t\tconfiguration_loss_test: {configuration_loss_test}')
-                                    print(f'\t\t\t\t\t\t\t\tconfiguration_loss_test_no_nan:'
-                                          f' {configuration_loss_test_no_nan}')
+                                    print(f'\t\t\t\t\t\t\t\tconfiguration_loss_test: {average_loss_test}')
                                     end_time = datetime.datetime.now()
                                     time_delta = utils.timedelta_format(start_time, end_time)
                                     print(f'\t\t\t\t\t\t\t\t{num_tests_for_configuration} identical models trained'
                                           f' and tested in: {time_delta}')
                                     results.append(
                                         {
-                                            'test_loss': configuration_loss_test,
-                                            'test_loss_no_nan': configuration_loss_test_no_nan,
-                                            'no_nan_counter': no_nan_counter,
+                                            'test_loss': average_loss_test,
+                                            'test_metrics': average_metrics_test,
                                             'learning_rate': learning_rate,
                                             'balance_data': balance_data,
                                             'batch_size': batch_size,
