@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import random
 
+import torch
+
 
 def brightness(img, low: float, high: float):
     value = random.uniform(low, high)
@@ -25,12 +27,13 @@ def channel_shift(img, value: int):
     return img
 
 
-def get_patch(img, size: int, top_left_coord: tuple):
-    """
-        Function to extract a patch form an image given pixel coordinates and size
-    """
+def get_patch(img: torch.Tensor, size: int, top_left_coord: tuple):
+    # for channel_first img
+    x = top_left_coord[0]
+    y = top_left_coord[1]
     patch = img[
-            top_left_coord[1] : top_left_coord[1] + size,
-            top_left_coord[0] : top_left_coord[0] + size,
-    ].copy()
+            :,
+            x : x + size,
+            y : y + size,
+    ].detach().clone()
     return patch
