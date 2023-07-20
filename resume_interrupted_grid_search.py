@@ -96,7 +96,9 @@ try:
                                         continue
 
                                     start_time = datetime.datetime.now()
-                                    configuration_loss_test = 0
+                                    average_loss_test = 0
+                                    average_metrics_test = {metric_name: 0
+                                                            for metric_name in partial_content['metrics']}
                                     for i in range(num_tests_for_configuration):
                                         model = model_utils.get_torchvision_model(
                                             model_name=model_name,
@@ -132,18 +134,24 @@ try:
                                             save_results=False,
                                             verbose=verbose,
                                         )
-                                        configuration_loss_test += test_loss
+                                        average_loss_test += test_loss
+                                        for metric_name, metric_evaluation in metric_evaluations.items():
+                                            average_metrics_test[metric_name] += metric_evaluation
 
-                                    configuration_loss_test = configuration_loss_test / num_tests_for_configuration
+                                    average_loss_test = average_loss_test / num_tests_for_configuration
+                                    for metric_name in partial_content['metrics']:
+                                        average_metrics_test[metric_name] = average_metrics_test[metric_name] / \
+                                                                            num_tests_for_configuration
 
-                                    print(f'\t\t\t\t\t\t\t\tconfiguration_loss_test: {configuration_loss_test}')
+                                    print(f'\t\t\t\t\t\t\t\taverage_loss_test: {average_loss_test}')
                                     end_time = datetime.datetime.now()
                                     time_delta = utils.timedelta_format(start_time, end_time)
                                     print(f'\t\t\t\t\t\t\t\t{num_tests_for_configuration} identical models trained'
                                           f' and tested in: {time_delta}')
                                     results.append(
                                         {
-                                            'test_loss': configuration_loss_test,
+                                            'test_loss': average_loss_test,
+                                            'test_metrics': average_metrics_test,
                                             'learning_rate': learning_rate,
                                             'balance_data': balance_data,
                                             'batch_size': batch_size,
@@ -166,8 +174,7 @@ except Exception as e:
     print('Saving partial results...')
 
 print('Test ended')
-print('Results:')
-utils.pretty_print_dict(results)
+print(f'Results:\n{results}')
 global_end_time = datetime.datetime.now()
 total_duration = utils.timedelta_format(global_start_time, global_end_time)
 print(f'Total duration: {total_duration}')
