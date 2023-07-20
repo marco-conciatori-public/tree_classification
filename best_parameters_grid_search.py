@@ -102,6 +102,7 @@ try:
                                     if freeze_layers and weights_name is None:
                                         print('\t\t\t\t\t\t\t\tSkipping this configuration because incompatible'
                                               ' parameter values (freeze_layers=True and weights_name=None)')
+                                        configuration_counter += 1
                                         continue
                                     start_time = datetime.datetime.now()
 
@@ -183,6 +184,7 @@ try:
                                             'model': (model_name, weights_name),
                                             'freeze_layers': freeze_layers,
                                             'time_used': str(time_delta),
+                                            'configuration_counter': configuration_counter,
                                         },
                                     )
                                     configuration_counter += 1
