@@ -1,6 +1,5 @@
 import json
 import torch
-import warnings
 from pathlib import Path
 from torchvision import models
 import torchvision.transforms.functional as tf
@@ -152,15 +151,16 @@ def get_torchvision_model(model_name: str,
         model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
         # unfreeze the last layer
         model.fc.requires_grad = True
-
     else:
         model.eval()
         # Freeze all layers weights
         for param in model.parameters():
             param.requires_grad = False
 
-    # print(f'model:\n{model}')
     model.to(device=device)
+
+    if verbose >= 1:
+        print(f'Readied model: {model_name}, with weights: {weights_name}')
     return model
 
 

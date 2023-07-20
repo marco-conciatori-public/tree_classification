@@ -12,9 +12,8 @@ device = utils.get_available_device(verbose=verbose)
 # warning: case-sensitive names
 # regnet model
 model_version = 'regnet_y_1_6gf'  # small
-# weights_name = 'RegNet_Y_1_6GF_Weights.IMAGENET1K_V1'
-# weights_name = 'RegNet_Y_1_6GF_Weights.DEFAULT'
-weights_name = None
+weights_name = 'RegNet_Y_1_6GF_Weights.DEFAULT'
+# weights_name = None
 # model_version = 'regnet_y_128gf'  # big
 # weights_name = 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'
 # freeze_layers = True
