@@ -153,7 +153,7 @@ try:
                                         average_metrics_test[metric_name] = average_metrics_test[metric_name] / \
                                                                                 num_tests_for_configuration
 
-                                    print(f'\t\t\t\t\t\t\t\tconfiguration_loss_test: {average_loss_test}')
+                                    print(f'\t\t\t\t\t\t\t\taverage_loss_test: {average_loss_test}')
                                     end_time = datetime.datetime.now()
                                     time_delta = utils.timedelta_format(start_time, end_time)
                                     print(f'\t\t\t\t\t\t\t\t{num_tests_for_configuration} identical models trained'
