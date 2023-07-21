@@ -28,7 +28,7 @@ MODEL_PARAMETERS: dict = {
 
 # TRAINING HYPERPARAMETERS
 # width and height of images
-# IMG_DIM: tuple = (95, 95)
+# IMG_DIM: int = 95
 BATCH_SIZE: int = 32
 NUM_EPOCHS: int = 3
 LEARNING_RATE: float = 0.01

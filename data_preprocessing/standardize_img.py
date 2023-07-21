@@ -2,34 +2,34 @@ import cv2
 import warnings
 
 
-def get_min_dimensions(img_list: list) -> (int, int):
-    min_width = 1000000
-    min_height = 1000000
+def get_min_dimensions(img_list: list) -> int:
+    min_dim = 1000000
+
     for img in img_list:
         try:
             width, height = img.shape[:2]
-            if width < min_width:
-                min_width = width
-            if height < min_height:
-                min_height = height
+            if width < min_dim:
+                min_dim = width
+            if height < min_dim:
+                min_dim = height
         except Exception as e:
             warnings.warn(f'WARNING: could not get shape of image. Exception: {e}')
             continue
-    return min_width, min_height
+    return min_dim
 
 
-def resize_imgs(img_list: list, standard_img_dim: (int, int) = None, verbose: int = 0) -> list:
+def resize_imgs(img_list: list, standard_img_dim: int = None, verbose: int = 0) -> list:
     resized_img_list = []
     if standard_img_dim is None:
         # get min width and height
         standard_img_dim = get_min_dimensions(img_list)
     if verbose >= 2:
-        print(f'resizing images to ({standard_img_dim[0]}, {standard_img_dim[1]})')
+        print(f'resizing images to ({standard_img_dim}, {standard_img_dim})')
 
     for img in img_list:
         # resize images to standard_img_dim
         try:
-            img = cv2.resize(img, standard_img_dim)
+            img = cv2.resize(img, (standard_img_dim, standard_img_dim))
         except Exception as e:
             warnings.warn(f'Error while resizing image: {e}')
             continue
