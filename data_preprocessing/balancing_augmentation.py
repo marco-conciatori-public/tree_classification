@@ -4,7 +4,7 @@ import random
 import warnings
 
 import global_constants
-from data_preprocessing import image_utils
+from image_processing import image_augmentation
 
 
 def random_transform_img(img, apply_probability: float = 0.5, show_img: bool = False):
@@ -23,9 +23,9 @@ def random_transform_img(img, apply_probability: float = 0.5, show_img: bool = F
         transformed_img = cv2.rotate(transformed_img, cv2.ROTATE_90_COUNTERCLOCKWISE)
 
     if random.uniform(0, 1) < apply_probability:
-        transformed_img = image_utils.brightness(transformed_img, low=0.4, high=1.8)
+        transformed_img = image_augmentation.brightness(transformed_img, low=0.4, high=1.8)
     # if random.uniform(0, 1) < apply_probability:
-    #     transformed_img = image_utils.channel_shift(transformed_img, value=10)
+    #     transformed_img = image_augmentation.channel_shift(transformed_img, value=10)
     if show_img:
         # show original image and transformed image in the same window
         show_img = cv2.hconcat([img, transformed_img])

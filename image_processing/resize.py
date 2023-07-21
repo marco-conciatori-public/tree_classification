@@ -2,7 +2,7 @@ import cv2
 import warnings
 
 
-def get_min_dimensions(img_list: list) -> int:
+def get_min_dimension(img_list: list) -> int:
     min_dim = 1000000
 
     for img in img_list:
@@ -18,11 +18,11 @@ def get_min_dimensions(img_list: list) -> int:
     return min_dim
 
 
-def resize_imgs(img_list: list, standard_img_dim: int = None, verbose: int = 0) -> list:
+def resize_img_list(img_list: list, standard_img_dim: int = None, verbose: int = 0) -> list:
     resized_img_list = []
     if standard_img_dim is None:
         # get min width and height
-        standard_img_dim = get_min_dimensions(img_list)
+        standard_img_dim = get_min_dimension(img_list)
     if verbose >= 2:
         print(f'resizing images to ({standard_img_dim}, {standard_img_dim})')
 

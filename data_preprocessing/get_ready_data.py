@@ -5,7 +5,8 @@ from pathlib import Path
 
 import utils
 import global_constants
-from data_preprocessing import data_loading, standardize_img, custom_dataset, balancing_augmentation
+from image_processing import resize
+from data_preprocessing import data_loading, custom_dataset, balancing_augmentation
 
 
 def get_data(batch_size: int,
@@ -62,7 +63,7 @@ def get_data(batch_size: int,
     )
     if not no_resizing:
         # resize images
-        img_list = standardize_img.resize_imgs(
+        img_list = resize.resize_img_list(
             img_list=img_list,
             standard_img_dim=standard_img_dim,
             verbose=verbose,
