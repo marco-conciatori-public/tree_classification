@@ -9,7 +9,7 @@ excluded_key_list = []
 top_n = 20
 file_number = int(input('Insert file number... '))
 parameter_evaluation = visualization_utils.load_evaluation(file_number)
-print('INFO:')
+print('\nINFO:')
 for key in parameter_evaluation:
     print(f"{key.replace('_', ' ')}: {parameter_evaluation[key]}")
 
@@ -22,7 +22,7 @@ parameters_to_plot = visualization_utils.identify_tested_hp(
     search_space=search_space,
     excluded_key_list=excluded_key_list,
 )
-print('Number of parameters tested:', len(parameters_to_plot))
+# print('Number of parameters tested:', len(parameters_to_plot))
 print('parameters tested:\n', parameters_to_plot)
 
 excluded_key_list.extend(parameters_to_plot)
@@ -54,5 +54,5 @@ top_configurations.print_top_n(
 )
 print()
 average_loss = top_configurations.average_loss_per_parameter(parameter_evaluation=parameter_evaluation)
-utils.pretty_print_dict(average_loss)
+# utils.pretty_print_dict(average_loss)
 loss_per_parameter.bar_plot(average_loss=average_loss)

@@ -25,14 +25,14 @@ def bar_plot(average_loss: dict):
         for parameter_value in parameter_results:
             if isinstance(parameter_value, tuple):
                 parameter_value = parameter_value[1]
-            x_labels.append(str(parameter_name) + '_' + str(parameter_value))
+            x_labels.append(str(parameter_name) + '=' + str(parameter_value))
     plt.xticks(
         ticks=range(counter),
         labels=x_labels,
         rotation=35,
         horizontalalignment='right',
     )
-    plt.ylim((0.3, 0.5))
+    # plt.ylim((0.3, 0.5))
     plt.tight_layout()
     plt.show()
     plt.close()
