@@ -13,7 +13,8 @@ INTERNAL_PARAMETER_SEPARATOR = '_'
 INFO_FILE_NAME = 'meta_data'
 PYTORCH_FILE_EXTENSION = '.pt'
 DL_FILE_NAME = 'data_loader'
-ORTHOMOSAIC_DATA_PATH = DATA_PATH + 'orthomosaic/'
+ORTHOMOSAIC_FOLDER_NAME = 'orthomosaic/'
+ORTHOMOSAIC_DATA_PATH = DATA_PATH + ORTHOMOSAIC_FOLDER_NAME
 
 DECIDUOUS = 'deciduous'
 EVERGREEN = 'evergreen'
@@ -73,7 +74,7 @@ TREE_INFORMATION = {
         'scientific_name': 'ilex crenata',
         'japanese_name': 'イヌツゲ',
         'type': EVERGREEN,
-        'display_color_rgb': (0, 0, 0),
+        'display_color_rgb': (255, 255, 255),
     },
 }
 

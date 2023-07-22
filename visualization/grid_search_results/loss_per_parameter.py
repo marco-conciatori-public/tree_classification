@@ -32,6 +32,7 @@ def bar_plot(average_loss: dict):
         rotation=35,
         horizontalalignment='right',
     )
+    plt.title('Average loss per parameter setting')
     # plt.ylim((0.3, 0.5))
     plt.tight_layout()
     plt.show()
