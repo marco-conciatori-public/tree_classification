@@ -26,18 +26,18 @@ num_tests_for_configuration: int = 3
 # and the average performance will be used to select the best configuration.
 # use lists of one element to test only one value for that variable.
 search_space = {
-    'data_augmentation_proportion_list': [1, 5, 10],
-    # 'data_augmentation_proportion_list': [1],
+    # 'data_augmentation_proportion_list': [1, 5, 10],
+    'data_augmentation_proportion_list': [5],
     # 'batch_size_list': [8, 16, 32],
     'batch_size_list': [16],
     # 'learning_rate_list': [0.005, 0.0001],
-    'learning_rate_list': [0.0001],
+    'learning_rate_list': [5e-05, 1e-05],
     'num_epochs_list': [10, 20],
     # 'num_epochs_list': [3],
     # 'optimizer_name_list': ['Adam', 'RMSprop'],
-    'optimizer_name_list': ['RMSprop'],
-    # 'balance_data_list': [True, False],
-    'balance_data_list': [False],
+    'optimizer_name_list': ['Adam'],
+    'balance_data_list': [True, False],
+    # 'balance_data_list': [False],
     'model_spec_list': [  # warning: case-sensitive names (model_name, weights_name)
         ('regnet_y_1_6gf', 'RegNet_Y_1_6GF_Weights.DEFAULT'),
         # ('regnet_y_1_6gf', None),
