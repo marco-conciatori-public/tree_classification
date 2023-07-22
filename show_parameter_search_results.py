@@ -26,7 +26,6 @@ parameters_to_plot = visualization_utils.identify_tested_hp(
 print('parameters tested:\n', parameters_to_plot)
 
 excluded_key_list.extend(parameters_to_plot)
-
 if len(parameters_to_plot) == 1:
     graph_2d.plot_parameters(
         hp_to_plot=parameters_to_plot,
@@ -45,6 +44,7 @@ elif len(parameters_to_plot) == 2:
         # max_digits=4,
     )
 
+# show only selected parameters
 select_parameters = ['test_loss']
 select_parameters.extend(visualization_utils.extract_parameter_keys(parameters_to_plot=parameters_to_plot))
 top_configurations.print_top_n(
