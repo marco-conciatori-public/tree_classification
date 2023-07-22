@@ -29,9 +29,9 @@ MODEL_PARAMETERS: dict = {
 # TRAINING HYPERPARAMETERS
 # width and height of images
 # IMG_DIM: int = 95
-BATCH_SIZE: int = 32
-NUM_EPOCHS: int = 3
-LEARNING_RATE: float = 0.01
+BATCH_SIZE: int = 16
+NUM_EPOCHS: int = 15
+LEARNING_RATE: float = 5e-5
 OPTIMIZER_NAME: str = 'Adam'
 # OPTIMIZER_NAME: str = 'RMSprop'
 LOSS_FUNCTION_NAME: str = 'CrossEntropyLoss'
@@ -47,7 +47,7 @@ METRICS: dict = {
     'Recall': STANDARD_METRIC_ARGS,
     'F1Score': STANDARD_METRIC_ARGS,
 }
-SAVE_MODEL: bool = False
+SAVE_MODEL: bool = True
 
 # must add up to 1 +/- TOLERANCE
 TRAIN_VAL_TEST_PROPORTIONS: list = [0.8, 0.1, 0.1]
@@ -57,4 +57,4 @@ TOLERANCE: float = 0.01
 # number of times the original dataset is duplicated with random variations
 DATA_AUGMENTATION_PROPORTION: int = 1
 BALANCE_DATA: bool = False
-DISPLAY_CONFUSION_MATRIX: bool = False
+DISPLAY_CONFUSION_MATRIX: bool = True
