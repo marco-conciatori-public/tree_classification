@@ -148,16 +148,20 @@ for x in range(0, x_max, stride):
         # print(f'{species_distribution[x: x + 5, y: y + 5, : ]}')
 
 print(f'species_distribution.shape: {species_distribution.shape}')
-print(f'species_distribution max: {species_distribution.max()}')
-print(f'species_distribution min: {species_distribution.min()}')
+print(f'species_distribution max: {species_distribution[ : , : , : -1].max()}')
+coord_max = species_distribution[ : , : , : -1].argmax(keepdims=True)
+print(f'coord_max: {coord_max}')
+print(f'check max: {species_distribution[coord_max[0], coord_max[1], coord_max[2] ]}')
 # normalize species_distribution using the information in the last channel
 for x in range(0, x_max, stride):
     for y in range(0, y_max, stride):
         for c in range(num_classes_plus_unknown):
             species_distribution[x, y, c] = species_distribution[x, y, c] / species_distribution[x, y, -1]
 print(f'species_distribution.shape: {species_distribution.shape}')
-print(f'species_distribution max: {species_distribution.max()}')
-print(f'species_distribution min: {species_distribution.min()}')
+print(f'species_distribution max: {species_distribution[ : , : , : -1].max()}')
+coord_max = species_distribution[ : , : , : -1].argmax(keepdims=True)
+print(f'coord_max: {coord_max}')
+print(f'check max: {species_distribution[coord_max[0], coord_max[1], coord_max[2] ]}')
 
 # remove last channel
 species_distribution = species_distribution[:, :, 0 : num_classes_plus_unknown]
