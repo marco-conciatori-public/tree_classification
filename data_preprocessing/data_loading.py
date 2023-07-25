@@ -19,7 +19,7 @@ def get_img_path_list(data_path: str, verbose: int = 0) -> list:
     return img_path_list
 
 
-def load_data(data_path: str, verbose: int = 0) -> (list, list):
+def load_data(data_path: str, selected_names: list = None, verbose: int = 0) -> (list, list):
     pure_path = Path(data_path)
     assert pure_path.exists(), f'Path "{data_path}" does not exist'
     assert pure_path.is_dir(), f'Path "{data_path}" is not a directory'
@@ -27,6 +27,9 @@ def load_data(data_path: str, verbose: int = 0) -> (list, list):
     img_list = []
     tag_list = []
     for img_path in pure_path.iterdir():
+        if selected_names is not None:
+            if img_path.name not in selected_names:
+                continue
         # get class of each image
         img_class = get_class.from_name(img_path.name)
 
