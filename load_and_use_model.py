@@ -12,8 +12,9 @@ from data_preprocessing import data_loading
 verbose = config.VERBOSE
 model_id = 0
 partial_name = 'regnet_y_1_6'
-# use only those images
+# use only those images, if None, use all images in folder
 img_name_list = ['buna_s1_0.tif']
+# img_name_list = None
 
 device = utils.get_available_device(verbose=verbose)
 model_path, info_path = utils.get_path_by_id(
