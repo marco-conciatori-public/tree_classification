@@ -12,7 +12,6 @@ from data_preprocessing import data_loading
 verbose = config.VERBOSE
 model_id = 0
 partial_name = 'regnet_y_1_6'
-img_folder = global_constants.TO_PREDICT_FOLDER_PATH
 # use only those images
 img_name_list = ['buna_s1_0.tif']
 
@@ -31,7 +30,7 @@ loaded_model, custom_transforms, meta_data = model_utils.load_model(
 )
 
 img_list, _ = data_loading.load_data(
-            data_path=img_folder,
+            data_path=global_constants.TO_PREDICT_FOLDER_PATH,
             selected_names=img_name_list,
             verbose=verbose,
         )
