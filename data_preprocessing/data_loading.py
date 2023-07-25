@@ -24,10 +24,11 @@ def load_data(data_path: str, selected_names: list = None, verbose: int = 0) -> 
     assert pure_path.exists(), f'Path "{data_path}" does not exist'
     assert pure_path.is_dir(), f'Path "{data_path}" is not a directory'
 
+    condition = selected_names is not None and len(selected_names) > 0
     img_list = []
     tag_list = []
     for img_path in pure_path.iterdir():
-        if selected_names is not None:
+        if condition:
             if img_path.name not in selected_names:
                 continue
         # get class of each image
