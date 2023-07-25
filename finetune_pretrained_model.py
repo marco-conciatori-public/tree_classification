@@ -5,16 +5,16 @@ from models import training, evaluation, model_utils
 from data_preprocessing import get_ready_data
 
 
-verbose = 0
+verbose = config.VERBOSE
 num_classes = len(global_constants.TREE_INFORMATION)
 device = utils.get_available_device(verbose=verbose)
 # warning: case-sensitive names
 # regnet model
-# model_version = 'regnet_y_1_6gf'  # small
-# weights_name = 'RegNet_Y_1_6GF_Weights.DEFAULT'
+model_version = 'regnet_y_1_6gf'  # small
+weights_name = 'RegNet_Y_1_6GF_Weights.DEFAULT'
 # weights_name = None
-model_version = 'regnet_y_128gf'  # big
-weights_name = 'RegNet_Y_128GF_Weights.DEFAULT'
+# model_version = 'regnet_y_128gf'  # big
+# weights_name = 'RegNet_Y_128GF_Weights.DEFAULT'
 # freeze_layers = True
 freeze_layers = False
 
