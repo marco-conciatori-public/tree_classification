@@ -76,5 +76,21 @@ TREE_INFORMATION = {
         'type': EVERGREEN,
         'display_color_rgb': (255, 255, 255),
     },
+    7: {
+        'japanese_reading': 'mizuki',
+        'common_name': 'wedding cake tree',
+        'scientific_name': 'cornus controversa',
+        'japanese_name': 'ミズキ',
+        'type': DECIDUOUS,
+        'display_color_rgb': (255, 255, 255),  # TODO: change color
+    },
+    8: {
+        'japanese_reading': 'koshiabura',
+        'common_name': 'koshiabura',
+        'scientific_name': 'chengiopanax sciadophylloides',
+        'japanese_name': 'コシアブラ',
+        'type': DECIDUOUS,
+        'display_color_rgb': (255, 255, 255),  # TODO: change color
+    },
 }
 
