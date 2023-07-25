@@ -5,7 +5,7 @@ from models import training, evaluation, model_utils
 from data_preprocessing import get_ready_data
 
 
-verbose = 2
+verbose = 0
 num_classes = len(global_constants.TREE_INFORMATION)
 device = utils.get_available_device(verbose=verbose)
 # warning: case-sensitive names
