@@ -5,8 +5,8 @@ import global_constants
 
 
 # PARAMETERS
-model_id = 1
-partial_name = 'regnet_y'
+model_id = 0
+partial_name = 'regnet_y_1_6'
 
 _, meta_data_path = utils.get_path_by_id(
     partial_name=partial_name,
