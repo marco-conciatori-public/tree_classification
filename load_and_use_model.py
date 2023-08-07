@@ -13,8 +13,9 @@ verbose = config.VERBOSE
 model_id = 0
 partial_name = 'regnet_y_1_6'
 # use only those images, if None, use all images in folder
-img_name_list = ['buna_s1_0.tif']
-# img_name_list = None
+# img_name_list = ['buna_s1_0.tif']
+img_name_list = None
+jump = 20
 
 device = utils.get_available_device(verbose=verbose)
 model_path, info_path = utils.get_path_by_id(
@@ -30,12 +31,15 @@ loaded_model, custom_transforms, meta_data = model_utils.load_model(
     verbose=verbose,
 )
 
-img_list, _ = data_loading.load_data(
+img_list, tag_list = data_loading.load_data(
             data_path=global_constants.TO_PREDICT_FOLDER_PATH,
             selected_names=img_name_list,
             verbose=verbose,
         )
-# print(f'img_list length: {len(img_list)}')
+print(f'img_list length: {len(img_list)}')
+img_list = img_list[::jump]
+print(f'img_list length: {len(img_list)}')
+tag_list = tag_list[::jump]
 
 # get loss function from string name
 loss_function = getattr(torch.nn, config.LOSS_FUNCTION_NAME)()
@@ -61,18 +65,21 @@ with torch.set_grad_enabled(False):
         top_class = prediction.argmax()
 
         print('-------------------')
-        # print(f'TRUE LABEL: '
-        #       f'{global_constants.TREE_INFORMATION[shortened_tag_list[img_index]]["japanese_reading"].upper()}')
+        print(f'TRUE LABEL: '
+              f'{global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"].upper()}')
         print('NETWORK EVALUATION:')
         for tree_class in range(len(prediction)):
-            if prediction[tree_class] >= config.TOLERANCE:
-                print(f' - {global_constants.TREE_INFORMATION[tree_class]["japanese_reading"]}: '
-                      f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))} %')
+            # if prediction[tree_class] >= config.TOLERANCE:
+            text = f' - {global_constants.TREE_INFORMATION[tree_class]["japanese_reading"]}: ' \
+                   f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))} %'
+            if tree_class == top_class:
+                text = utils.to_bold_string(text)
+            print(text)
 
         img = img_list[img_index]
         # show image
         cv2.imshow(
-            winname=global_constants.TREE_INFORMATION[top_class]["japanese_reading"],
+            winname=global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"],
             mat=img,
         )
         cv2.waitKey(0)

@@ -141,3 +141,7 @@ def timedelta_format(initial_time, final_time, truncate_seconds: bool = True):
         # remove times below seconds
         time_delta = time_delta - datetime.timedelta(microseconds=time_delta.microseconds)
     return time_delta
+
+
+def to_bold_string(string: str):
+    return f'\033[1m{string}\033[0m'
