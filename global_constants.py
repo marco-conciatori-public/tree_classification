@@ -23,7 +23,7 @@ EVERGREEN = 'evergreen'
 TREE_INFORMATION = {
     0: {
         'japanese_reading': 'buna',
-        'common_name': 'beech',
+        'english_name': 'beech',
         'scientific_name': 'fagus crenata',
         'japanese_name': 'ブナ',
         'type': DECIDUOUS,
@@ -31,7 +31,7 @@ TREE_INFORMATION = {
     },
     1: {
         'japanese_reading': 'matsu',
-        'common_name': 'pine',
+        'english_name': 'pine',
         'scientific_name': 'pinus spp',
         'japanese_name': 'マツ',
         'type': EVERGREEN,
@@ -39,7 +39,7 @@ TREE_INFORMATION = {
     },
     2: {
         'japanese_reading': 'minekaede',
-        'common_name': 'butterfly maple',
+        'english_name': 'butterfly maple',
         'scientific_name': 'acer tschonoskii',
         'japanese_name': 'ミネカエデ',
         'type': DECIDUOUS,
@@ -47,7 +47,7 @@ TREE_INFORMATION = {
     },
     3: {
         'japanese_reading': 'mizunara',
-        'common_name': 'oak',
+        'english_name': 'oak',
         'scientific_name': 'quescus crispula',
         'japanese_name': 'ミズナラ',
         'type': DECIDUOUS,
@@ -56,7 +56,7 @@ TREE_INFORMATION = {
     4: {
         'japanese_reading': 'nanakamado',
         'abbreviated_japanese_reading': 'nana',
-        'common_name': 'japanese rowan',
+        'english_name': 'japanese rowan',
         'scientific_name': 'sorbus commixta',
         'japanese_name': 'ナナカマド',
         'type': DECIDUOUS,
@@ -64,7 +64,7 @@ TREE_INFORMATION = {
     },
     5: {
         'japanese_reading': 'kyaraboku',
-        'common_name': 'japanese yew',
+        'english_name': 'japanese yew',
         'scientific_name': 'taxus cuspidata',
         'japanese_name': 'キャラボク',
         'type': EVERGREEN,
@@ -72,7 +72,7 @@ TREE_INFORMATION = {
     },
     6: {
         'japanese_reading': 'inutsuge',
-        'common_name': 'japanese holly',
+        'english_name': 'japanese holly',
         'scientific_name': 'ilex crenata',
         'japanese_name': 'イヌツゲ',
         'type': EVERGREEN,
@@ -80,7 +80,7 @@ TREE_INFORMATION = {
     },
     7: {
         'japanese_reading': 'mizuki',
-        'common_name': 'wedding cake tree',
+        'english_name': 'wedding cake tree',
         'scientific_name': 'cornus controversa',
         'japanese_name': 'ミズキ',
         'type': DECIDUOUS,
@@ -88,7 +88,7 @@ TREE_INFORMATION = {
     },
     8: {
         'japanese_reading': 'koshiabura',
-        'common_name': 'koshiabura',
+        'english_name': 'koshiabura',
         'scientific_name': 'chengiopanax sciadophylloides',
         'japanese_name': 'コシアブラ',
         'type': DECIDUOUS,
