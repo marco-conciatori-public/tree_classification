@@ -65,12 +65,11 @@ with torch.set_grad_enabled(False):
         top_class = prediction.argmax()
 
         print('-------------------')
-        print(f'TRUE LABEL: '
-              f'{global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"].upper()}')
+        print(f'TRUE LABEL: {utils.get_tree_name(tag_list[img_index]).upper()}')
         print('NETWORK EVALUATION:')
         for tree_class in range(len(prediction)):
             # if prediction[tree_class] >= config.TOLERANCE:
-            text = f' - {global_constants.TREE_INFORMATION[tree_class]["japanese_reading"]}: ' \
+            text = f' - {utils.get_tree_name(tree_class)}: ' \
                    f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))} %'
             if tree_class == top_class:
                 text = utils.to_bold_string(text)
@@ -79,7 +78,7 @@ with torch.set_grad_enabled(False):
         img = img_list[img_index]
         # show image
         cv2.imshow(
-            winname=global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"],
+            winname=utils.get_tree_name(tag_list[img_index]),
             mat=img,
         )
         cv2.waitKey(0)

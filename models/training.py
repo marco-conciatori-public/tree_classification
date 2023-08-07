@@ -33,7 +33,7 @@ def train(model: torch.nn.Module,
     optimizer = getattr(torch.optim, optimizer_name)(params=model.parameters(), lr=learning_rate)
     classes = []
     for tree_info in global_constants.TREE_INFORMATION.values():
-        classes.append(tree_info['japanese_reading'])
+        classes.append(tree_info[global_constants.TREE_NAME_TO_SHOW])
 
     training_metrics = {}
     validation_metrics = {}

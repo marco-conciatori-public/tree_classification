@@ -91,17 +91,17 @@ for i in range(worst_n_predictions):
 
     print('-------------------')
     print(f'TRUE LABEL: '
-          f'{global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"].upper()}')
+          f'{utils.get_tree_name(tag_list[img_index]).upper()}')
     print('NETWORK EVALUATION:')
     for tree_class in range(len(prediction)):
         if prediction[tree_class] >= config.TOLERANCE:
-            print(f' - {global_constants.TREE_INFORMATION[tree_class]["japanese_reading"]}: '
+            print(f' - {utils.get_tree_name(tree_class)}: '
                   f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
 
     # show image
     img = step_2_img_list[img_index]
     cv2.imshow(
-        winname=global_constants.TREE_INFORMATION[tag_list[img_index]]["japanese_reading"].upper(),
+        winname=utils.get_tree_name(tag_list[img_index]).upper(),
         mat=img,
     )
     cv2.waitKey(0)

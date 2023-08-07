@@ -3,6 +3,7 @@ import copy
 import random
 import warnings
 
+import utils
 import global_constants
 from image_processing import image_augmentation
 
@@ -95,7 +96,7 @@ def balance_augment_data(img_list: list,
             for tag in temp_tag_list:
                 assert tag == class_index
             if verbose >= 2:
-                print(f'\tclass: {class_index} ({global_constants.TREE_INFORMATION[class_index]["japanese_reading"]})')
+                print(f'\tclass: {class_index} ({utils.get_tree_name(class_index)})')
                 print(f'\tclass_augmentation_proportion: {class_augmentation_proportion}')
                 print(f'\tNum original obs: {len(imgs_this_class)}')
                 print(f'\tNum obs after augmentation: {len(temp_img_list) + len(imgs_this_class)}')

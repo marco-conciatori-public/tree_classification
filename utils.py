@@ -106,7 +106,7 @@ def display_cm(true_values, predictions, labels=None):
     if labels is None:
         labels = []
         for el in global_constants.TREE_INFORMATION.values():
-            labels.append(el['japanese_reading'])
+            labels.append(el[global_constants.TREE_NAME_TO_SHOW])
 
     num_classes = len(global_constants.TREE_INFORMATION)
     true_values = np.array(true_values)
@@ -145,3 +145,7 @@ def timedelta_format(initial_time, final_time, truncate_seconds: bool = True):
 
 def to_bold_string(string: str):
     return f'\033[1m{string}\033[0m'
+
+
+def get_tree_name(species_id: int, name_type: str = global_constants.TREE_NAME_TO_SHOW):
+    return global_constants.TREE_INFORMATION[species_id][name_type]
