@@ -16,6 +16,10 @@ device = utils.get_available_device(verbose=verbose)
 # weights_name = None
 # model_version = 'regnet_y_128gf'  # big
 # weights_name = 'RegNet_Y_128GF_Weights.DEFAULT'
+# RESNET MODEL
+model_architecture = 'resnet'
+model_version = 'resnet50'
+weights_name = 'ResNet50_Weights.DEFAULT'
 # freeze_layers = True
 freeze_layers = False
 
