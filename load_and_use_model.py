@@ -15,7 +15,7 @@ partial_name = 'regnet_y_1_6'
 # use only those images, if None, use all images in folder
 # img_name_list = ['buna_s1_0.tif']
 img_name_list = None
-jump = 20
+jump = 150
 
 device = utils.get_available_device(verbose=verbose)
 model_path, info_path = utils.get_path_by_id(
