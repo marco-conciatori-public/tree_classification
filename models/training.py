@@ -30,6 +30,7 @@ def train(model: torch.nn.Module,
     loss_function = getattr(torch.nn, loss_function_name)()
 
     # get optimizer from string name
+    # TODO: if freeze_layers is True, the optimizer should only take as parameters the parameters of the last layer/s
     optimizer = getattr(torch.optim, optimizer_name)(params=model.parameters(), lr=learning_rate)
     classes = []
     for tree_info in global_constants.TREE_INFORMATION.values():

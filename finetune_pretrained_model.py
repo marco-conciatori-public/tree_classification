@@ -20,6 +20,8 @@ device = utils.get_available_device(verbose=verbose)
 model_architecture = 'resnet'
 model_version = 'resnet50'
 weights_name = 'ResNet50_Weights.DEFAULT'
+# SWIN TRANSFORMER MODEL
+# TODO: implement swin transformer
 # freeze_layers = True
 freeze_layers = False
 
