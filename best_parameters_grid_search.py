@@ -39,9 +39,9 @@ search_space = {
     'balance_data_list': [True, False],
     # 'balance_data_list': [False],
     'model_spec_list': [  # warning: case-sensitive names (model_name, weights_name)
-        ('regnet_y_1_6gf', 'RegNet_Y_1_6GF_Weights.DEFAULT'),
-        # ('regnet_y_1_6gf', None),
-        # ('regnet_y_128gf', 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'),
+        ('regnet', 'regnet_y_1_6gf', 'RegNet_Y_1_6GF_Weights.DEFAULT'),
+        # ('regnet', 'regnet_y_1_6gf', None),
+        # ('regnet', 'regnet_y_128gf', 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'),
     ],
     # to train a model from scratch, set weights_name to None
     # 'freeze_layers_list': [True, False],
@@ -60,8 +60,8 @@ results = []
 try:
     print('\nStarting grid search...')
     for model_spec in search_space['model_spec_list']:
-        model_name, weights_name = model_spec
-        print(f'model: {model_name}, with weights: {weights_name}')
+        model_architecture, model_name, weights_name = model_spec
+        print(f'model architecture: {model_architecture}, model version: {model_name}, with weights: {weights_name}')
         custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
             weights_name=weights_name,
             verbose=verbose,
@@ -111,6 +111,7 @@ try:
                                     average_metrics_test = {metric_name: 0 for metric_name in config.METRICS}
                                     for i in range(num_tests_for_configuration):
                                         model = model_utils.get_torchvision_model(
+                                            model_architecture=model_architecture,
                                             model_name=model_name,
                                             freeze_layers=freeze_layers,
                                             weights_name=weights_name,

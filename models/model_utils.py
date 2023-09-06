@@ -1,5 +1,6 @@
 import json
 import torch
+import importlib
 from pathlib import Path
 from torchvision import models
 import torchvision.transforms.functional as tf
@@ -117,7 +118,8 @@ def print_formatted_results(loss: float,
             print(f'- {metric_name}: {round(result, global_constants.MAX_DECIMAL_PLACES)}')
 
 
-def get_torchvision_model(model_name: str,
+def get_torchvision_model(model_architecture: str,
+                          model_name: str,
                           device: torch.device,
                           weights_name: str = None,
                           freeze_layers: bool = False,
@@ -147,10 +149,11 @@ def get_torchvision_model(model_name: str,
             for param in model.parameters():
                 param.requires_grad = False
 
-        # Replace the last layer with a new, untrained layer that has num_classes outputs
-        model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
-        # unfreeze the last layer
-        model.fc.requires_grad = True
+        # Replace decision layer/s with a new, untrained layer that has num_classes outputs
+        # this operation is model dependent, so each model has its own implementation
+        architecture_utils = importlib.import_module(f'models.pretrained.{model_architecture}')
+        model = architecture_utils.replace_decision_layer(model=model, num_classes=num_classes)
+
     else:
         model.eval()
         # Freeze all layers weights

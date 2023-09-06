@@ -9,9 +9,10 @@ verbose = config.VERBOSE
 num_classes = len(global_constants.TREE_INFORMATION)
 device = utils.get_available_device(verbose=verbose)
 # warning: case-sensitive names
-# regnet model
-model_version = 'regnet_y_1_6gf'  # small
-weights_name = 'RegNet_Y_1_6GF_Weights.DEFAULT'
+# REGNET MODEL
+# model_architecture = 'regnet'
+# model_version = 'regnet_y_1_6gf'  # small
+# weights_name = 'RegNet_Y_1_6GF_Weights.DEFAULT'
 # weights_name = None
 # model_version = 'regnet_y_128gf'  # big
 # weights_name = 'RegNet_Y_128GF_Weights.DEFAULT'
@@ -20,6 +21,7 @@ freeze_layers = False
 
 # load model
 model = model_utils.get_torchvision_model(
+    model_architecture=model_architecture,
     model_name=model_version,
     weights_name=weights_name,
     freeze_layers=freeze_layers,

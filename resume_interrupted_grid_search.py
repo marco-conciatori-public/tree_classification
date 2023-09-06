@@ -46,8 +46,8 @@ configuration_counter = 0
 try:
     print(f'\nResuming grid search from configuration {last_configuration_counter}...')
     for model_spec in search_space['model_spec_list']:
-        model_name, weights_name = model_spec
-        print(f'model: {model_name}, with weights: {weights_name}')
+        model_architecture, model_name, weights_name = model_spec
+        print(f'model architecture: {model_architecture}, model version: {model_name}, with weights: {weights_name}')
         custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
             weights_name=weights_name,
             verbose=verbose,
@@ -102,6 +102,7 @@ try:
                                                             for metric_name in partial_content['metrics']}
                                     for i in range(num_tests_for_configuration):
                                         model = model_utils.get_torchvision_model(
+                                            model_architecture=model_architecture,
                                             model_name=model_name,
                                             freeze_layers=freeze_layers,
                                             weights_name=weights_name,
