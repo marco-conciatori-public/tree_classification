@@ -2,7 +2,7 @@ import json
 import torch
 import importlib
 from pathlib import Path
-from torchvision import models
+from torchvision import models as torchvision_models
 import torchvision.transforms.functional as tf
 
 import utils
@@ -24,7 +24,7 @@ def create_model(model_class_name: str,
         name = model_class_name
 
     model_id = utils.get_available_id(partial_name=name, folder_path=global_constants.MODEL_OUTPUT_DIR)
-    # warning: parallel or concurrent model instances it is possible that some of them get assigned the same id.
+    # WARNING: parallel or concurrent model instances it is possible that some of them get assigned the same id.
     # The error or involuntary overwriting happens only when saving those models.
 
     if verbose >= 2:
@@ -136,7 +136,7 @@ def get_torchvision_model(model_architecture: str,
     model_id = utils.get_available_id(partial_name=model_full_name, folder_path=global_constants.MODEL_OUTPUT_DIR)
 
     # Initialize model with the given weights
-    model = models.get_model(name=model_name.lower(), weights=weights_name)
+    model = torchvision_models.get_model(name=model_name.lower(), weights=weights_name)
     model.name = model_full_name
     model.id = model_id
 
@@ -172,7 +172,7 @@ def get_custom_transforms(weights_name: str | None,
                           ):
     if weights_name is None:
         return None, False
-    weights = models.get_weight(name=weights_name)
+    weights = torchvision_models.get_weight(name=weights_name)
     preprocess = weights.transforms(antialias=True)
     attributes = dir(preprocess)
     resize_in_attributes = False
