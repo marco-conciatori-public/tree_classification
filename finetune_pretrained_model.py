@@ -21,10 +21,13 @@ device = utils.get_available_device(verbose=verbose)
 # model_version = 'resnet50'
 # weights_name = 'ResNet50_Weights.DEFAULT'
 # CONVNEXT MODEL
-model_architecture = 'convnext'
-model_version = 'convnext_small'
-weights_name = 'ConvNeXt_Small_Weights.DEFAULT'
+# model_architecture = 'convnext'
+# model_version = 'convnext_small'
+# weights_name = 'ConvNeXt_Small_Weights.DEFAULT'
 # SWIN TRANSFORMER MODEL
+model_architecture = 'swin_transformer'
+model_version = 'swin_t'
+weights_name = 'Swin_T_Weights.DEFAULT'
 # TODO: implement swin transformer
 # freeze_layers = True
 freeze_layers = False
