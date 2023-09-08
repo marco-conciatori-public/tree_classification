@@ -11,7 +11,8 @@ from data_preprocessing import data_loading
 # PARAMETERS
 verbose = config.VERBOSE
 model_id = 0
-partial_name = 'regnet_y_1_6'
+# partial_name = 'regnet_y_1_6'
+partial_name = 'swin'
 # use only those images, if None, use all images in folder
 # img_name_list = ['buna_s1_0.tif']
 img_name_list = None
