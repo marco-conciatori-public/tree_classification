@@ -19,7 +19,7 @@ def get_img_path_list(data_path: str, verbose: int = 0) -> list:
     return img_path_list
 
 
-def load_data(data_path: str, selected_names: list = None, verbose: int = 0) -> (list, list):
+def load_data(data_path: str, selected_names: list = None, use_targets: bool = True, verbose: int = 0) -> (list, list):
     pure_path = Path(data_path)
     assert pure_path.exists(), f'Path "{data_path}" does not exist'
     assert pure_path.is_dir(), f'Path "{data_path}" is not a directory'
@@ -31,16 +31,19 @@ def load_data(data_path: str, selected_names: list = None, verbose: int = 0) -> 
         if condition:
             if img_path.name not in selected_names:
                 continue
-        # get class of each image
-        img_class = get_class.from_name(img_path.name)
 
         try:
             img = cv2.imread(str(img_path))
             img_list.append(img)
-            tag_list.append(img_class)
         except Exception as e:
             print(f'ERROR: could not load image "{img_path}". Exception: {e}')
 
+        if use_targets:
+            # get class of each image
+            img_class = get_class.from_name(img_path.name)
+            tag_list.append(img_class)
+
     if verbose >= 2:
         print(f'Loaded {len(img_list)} images')
+
     return img_list, tag_list
