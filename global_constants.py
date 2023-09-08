@@ -95,4 +95,4 @@ TREE_INFORMATION = {
         'display_color_rgb': (255, 255, 255),  # TODO: change color
     },
 }
-TREE_NAME_TO_SHOW = 'english_name'
+TREE_NAME_TO_SHOW = 'japanese_reading'
