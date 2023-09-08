@@ -14,6 +14,7 @@ def replace_decision_layer(model: torch.nn.Module, num_classes: int) -> torch.nn
         eps=eps,
         elementwise_affine=True,
     )
+    model.classifier[0].requires_grad = True
     model.classifier[2] = torch.nn.Linear(in_features=num_input_features, out_features=num_classes, bias=True)
     model.classifier[2].requires_grad = True
     # print(f'LayerNorm2d:\n{model.classifier[0]}')
