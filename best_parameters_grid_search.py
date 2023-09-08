@@ -26,22 +26,23 @@ num_tests_for_configuration: int = 3
 # and the average performance will be used to select the best configuration.
 # use lists of one element to test only one value for that variable.
 search_space = {
-    # 'data_augmentation_proportion_list': [1, 5, 10],
-    'data_augmentation_proportion_list': [5],
+    'data_augmentation_proportion_list': [1, 4, 8],
+    # 'data_augmentation_proportion_list': [5],
     # 'batch_size_list': [8, 16, 32],
-    'batch_size_list': [16],
+    'batch_size_list': [64],
     # 'learning_rate_list': [0.005, 0.0001],
-    'learning_rate_list': [5e-05, 1e-05],
-    'num_epochs_list': [10, 20],
-    # 'num_epochs_list': [3],
+    'learning_rate_list': [1e-04, 1e-05, 1e-06],
+    # 'num_epochs_list': [10, 20],
+    'num_epochs_list': [10],
     # 'optimizer_name_list': ['Adam', 'RMSprop'],
     'optimizer_name_list': ['Adam'],
     'balance_data_list': [True, False],
     # 'balance_data_list': [False],
-    'model_spec_list': [  # warning: case-sensitive names (model_name, weights_name)
-        ('regnet', 'regnet_y_1_6gf', 'RegNet_Y_1_6GF_Weights.DEFAULT'),
+    'model_spec_list': [  # WARNING: case-sensitive names (model_architecture, model_name, weights_name)
+        # ('regnet', 'regnet_y_1_6gf', 'RegNet_Y_1_6GF_Weights.DEFAULT'),
         # ('regnet', 'regnet_y_1_6gf', None),
         # ('regnet', 'regnet_y_128gf', 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'),
+        ('swin_transformer', 'swin_s', 'Swin_S_Weights.DEFAULT'),
     ],
     # to train a model from scratch, set weights_name to None
     # 'freeze_layers_list': [True, False],
