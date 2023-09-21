@@ -43,11 +43,6 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     verbose=verbose,
 )
 
-step_2_img_list, _ = data_loading.load_data(
-            data_path=global_constants.STEP_2_DATA_PATH,
-            verbose=0,
-        )
-
 img_list = []
 tag_list = []
 for batch in train_dl:
@@ -62,7 +57,6 @@ for batch in test_dl:
     observation_batch, target_batch = batch
     img_list.append(observation_batch)
     tag_list.append(target_batch.squeeze(0).item())
-assert len(img_list) == len(step_2_img_list)
 
 # get loss function from string name
 loss_function = getattr(torch.nn, config.LOSS_FUNCTION_NAME)()
@@ -99,7 +93,7 @@ for i in range(worst_n_predictions):
                   f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
 
     # show image
-    img = step_2_img_list[img_index]
+    img = img_list[img_index]
     cv2.imshow(
         winname=utils.get_tree_name(tag_list[img_index]).upper(),
         mat=img,

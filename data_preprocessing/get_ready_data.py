@@ -21,42 +21,15 @@ def get_data(batch_size: int,
              random_seed: int = None,
              verbose: int = 0,
              ):
-    # TODO: this is a temporary solution. each time delete the step 3 data and compute them again.
-    # To load them, step 3 data must be divided in folders based on the custom_transforms applied, batch_size,
-    # shuffle, and so on. This is not implemented yet.
-    augmentation_path = f'{global_constants.STEP_3_DATA_PATH}augmentation_{augmentation_proportion}/'
-    shutil.rmtree(path=global_constants.STEP_3_DATA_PATH, ignore_errors=True)
+    # TODO: this is a temporary solution. each time delete the step 2 data and compute them again. To load them,
+    #  step 2 data must be divided in folders based on the custom_transforms applied, batch_size, shuffle, and so
+    #  on. This is not implemented yet.
+    augmentation_path = f'{global_constants.STEP_2_DATA_PATH}augmentation_{augmentation_proportion}/'
+    shutil.rmtree(path=global_constants.STEP_2_DATA_PATH, ignore_errors=True)
 
     if verbose >= 1:
         print('Loading data...')
-    # try:
-    #     train_dl, val_dl, test_dl = torch.load(
-    #         f=augmentation_path + global_constants.DL_FILE_NAME + global_constants.PYTORCH_FILE_EXTENSION
-    #     )
-    #     print('Step 3 data found and loaded')
-    #     batched_img_tag = next(iter(train_dl))
-    #     batched_img_shape = batched_img_tag[0].shape
-    #     # print(f'batched_img_shape: {batched_img_shape}')
-    #     # print(f'batched Target shape: {batched_img_tag[1].shape}')
-    #     # remove batch dimension
-    #     img_shape = batched_img_shape[1:]
-    #     # print(f'img_shape: {img_shape}')
-    #     return train_dl, val_dl, test_dl, img_shape
-    # except Exception:
-    #     print('Step 3 data not found, generating them')
-    #
-    # step_2_data_loaded = True
-    # try:
-    #     img_list, tag_list = data_loading.load_data(
-    #         data_path=global_constants.STEP_2_DATA_PATH,
-    #         verbose=verbose,
-    #     )
-    #     print('Step 2 data found and loaded')
-    # except Exception:
-    #     print('Step 2 data not found, generating them')
-    #     step_2_data_loaded = False
 
-    # if not step_2_data_loaded:
     img_list, tag_list = data_loading.load_data(
         data_path=global_constants.STEP_1_DATA_PATH,
         verbose=verbose,
@@ -69,7 +42,6 @@ def get_data(batch_size: int,
             verbose=verbose,
         )
 
-    # step 3
     # split dataset
     utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)
     total_length = len(img_list)
@@ -189,6 +161,6 @@ def get_data(batch_size: int,
         augmentation_path.mkdir(parents=True)
     torch.save(obj=(train_dl, val_dl, test_dl), f=complete_file_path)
     if verbose >= 1:
-        print('Step 3 data generated and saved')
+        print('Step 2 data generated and saved')
 
     return train_dl, val_dl, test_dl, img_shape
