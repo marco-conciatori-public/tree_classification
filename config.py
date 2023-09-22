@@ -39,7 +39,8 @@ SHUFFLE: bool = True
 STANDARD_METRIC_ARGS: dict = {
     'task': 'multiclass',
     # 'num_classes': 5,
-    'average': 'weighted',
+    # 'average': 'weighted',
+    'average': 'none',
 }
 METRICS: dict = {
     'Accuracy': STANDARD_METRIC_ARGS,
