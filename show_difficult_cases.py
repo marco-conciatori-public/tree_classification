@@ -5,7 +5,7 @@ import utils
 import global_constants
 from import_args import args
 from models import model_utils
-from data_preprocessing import get_ready_data, data_loading
+from data_preprocessing import get_ready_data
 
 
 # import parameters

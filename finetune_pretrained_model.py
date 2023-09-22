@@ -28,7 +28,6 @@ num_classes = len(global_constants.TREE_INFORMATION)
 model_architecture = 'swin_transformer'
 model_version = 'swin_t'
 weights_name = 'Swin_T_Weights.DEFAULT'
-# TODO: implement swin transformer
 # freeze_layers = True
 freeze_layers = False
 
