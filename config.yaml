@@ -1,0 +1,52 @@
+verbose: 2
+
+# CONV_2D NN HYPERPARAMETERS
+model_parameters:
+    num_conv_layers: 3,
+    dense_layers: [4096, 512, 64],
+    convolution_parameters:
+        in_channels: 3,
+        out_channels: 16,
+        groups: 1,
+        kernel_size: 3,
+        stride: 1,
+        padding: same,
+    pooling_operation: MaxPool2d,
+    pooling_parameters:
+        kernel_size: 2,
+        stride: 2,
+        padding: 0,
+    temp_dense_layer_dimension: 7744,  # temporary fix
+
+# TRAINING HYPERPARAMETERS
+# width and height of images
+# img_dim: 95
+batch_size: 16
+num_epochs: 4
+learning_rate: !!float 5e-5
+optimizer_name: Adam
+# optimizer_name: RMSprop
+loss_function_name: CrossEntropyLoss
+shuffle: True
+standard_metric_args:
+    task: multiclass,
+    # average: weighted,
+    average: none,
+}
+metrics:
+    Accuracy: standard_metric_args,
+    Precision: standard_metric_args,
+    Recall: standard_metric_args,
+    F1Score: standard_metric_args,
+}
+save_model: True
+
+# must add up to 1 +/- tolerance
+train_val_test_proportions: list = [0.8, 0.1, 0.1]
+tolerance: 0.01
+# TODO: not fully implemented yet, only some of the random operations use this seed
+random_seed: 42  # set to None for different results each time
+# number of times the original dataset is duplicated with random variations
+data_augmentation_proportion: 5
+balance_data: False
+display_confusion_matrix: True
