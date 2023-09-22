@@ -83,7 +83,6 @@ try:
                         custom_transforms=custom_transforms,
                         train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
                         no_resizing=resize_in_attributes,
-                        tolerance=config.TOLERANCE,
                         augmentation_proportion=data_augmentation_proportion,
                         random_seed=config.RANDOM_SEED,
                         verbose=verbose,

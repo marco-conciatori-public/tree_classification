@@ -14,7 +14,6 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     balance_data=config.BALANCE_DATA,
     train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
     # standard_img_dim=config.IMG_DIM,
-    tolerance=config.TOLERANCE,
     augmentation_proportion=config.DATA_AUGMENTATION_PROPORTION,
     random_seed=config.RANDOM_SEED,
     verbose=verbose,

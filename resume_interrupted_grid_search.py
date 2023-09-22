@@ -67,7 +67,6 @@ try:
                         custom_transforms=custom_transforms,
                         train_val_test_proportions=partial_content['train_val_test_proportions'],
                         no_resizing=resize_in_attributes,
-                        tolerance=partial_content['tolerance'],
                         augmentation_proportion=data_augmentation_proportion,
                         random_seed=partial_content['random_seed'],
                         verbose=verbose,

@@ -13,7 +13,6 @@ def get_data(batch_size: int,
              shuffle: bool,
              balance_data: bool,
              train_val_test_proportions: list,
-             tolerance: float,
              no_resizing: bool = False,
              standard_img_dim: int = None,
              custom_transforms: list = None,
@@ -43,7 +42,6 @@ def get_data(batch_size: int,
         )
 
     # split dataset
-    utils.check_split_proportions(train_val_test_proportions=train_val_test_proportions, tolerance=tolerance)
     total_length = len(img_list)
     split_lengths = [int(total_length * proportion) for proportion in train_val_test_proportions]
     split_lengths[2] = total_length - split_lengths[0] - split_lengths[1]

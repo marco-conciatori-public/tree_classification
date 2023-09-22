@@ -56,7 +56,6 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     custom_transforms=custom_transforms,
     train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
     no_resizing=resize_in_attributes,
-    tolerance=config.TOLERANCE,
     augmentation_proportion=config.DATA_AUGMENTATION_PROPORTION,
     random_seed=config.RANDOM_SEED,
     verbose=verbose,

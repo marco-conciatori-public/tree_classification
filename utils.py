@@ -49,13 +49,6 @@ def get_available_device(verbose: int = 0) -> torch.device:
     return device
 
 
-def check_split_proportions(train_val_test_proportions: list, tolerance: float):
-    # check that proportions adds up to 1, except for rounding errors
-    assert 1 - tolerance < sum(train_val_test_proportions) < 1 + tolerance, \
-        f'The values of train_val_test_proportions must add up to 1 +/- {tolerance}' \
-        f' They add up to {sum(train_val_test_proportions)}'
-
-
 def get_path_by_id(model_id: int, folder_path: str, partial_name: str = ''):
     pure_path = Path(folder_path)
     assert pure_path.exists(), f'ERROR: The folder_path {folder_path} does not exists'
