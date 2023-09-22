@@ -42,7 +42,8 @@ search_space = {
         # ('regnet', 'regnet_y_1_6gf', 'RegNet_Y_1_6GF_Weights.DEFAULT'),
         # ('regnet', 'regnet_y_1_6gf', None),
         # ('regnet', 'regnet_y_128gf', 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'),
-        ('swin_transformer', 'swin_s', 'Swin_S_Weights.DEFAULT'),
+        # ('swin_transformer', 'swin_s', 'Swin_S_Weights.DEFAULT'),
+        ('swin_transformer', 'swin_t', 'Swin_T_Weights.DEFAULT'),
     ],
     # to train a model from scratch, set weights_name to None
     # 'freeze_layers_list': [True, False],

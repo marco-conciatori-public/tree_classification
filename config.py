@@ -30,7 +30,7 @@ MODEL_PARAMETERS: dict = {
 # width and height of images
 # IMG_DIM: int = 95
 BATCH_SIZE: int = 16
-NUM_EPOCHS: int = 15
+NUM_EPOCHS: int = 4
 LEARNING_RATE: float = 5e-5
 OPTIMIZER_NAME: str = 'Adam'
 # OPTIMIZER_NAME: str = 'RMSprop'
