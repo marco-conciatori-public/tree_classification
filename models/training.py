@@ -3,8 +3,8 @@ import numpy as np
 import torch
 import torchmetrics
 
-import config
 import global_constants
+from import_args import args
 from models import model_utils
 
 
@@ -25,6 +25,8 @@ def train(model: torch.nn.Module,
 
     if verbose >= 1:
         print('Training started...')
+
+    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 
     # get loss function from string name
     loss_function = getattr(torch.nn, loss_function_name)()
@@ -197,24 +199,19 @@ def train(model: torch.nn.Module,
             print('Saving model before exiting...')
             print(f'With validation loss: {min_valid_loss}')
             model.load_state_dict(best_model_weights)
-            meta_data = {
-                'learning_rate': learning_rate,
-                'num_epochs': num_epochs,
-                'loss_function_name': loss_function_name,
-                'optimizer_name': optimizer_name,
-                'training_length': len(training_data),
-                'interrupted': True,
-                'shuffle': config.SHUFFLE,
-                'random_seed': config.RANDOM_SEED,
-                'batch_size': batch_size,
-                'num_classes': num_classes,
-                'classes': classes,
-                'train_val_test_proportions': config.TRAIN_VAL_TEST_PROPORTIONS,
-                'last_complete_epoch': epoch - 1,
-                'augmentation_proportion': config.DATA_AUGMENTATION_PROPORTION,
-                'balance_classes': config.BALANCE_DATA,
-                'history': history,
-            }
+            meta_data = copy.deepcopy(parameters)
+            meta_data['learning_rate'] = learning_rate
+            meta_data['num_epochs'] = num_epochs
+            meta_data['loss_function_name'] = loss_function_name
+            meta_data['optimizer_name'] = optimizer_name
+            meta_data['training_length'] = len(training_data)
+            meta_data['interrupted'] = True
+            meta_data['batch_size'] = batch_size
+            meta_data['num_classes'] = num_classes
+            meta_data['classes'] = classes
+            meta_data['last_complete_epoch'] = epoch - 1
+            meta_data['history'] = history
+
             model_utils.save_model_and_meta_data(
                 model=model,
                 custom_transforms=custom_transforms,
@@ -226,24 +223,18 @@ def train(model: torch.nn.Module,
 
     # save model (weights and configuration) and other useful information
     if save_model:
-        meta_data = {
-            'learning_rate': learning_rate,
-            'num_epochs': num_epochs,
-            'loss_function_name': loss_function_name,
-            'optimizer_name': optimizer_name,
-            'training_length': len(training_data),
-            'interrupted': False,
-            'shuffle': config.SHUFFLE,
-            'random_seed': config.RANDOM_SEED,
-            'batch_size': batch_size,
-            'num_classes': num_classes,
-            'classes': classes,
-            'train_val_test_proportions': config.TRAIN_VAL_TEST_PROPORTIONS,
-            'last_complete_epoch': epoch,
-            'augmentation_proportion': config.DATA_AUGMENTATION_PROPORTION,
-            'balance_classes': config.BALANCE_DATA,
-            'history': history,
-        }
+        meta_data = copy.deepcopy(parameters)
+        meta_data['learning_rate'] = learning_rate
+        meta_data['num_epochs'] = num_epochs
+        meta_data['loss_function_name'] = loss_function_name
+        meta_data['optimizer_name'] = optimizer_name
+        meta_data['training_length'] = len(training_data)
+        meta_data['interrupted'] = False
+        meta_data['batch_size'] = batch_size
+        meta_data['classes'] = classes
+        meta_data['last_complete_epoch'] = epoch
+        meta_data['history'] = history
+
         model_utils.save_model_and_meta_data(
             model=model,
             custom_transforms=custom_transforms,

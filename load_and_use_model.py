@@ -2,14 +2,14 @@ import torch
 import cv2
 
 import utils
-import config
 import global_constants
+from import_args import args
 from models import model_utils
 from data_preprocessing import data_loading
 
 
-# PARAMETERS
-verbose = config.VERBOSE
+# import parameters
+parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 model_id = 0
 # partial_name = 'regnet_y_1_6'
 partial_name = 'swin'
@@ -21,7 +21,7 @@ use_targets = False
 # data_path = global_constants.TO_PREDICT_FOLDER_PATH
 data_path = global_constants.DATA_PATH + 'mixed_species/'
 
-device = utils.get_available_device(verbose=verbose)
+device = utils.get_available_device(verbose=parameters['verbose'])
 model_path, info_path = utils.get_path_by_id(
     partial_name=partial_name,
     model_id=model_id,
@@ -32,14 +32,14 @@ loaded_model, custom_transforms, meta_data = model_utils.load_model(
     device=device,
     training_mode=False,
     meta_data_path=info_path,
-    verbose=verbose,
+    verbose=parameters['verbose'],
 )
 
 img_list, tag_list = data_loading.load_data(
     data_path=data_path,
     selected_names=img_name_list,
     use_targets=use_targets,
-    verbose=verbose,
+    verbose=parameters['verbose'],
 )
 print(f'img_list length: {len(img_list)}')
 img_list = img_list[::jump]
@@ -48,7 +48,7 @@ if use_targets:
     tag_list = tag_list[::jump]
 
 # get loss function from string name
-loss_function = getattr(torch.nn, config.LOSS_FUNCTION_NAME)()
+loss_function = getattr(torch.nn, parameters['loss_function_name'])()
 softmax = torch.nn.Softmax(dim=0)
 with torch.set_grad_enabled(False):
     for img_index in range(len(img_list)):

@@ -1,32 +1,32 @@
 import utils
-import config
 import global_constants
-from models import model_utils, training, evaluation
+from import_args import args
 from data_preprocessing import get_ready_data
+from models import model_utils, training, evaluation
 
 
-verbose = config.VERBOSE
-device = utils.get_available_device(verbose=verbose)
+# import parameters
+parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 
 train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
-    batch_size=config.BATCH_SIZE,
-    shuffle=config.SHUFFLE,
-    balance_data=config.BALANCE_DATA,
-    train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
-    # standard_img_dim=config.IMG_DIM,
-    augmentation_proportion=config.DATA_AUGMENTATION_PROPORTION,
-    random_seed=config.RANDOM_SEED,
-    verbose=verbose,
+    batch_size=parameters['batch_size'],
+    shuffle=parameters['shuffle'],
+    balance_data=parameters['balance_data'],
+    train_val_test_proportions=parameters['train_val_test_proportions'],
+    # standard_img_dim=parameters['img_dim'],
+    augmentation_proportion=parameters['augmentation_proportion'],
+    random_seed=parameters['random_seed'],
+    verbose=parameters['verbose'],
 )
 
 model = model_utils.create_model(
     model_class_name='Conv_2d',
     input_shape=img_shape,
     num_output=len(global_constants.TREE_INFORMATION),
-    model_parameters=config.MODEL_PARAMETERS,
-    device=device,
+    model_parameters=parameters['model_parameters'],
+    device=parameters['device'],
     name='test_conv_2d',
-    verbose=verbose,
+    verbose=parameters['verbose'],
 )
 # print(model)
 # temp_tensor = torch.Tensor(img_list[0])
@@ -37,7 +37,7 @@ model = model_utils.create_model(
 # # switch from HWC to CHW
 # temp_tensor = temp_tensor.permute(0, 3, 1, 2)
 # print(f'main tensor shape: {temp_tensor.shape}')
-# temp_tensor = temp_tensor.to(device)
+# temp_tensor = temp_tensor.to(parameters['device'])
 # print(f'main tensor shape: {temp_tensor.shape}')
 # result = model(temp_tensor)
 # print(result)
@@ -46,28 +46,28 @@ training_history = training.train(
     model=model,
     training_data=train_dl,
     validation_data=val_dl,
-    num_epochs=config.NUM_EPOCHS,
-    learning_rate=config.LEARNING_RATE,
-    loss_function_name=config.LOSS_FUNCTION_NAME,
-    optimizer_name=config.OPTIMIZER_NAME,
-    device=device,
-    verbose=verbose,
-    save_model=config.SAVE_MODEL,
+    num_epochs=parameters['num_epochs'],
+    learning_rate=parameters['learning_rate'],
+    loss_function_name=parameters['loss_function_name'],
+    optimizer_name=parameters['optimizer_name'],
+    device=parameters['device'],
+    verbose=parameters['verbose'],
+    save_model=parameters['save_model'],
     save_path=global_constants.MODEL_OUTPUT_DIR,
-    metrics=config.METRICS,
+    metrics=parameters['metrics'],
 )
 print(f'training_history:\n{training_history}')
 
 test_loss, metric_evaluations = evaluation.eval(
     model=model,
     test_data=test_dl,
-    loss_function_name=config.LOSS_FUNCTION_NAME,
-    device=device,
-    display_confusion_matrix=config.DISPLAY_CONFUSION_MATRIX,
-    metrics=config.METRICS,
+    loss_function_name=parameters['loss_function_name'],
+    device=parameters['device'],
+    display_confusion_matrix=parameters['display_confusion_matrix'],
+    metrics=parameters['metrics'],
     save_results=True,
     save_path=global_constants.MODEL_OUTPUT_DIR,
-    verbose=verbose,
+    verbose=parameters['verbose'],
 )
 print(f'test_loss: {test_loss}')
 print(f'test_metric_evaluations: {metric_evaluations}')

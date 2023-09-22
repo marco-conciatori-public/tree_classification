@@ -2,18 +2,18 @@ import torch
 import torchmetrics
 
 import utils
-import config
 import global_constants
+from import_args import args
 from models import model_utils
 from data_preprocessing import get_ready_data
 
 
-# PARAMETERS
-verbose = 2
+# import parameters
+parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
+parameters['verbose'] = 2
 model_id = 0
 partial_name = 'regnety'
-device = utils.get_available_device(verbose=verbose)
-display_confusion_matrix = config.DISPLAY_CONFUSION_MATRIX
+device = parameters['device']
 
 model_path, info_path = utils.get_path_by_id(
     partial_name=partial_name,
@@ -26,28 +26,28 @@ loaded_model, custom_transforms, meta_data = model_utils.load_model(
     device=device,
     training_mode=False,
     meta_data_path=info_path,
-    verbose=verbose,
+    verbose=parameters['verbose'],
 )
 
 _, _, test_dl, img_shape = get_ready_data.get_data(
-    shuffle=config.SHUFFLE,
+    shuffle=parameters['shuffle'],
     balance_data=False,
     batch_size=1,
-    train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
+    train_val_test_proportions=parameters['train_val_test_proportions'],
     # standard_img_dim=config.IMG_DIM,
     custom_transforms=custom_transforms,
     augmentation_proportion=1,
-    random_seed=config.RANDOM_SEED,
-    verbose=verbose,
+    random_seed=parameters['random_seed'],
+    verbose=parameters['verbose'],
 )
-if verbose >= 1:
+if parameters['verbose'] >= 1:
     print(f'len(test_dl): {len(test_dl)}')
 
 # get loss function from string name
-loss_function = getattr(torch.nn, config.LOSS_FUNCTION_NAME)()
+loss_function = getattr(torch.nn, parameters['loss_function_name'])()
 
 test_metrics = {}
-for metric_name, metric_args in config.METRICS.items():
+for metric_name, metric_args in parameters['metrics'].items():
     try:
         metric_class = getattr(torchmetrics, metric_name)
     except AttributeError:
@@ -80,7 +80,7 @@ with torch.set_grad_enabled(False):
 
         test_loss += loss.item()
 
-        if display_confusion_matrix:
+        if parameters['display_confusion_matrix']:
             # calculations for confusion matrix
             prediction = prediction_batch.squeeze(0)
             # print(f'prediction shape: {prediction.shape}')
@@ -101,7 +101,7 @@ for metric_name in test_metrics:
     metric = test_metrics[metric_name]
     metric_evaluations[metric_name] = metric.compute()
 
-if verbose >= 1:
+if parameters['verbose'] >= 1:
     model_utils.print_formatted_results(
         title='TEST RESULTS',
         loss=test_loss,
@@ -109,6 +109,6 @@ if verbose >= 1:
         metrics_in_percentage=True,
     )
 
-if display_confusion_matrix:
+if parameters['display_confusion_matrix']:
     # Plot the confusion matrix
     utils.display_cm(true_values=tag_list, predictions=prediction_list)

@@ -46,8 +46,8 @@ them as also a meta_data file associated, which contains the parameters used to 
 obtained during training/fine-tuning and evaluation. The meda_data file is saved as a json file, so that it can be read
 directly by humans.
 
-Parameters for the scripts can be modified in the file "config.py". There are also some script-specific parameters
-that can be modified directly inside some of the scripts.
+Parameters for the scripts can be modified in the file "config.yaml" or provided via command line argument. There are
+also some script-specific parameters that can be modified directly inside some of the scripts.
 
 The data preprocessing expects data in "data/step_1", loads the images and resizes them. If specified in the config
 file, shuffling, balancing, and augmentation are applied. Transformations specific to pre-trained models are executed.

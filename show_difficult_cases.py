@@ -2,16 +2,15 @@ import torch
 import cv2
 
 import utils
-import config
 import global_constants
+from import_args import args
 from models import model_utils
 from data_preprocessing import get_ready_data, data_loading
 
 
-cpu = torch.device('cpu')
-
-# PARAMETERS
-verbose = 2
+# import parameters
+parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
+parameters['verbose'] = 2
 model_id = 0
 partial_name = 'regnety'
 worst_n_predictions = 30
@@ -24,22 +23,22 @@ model_path, info_path = utils.get_path_by_id(
 
 loaded_model, custom_transforms, meta_data = model_utils.load_model(
     model_path=model_path,
-    device=cpu,
+    device=parameters['device'],
     training_mode=False,
     meta_data_path=info_path,
-    verbose=verbose,
+    verbose=parameters['verbose'],
 )
 
 train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     shuffle=False,
     batch_size=1,
     balance_data=False,
-    train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
+    train_val_test_proportions=parameters['train_val_test_proportions'],
     # standard_img_dim=config.IMG_DIM,
     custom_transforms=custom_transforms,
     augmentation_proportion=1,
-    random_seed=config.RANDOM_SEED,
-    verbose=verbose,
+    random_seed=parameters['random_seed'],
+    verbose=parameters['verbose'],
 )
 
 img_list = []
@@ -58,7 +57,7 @@ for batch in test_dl:
     tag_list.append(target_batch.squeeze(0).item())
 
 # get loss function from string name
-loss_function = getattr(torch.nn, config.LOSS_FUNCTION_NAME)()
+loss_function = getattr(torch.nn, parameters['loss_function_name'])()
 softmax = torch.nn.Softmax(dim=0)
 worst_predictions = []
 with torch.set_grad_enabled(False):
@@ -87,7 +86,7 @@ for i in range(worst_n_predictions):
           f'{utils.get_tree_name(tag_list[img_index]).upper()}')
     print('NETWORK EVALUATION:')
     for tree_class in range(len(prediction)):
-        if prediction[tree_class] >= config.TOLERANCE:
+        if prediction[tree_class] >= parameters['tolerance']:
             print(f' - {utils.get_tree_name(tree_class)}: '
                   f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
 

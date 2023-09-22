@@ -1,13 +1,13 @@
 import utils
-import config
 import global_constants
+from import_args import args
 from models import training, evaluation, model_utils
 from data_preprocessing import get_ready_data
 
 
-verbose = config.VERBOSE
+# import parameters
+parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 num_classes = len(global_constants.TREE_INFORMATION)
-device = utils.get_available_device(verbose=verbose)
 # warning: case-sensitive names
 # REGNET MODEL
 # model_architecture = 'regnet'
@@ -38,27 +38,27 @@ model = model_utils.get_torchvision_model(
     model_name=model_version,
     weights_name=weights_name,
     freeze_layers=freeze_layers,
-    device=device,
+    device=parameters['device'],
     training=True,
     num_classes=num_classes,
-    verbose=verbose,
+    verbose=parameters['verbose'],
 )
 # print(f'model:\n{model}')
 custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
     weights_name=weights_name,
-    verbose=verbose,
+    verbose=parameters['verbose'],
 )
 
 train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
-    batch_size=config.BATCH_SIZE,
-    shuffle=config.SHUFFLE,
-    balance_data=config.BALANCE_DATA,
+    batch_size=parameters['batch_size'],
+    shuffle=parameters['shuffle'],
+    balance_data=parameters['balance_data'],
     custom_transforms=custom_transforms,
-    train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
+    train_val_test_proportions=parameters['train_val_test_proportions'],
     no_resizing=resize_in_attributes,
-    augmentation_proportion=config.DATA_AUGMENTATION_PROPORTION,
-    random_seed=config.RANDOM_SEED,
-    verbose=verbose,
+    augmentation_proportion=parameters['augmentation_proportion'],
+    random_seed=parameters['random_seed'],
+    verbose=parameters['verbose'],
 )
 
 # check image shape
@@ -76,15 +76,15 @@ training_history = training.train(
     model=model,
     training_data=train_dl,
     validation_data=val_dl,
-    num_epochs=config.NUM_EPOCHS,
-    learning_rate=config.LEARNING_RATE,
-    loss_function_name=config.LOSS_FUNCTION_NAME,
-    optimizer_name=config.OPTIMIZER_NAME,
-    device=device,
-    verbose=verbose,
-    save_model=config.SAVE_MODEL,
+    num_epochs=parameters['num_epochs'],
+    learning_rate=parameters['learning_rate'],
+    loss_function_name=parameters['loss_function_name'],
+    optimizer_name=parameters['optimizer_name'],
+    device=parameters['device'],
+    verbose=parameters['verbose'],
+    save_model=parameters['save_model'],
     save_path=global_constants.MODEL_OUTPUT_DIR,
-    metrics=config.METRICS,
+    metrics=parameters['metrics'],
     custom_transforms=custom_transforms,
 )
 print(f'training_history:\n{training_history}')
@@ -92,13 +92,13 @@ print(f'training_history:\n{training_history}')
 test_loss, metric_evaluations = evaluation.eval(
     model=model,
     test_data=test_dl,
-    loss_function_name=config.LOSS_FUNCTION_NAME,
-    device=device,
-    display_confusion_matrix=config.DISPLAY_CONFUSION_MATRIX,
-    metrics=config.METRICS,
-    save_results=config.SAVE_MODEL,
+    loss_function_name=parameters['loss_function_name'],
+    device=parameters['device'],
+    display_confusion_matrix=parameters['display_confusion_matrix'],
+    metrics=parameters['metrics'],
+    save_results=parameters['save_results'],
     save_path=global_constants.MODEL_OUTPUT_DIR,
-    verbose=verbose,
+    verbose=parameters['verbose'],
 )
 print(f'test_loss: {test_loss}')
 print(f'test_metric_evaluations: {metric_evaluations}')

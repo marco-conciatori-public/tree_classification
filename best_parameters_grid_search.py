@@ -3,15 +3,16 @@ import datetime
 from pathlib import Path
 
 import utils
-import config
 import global_constants
+from import_args import args
 from data_preprocessing import get_ready_data
 from models import training, evaluation, model_utils
 
 
 # for fine-tuning pretrained models, not for training new custom models
-verbose = 0
-device = utils.get_available_device(verbose=verbose)
+# import parameters
+parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
+parameters['verbose'] = 0
 num_classes = len(global_constants.TREE_INFORMATION)
 interrupted = False
 print('Initial date and time:')
@@ -66,7 +67,7 @@ try:
         print(f'model architecture: {model_architecture}, model version: {model_name}, with weights: {weights_name}')
         custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
             weights_name=weights_name,
-            verbose=verbose,
+            verbose=parameters['verbose'],
         )
 
         for batch_size in search_space['batch_size_list']:
@@ -78,14 +79,14 @@ try:
                     start_time = datetime.datetime.now()
                     train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
                         batch_size=batch_size,
-                        shuffle=config.SHUFFLE,
+                        shuffle=parameters['shuffle'],
                         balance_data=balance_data,
                         custom_transforms=custom_transforms,
-                        train_val_test_proportions=config.TRAIN_VAL_TEST_PROPORTIONS,
+                        train_val_test_proportions=parameters['train_val_test_proportions'],
                         no_resizing=resize_in_attributes,
                         augmentation_proportion=data_augmentation_proportion,
-                        random_seed=config.RANDOM_SEED,
-                        verbose=verbose,
+                        random_seed=parameters['random_seed'],
+                        verbose=parameters['verbose'],
                     )
                     end_time = datetime.datetime.now()
                     print(f'\t\t\tdata processing/loading time: {utils.timedelta_format(start_time, end_time)}')
@@ -109,17 +110,17 @@ try:
 
                                     start_time = datetime.datetime.now()
                                     average_loss_test = 0
-                                    average_metrics_test = {metric_name: 0 for metric_name in config.METRICS}
+                                    average_metrics_test = {metric_name: 0 for metric_name in parameters['metrics']}
                                     for i in range(num_tests_for_configuration):
                                         model = model_utils.get_torchvision_model(
                                             model_architecture=model_architecture,
                                             model_name=model_name,
                                             freeze_layers=freeze_layers,
                                             weights_name=weights_name,
-                                            device=device,
+                                            device=parameters['device'],
                                             training=True,
                                             num_classes=num_classes,
-                                            verbose=verbose,
+                                            verbose=parameters['verbose'],
                                         )
 
                                         training_history = training.train(
@@ -128,10 +129,10 @@ try:
                                             validation_data=val_dl,
                                             num_epochs=num_epochs,
                                             learning_rate=learning_rate,
-                                            loss_function_name=config.LOSS_FUNCTION_NAME,
+                                            loss_function_name=parameters['loss_function_name'],
                                             optimizer_name=optimizer_name,
-                                            device=device,
-                                            verbose=verbose,
+                                            device=parameters['device'],
+                                            verbose=parameters['verbose'],
                                             save_model=False,
                                             custom_transforms=custom_transforms,
                                         )
@@ -139,19 +140,19 @@ try:
                                         test_loss, metric_evaluations = evaluation.eval(
                                             model=model,
                                             test_data=test_dl,
-                                            loss_function_name=config.LOSS_FUNCTION_NAME,
-                                            device=device,
+                                            loss_function_name=parameters['loss_function_name'],
+                                            device=parameters['device'],
                                             display_confusion_matrix=False,
-                                            metrics=config.METRICS,
+                                            metrics=parameters['metrics'],
                                             save_results=False,
-                                            verbose=verbose,
+                                            verbose=parameters['verbose'],
                                         )
                                         average_loss_test += test_loss
                                         for metric_name, metric_evaluation in metric_evaluations.items():
                                             average_metrics_test[metric_name] += metric_evaluation
 
                                     average_loss_test = average_loss_test / num_tests_for_configuration
-                                    for metric_name in config.METRICS:
+                                    for metric_name in parameters['metrics']:
                                         average_metrics_test[metric_name] = average_metrics_test[metric_name] / \
                                                                                 num_tests_for_configuration
 
@@ -196,15 +197,15 @@ print(f'Total duration: {total_duration}')
 content = {
     'total_duration': str(total_duration),
     'conclusion_date': global_end_time.strftime('%Y-%m-%d-%H:%M:%S'),
-    'shuffle': config.SHUFFLE,
+    'shuffle': parameters['shuffle'],
     'num_classes': num_classes,
     'num_tests_for_configuration': num_tests_for_configuration,
     'interrupted': interrupted,
-    'loss_function_name': config.LOSS_FUNCTION_NAME,
-    'train_val_test_proportions': config.TRAIN_VAL_TEST_PROPORTIONS,
-    'tolerance': config.TOLERANCE,
-    'random_seed': config.RANDOM_SEED,
-    'metrics': config.METRICS,
+    'loss_function_name': parameters['loss_function_name'],
+    'train_val_test_proportions': parameters['train_val_test_proportions'],
+    'tolerance': parameters['tolerance'],
+    'random_seed': parameters['random_seed'],
+    'metrics': parameters['metrics'],
     'search_space': search_space,
     'results': results,
 }
