@@ -64,7 +64,7 @@ test_loss, metric_evaluations = evaluation.eval(
     device=parameters['device'],
     display_confusion_matrix=parameters['display_confusion_matrix'],
     metrics=parameters['metrics'],
-    save_results=True,
+    save_results=parameters['save_model'],
     save_path=global_constants.MODEL_OUTPUT_DIR,
     verbose=parameters['verbose'],
 )
