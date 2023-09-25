@@ -78,6 +78,7 @@ try:
                     print(f'\t\t\tdata_augmentation_proportion: {data_augmentation_proportion}')
                     start_time = datetime.datetime.now()
                     train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
+                        data_path=parameters['data_path'],
                         batch_size=batch_size,
                         shuffle=parameters['shuffle'],
                         balance_data=balance_data,
@@ -199,6 +200,8 @@ content = {
     'total_duration': str(total_duration),
     'conclusion_date': global_end_time.strftime('%Y-%m-%d-%H:%M:%S'),
     'shuffle': parameters['shuffle'],
+    'device': parameters['device'],
+    'data_path': parameters['data_path'],
     'num_classes': num_classes,
     'num_tests_for_configuration': num_tests_for_configuration,
     'interrupted': interrupted,

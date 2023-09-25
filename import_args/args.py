@@ -1,6 +1,7 @@
 import os
 
 import utils
+import global_constants
 from import_args import from_yaml, from_command_line
 
 
@@ -26,5 +27,6 @@ def import_and_check(yaml_path) -> dict:
 
     device = utils.get_available_device(verbose=data_dict['verbose'])
     data_dict['device'] = device
+    data_dict['data_path'] = global_constants.DATA_PATH + data_dict['input_data_folder']
 
     return data_dict

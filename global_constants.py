@@ -1,6 +1,5 @@
 DATA_PATH = 'data/'
 ONE_LEVEL_UP = '../'
-STEP_1_DATA_PATH = DATA_PATH + 'step_1/'
 STEP_2_DATA_PATH = DATA_PATH + 'step_2/'
 OUTPUT_DIR = 'output/'
 TO_PREDICT_FOLDER_NAME = 'to_predict/'

@@ -58,3 +58,5 @@ random_seed: 42  # set to None for different results each time
 data_augmentation_proportion: 5
 balance_data: False
 display_confusion_matrix: True
+
+input_data_folder: step_1/

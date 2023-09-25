@@ -9,7 +9,8 @@ from image_processing import resize
 from data_preprocessing import data_loading, custom_dataset, balancing_augmentation
 
 
-def get_data(batch_size: int,
+def get_data(data_path: str,
+             batch_size: int,
              shuffle: bool,
              balance_data: bool,
              train_val_test_proportions: list,
@@ -17,7 +18,6 @@ def get_data(batch_size: int,
              standard_img_dim: int = None,
              custom_transforms: list = None,
              augmentation_proportion: int = 1,
-             data_path: str = None,
              random_seed: int = None,
              verbose: int = 0,
              ):

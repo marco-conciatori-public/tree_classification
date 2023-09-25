@@ -27,8 +27,8 @@ for dir_path in pure_path.iterdir():
         folder_list = list(dir_path.glob('*.TIF'))
         tif_list.extend(folder_list)
 
-# save images to the STEP_1_DATA_PATH folder
-save_folder_path = Path(global_constants.ONE_LEVEL_UP + global_constants.STEP_1_DATA_PATH)
+# save images to the input data folder
+save_folder_path = Path(global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + 'step_1/')
 if not save_folder_path.exists():
     save_folder_path.mkdir(parents=False)
 # print(f'save_folder_path: {save_folder_path}')

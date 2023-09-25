@@ -49,6 +49,7 @@ custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
 )
 
 train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
+    data_path=parameters['data_path'],
     batch_size=parameters['batch_size'],
     shuffle=parameters['shuffle'],
     balance_data=parameters['balance_data'],

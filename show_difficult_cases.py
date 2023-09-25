@@ -30,6 +30,7 @@ loaded_model, custom_transforms, meta_data = model_utils.load_model(
 )
 
 train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
+    data_path=parameters['data_path'],
     shuffle=False,
     batch_size=1,
     balance_data=False,

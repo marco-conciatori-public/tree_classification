@@ -8,6 +8,7 @@ from models import model_utils, training, evaluation
 parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 
 train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
+    data_path=parameters['data_path'],
     batch_size=parameters['batch_size'],
     shuffle=parameters['shuffle'],
     balance_data=parameters['balance_data'],

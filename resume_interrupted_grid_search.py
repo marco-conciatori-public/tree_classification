@@ -11,7 +11,6 @@ from models import training, evaluation, model_utils
 
 # for fine-tuning pretrained models, not for training new custom models
 verbose = 0
-device = utils.get_available_device(verbose=verbose)
 interrupted = False
 print('Initial date and time:')
 global_start_time = datetime.datetime.now()
@@ -28,6 +27,8 @@ num_classes = partial_content['num_classes']
 # number of tests for each configuration, to have a more accurate estimate of the performance
 num_tests_for_configuration: int = partial_content['num_tests_for_configuration']
 search_space = partial_content['search_space']
+data_path = partial_content['data_path']
+device = partial_content['device']
 # compute number of combinations
 num_different_configurations = 1
 for value in search_space.values():
@@ -61,6 +62,7 @@ try:
                     print(f'\t\t\tdata_augmentation_proportion: {data_augmentation_proportion}')
                     start_time = datetime.datetime.now()
                     train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
+                        data_path=data_path,
                         batch_size=batch_size,
                         shuffle=partial_content['shuffle'],
                         balance_data=balance_data,
