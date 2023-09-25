@@ -13,7 +13,7 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     balance_data=parameters['balance_data'],
     train_val_test_proportions=parameters['train_val_test_proportions'],
     # standard_img_dim=parameters['img_dim'],
-    augmentation_proportion=parameters['augmentation_proportion'],
+    augmentation_proportion=parameters['data_augmentation_proportion'],
     random_seed=parameters['random_seed'],
     verbose=parameters['verbose'],
 )

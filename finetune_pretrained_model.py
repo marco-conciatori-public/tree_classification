@@ -55,7 +55,7 @@ train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
     custom_transforms=custom_transforms,
     train_val_test_proportions=parameters['train_val_test_proportions'],
     no_resizing=resize_in_attributes,
-    augmentation_proportion=parameters['augmentation_proportion'],
+    augmentation_proportion=parameters['data_augmentation_proportion'],
     random_seed=parameters['random_seed'],
     verbose=parameters['verbose'],
 )
