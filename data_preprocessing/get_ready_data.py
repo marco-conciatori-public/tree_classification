@@ -17,6 +17,7 @@ def get_data(batch_size: int,
              standard_img_dim: int = None,
              custom_transforms: list = None,
              augmentation_proportion: int = 1,
+             data_path: str = None,
              random_seed: int = None,
              verbose: int = 0,
              ):
@@ -29,10 +30,16 @@ def get_data(batch_size: int,
     if verbose >= 1:
         print('Loading data...')
 
-    img_list, tag_list = data_loading.load_data(
-        data_path=global_constants.STEP_1_DATA_PATH,
-        verbose=verbose,
-    )
+    if data_path is None:
+        img_list, tag_list = data_loading.load_data(
+            data_path=global_constants.STEP_1_DATA_PATH,
+            verbose=verbose,
+        )
+    else:
+        img_list, tag_list = data_loading.load_data(
+            data_path=data_path,
+            verbose=verbose,
+        )
     if not no_resizing:
         # resize images
         img_list = resize.resize_img_list(
