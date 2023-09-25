@@ -7,6 +7,7 @@ The environment needs to be set up with the following packages:
 - torchvision
 - openCV
 - numpy
+- pyyaml
 - pathlib
 - matplotlib (optional, for confusion matrix display)
 - sklearn (optional, for confusion matrix display)
