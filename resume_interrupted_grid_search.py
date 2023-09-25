@@ -123,6 +123,7 @@ try:
                                             verbose=verbose,
                                             save_model=False,
                                             custom_transforms=custom_transforms,
+                                            extra_info_to_save=None,
                                         )
 
                                         test_loss, metric_evaluations = evaluation.eval(

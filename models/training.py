@@ -4,7 +4,6 @@ import torch
 import torchmetrics
 
 import global_constants
-from import_args import args
 from models import model_utils
 
 
@@ -21,12 +20,11 @@ def train(model: torch.nn.Module,
           save_path=None,
           custom_transforms=None,
           verbose: int = 0,
+          extra_info_to_save: dict = None,
           ) -> dict:
 
     if verbose >= 1:
         print('Training started...')
-
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 
     # get loss function from string name
     loss_function = getattr(torch.nn, loss_function_name)()
@@ -199,47 +197,46 @@ def train(model: torch.nn.Module,
             print('Saving model before exiting...')
             print(f'With validation loss: {min_valid_loss}')
             model.load_state_dict(best_model_weights)
-            meta_data = copy.deepcopy(parameters)
-            meta_data['learning_rate'] = learning_rate
-            meta_data['num_epochs'] = num_epochs
-            meta_data['loss_function_name'] = loss_function_name
-            meta_data['optimizer_name'] = optimizer_name
-            meta_data['training_length'] = len(training_data)
-            meta_data['interrupted'] = True
-            meta_data['batch_size'] = batch_size
-            meta_data['num_classes'] = num_classes
-            meta_data['classes'] = classes
-            meta_data['last_complete_epoch'] = epoch - 1
-            meta_data['history'] = history
+            extra_info_to_save['learning_rate'] = learning_rate
+            extra_info_to_save['num_epochs'] = num_epochs
+            extra_info_to_save['loss_function_name'] = loss_function_name
+            extra_info_to_save['optimizer_name'] = optimizer_name
+            extra_info_to_save['training_length'] = len(training_data)
+            extra_info_to_save['interrupted'] = True
+            extra_info_to_save['batch_size'] = batch_size
+            extra_info_to_save['num_classes'] = num_classes
+            extra_info_to_save['classes'] = classes
+            extra_info_to_save['last_complete_epoch'] = epoch - 1
+            extra_info_to_save['history'] = history
 
             model_utils.save_model_and_meta_data(
                 model=model,
                 custom_transforms=custom_transforms,
                 save_path=save_path,
-                meta_data=meta_data,
+                meta_data=extra_info_to_save,
                 verbose=verbose,
             )
         raise KeyboardInterrupt
 
     # save model (weights and configuration) and other useful information
     if save_model:
-        meta_data = copy.deepcopy(parameters)
-        meta_data['learning_rate'] = learning_rate
-        meta_data['num_epochs'] = num_epochs
-        meta_data['loss_function_name'] = loss_function_name
-        meta_data['optimizer_name'] = optimizer_name
-        meta_data['training_length'] = len(training_data)
-        meta_data['interrupted'] = False
-        meta_data['batch_size'] = batch_size
-        meta_data['classes'] = classes
-        meta_data['last_complete_epoch'] = epoch
-        meta_data['history'] = history
+        extra_info_to_save['learning_rate'] = learning_rate
+        extra_info_to_save['num_epochs'] = num_epochs
+        extra_info_to_save['loss_function_name'] = loss_function_name
+        extra_info_to_save['optimizer_name'] = optimizer_name
+        extra_info_to_save['training_length'] = len(training_data)
+        extra_info_to_save['interrupted'] = False
+        extra_info_to_save['batch_size'] = batch_size
+        extra_info_to_save['num_classes'] = num_classes
+        extra_info_to_save['classes'] = classes
+        extra_info_to_save['last_complete_epoch'] = epoch
+        extra_info_to_save['history'] = history
 
         model_utils.save_model_and_meta_data(
             model=model,
             custom_transforms=custom_transforms,
             save_path=save_path,
-            meta_data=meta_data,
+            meta_data=extra_info_to_save,
             verbose=verbose,
         )
     return history

@@ -21,7 +21,6 @@ use_targets = False
 # data_path = global_constants.TO_PREDICT_FOLDER_PATH
 data_path = global_constants.DATA_PATH + 'mixed_species/'
 
-device = utils.get_available_device(verbose=parameters['verbose'])
 model_path, info_path = utils.get_path_by_id(
     partial_name=partial_name,
     model_id=model_id,
@@ -29,7 +28,7 @@ model_path, info_path = utils.get_path_by_id(
 )
 loaded_model, custom_transforms, meta_data = model_utils.load_model(
     model_path=model_path,
-    device=device,
+    device=parameters['device'],
     training_mode=False,
     meta_data_path=info_path,
     verbose=parameters['verbose'],
@@ -59,8 +58,8 @@ with torch.set_grad_enabled(False):
             for transform in custom_transforms:
                 img = transform(img)
 
-        if img.device != device:
-            img = img.to(device)
+        if img.device != parameters['device']:
+            img = img.to(parameters['device'])
 
         # add batch dimension
         img = img.unsqueeze(0)

@@ -71,6 +71,11 @@ print(f'batched Target shape: {batched_img_tag[1].shape}')
 img_shape = batched_img_shape[1:]
 print(f'img_shape: {img_shape}')
 
+parameters_to_save = {}
+parameters_to_save['shuffle'] = parameters['shuffle']
+parameters_to_save['random_seed'] = parameters['random_seed']
+parameters_to_save['augmentation_proportion'] = parameters['data_augmentation_proportion']
+parameters_to_save['balance_classes'] = parameters['balance_data']
 training_history = training.train(
     model=model,
     training_data=train_dl,
@@ -85,6 +90,7 @@ training_history = training.train(
     save_path=global_constants.MODEL_OUTPUT_DIR,
     metrics=parameters['metrics'],
     custom_transforms=custom_transforms,
+    extra_info_to_save=parameters_to_save,
 )
 print(f'training_history:\n{training_history}')
 
