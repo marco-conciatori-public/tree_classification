@@ -28,16 +28,24 @@ optimizer_name: Adam
 # optimizer_name: RMSprop
 loss_function_name: CrossEntropyLoss
 shuffle: True
-standard_metric_args:
-    task: multiclass
-    # average: weighted
-    average: none
 
 metrics:
-    Accuracy: standard_metric_args
-    Precision: standard_metric_args
-    Recall: standard_metric_args
-    F1Score: standard_metric_args
+    Accuracy:
+        task: multiclass
+        average: weighted
+#        average: none
+    Precision:
+        task: multiclass
+        average: weighted
+#        average: none
+    Recall:
+        task: multiclass
+        average: weighted
+#        average: none
+    F1Score:
+        task: multiclass
+        average: weighted
+#        average: none
 
 save_model: True
 
