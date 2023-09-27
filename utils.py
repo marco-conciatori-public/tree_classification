@@ -104,7 +104,7 @@ def display_cm(true_values, predictions, labels=None):
     num_classes = len(global_constants.TREE_INFORMATION)
     true_values = np.array(true_values)
     predictions = np.array(predictions)
-    confusion_matrix = np.zeros((num_classes, num_classes), dtype=np.int64)
+    confusion_matrix = np.zeros(shape=(num_classes, num_classes), dtype=np.int64)
     for i in range(len(true_values)):
         confusion_matrix[true_values[i], predictions[i]] += 1
 
