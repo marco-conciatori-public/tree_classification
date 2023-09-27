@@ -4,9 +4,9 @@ import utils
 import global_constants
 
 
-# PARAMETERS
-model_id = 0
-partial_name = 'regnet_y_1_6'
+# parameters
+model_id = int(input('Insert model id number: '))
+partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
 
 _, meta_data_path = utils.get_path_by_id(
     partial_name=partial_name,

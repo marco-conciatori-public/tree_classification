@@ -11,9 +11,9 @@ from data_preprocessing import get_ready_data
 # import parameters
 parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 parameters['verbose'] = 2
-model_id = 0
-partial_name = 'regnety'
 worst_n_predictions = 30
+model_id = int(input('Insert model id number: '))
+partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
 
 model_path, info_path = utils.get_path_by_id(
     partial_name=partial_name,
