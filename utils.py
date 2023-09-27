@@ -113,7 +113,7 @@ def display_cm(true_values, predictions, labels=None):
         confusion_matrix,
         cmap=plt.cm.Blues,
         alpha=0.8,
-        norm=colors.LogNorm(vmin=confusion_matrix.min(), vmax=confusion_matrix.max()),
+        norm=colors.LogNorm(),
     )
     for i in range(confusion_matrix.shape[0]):
         for j in range(confusion_matrix.shape[1]):
