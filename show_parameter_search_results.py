@@ -5,8 +5,8 @@ from visualization.grid_search_results import top_configurations, graph_2d, grap
 
 bar_width = 0.7
 max_digits = 5
-excluded_key_list = []
 top_n = 20
+excluded_key_list = []
 file_number = int(input('Insert file number: '))
 parameter_evaluation = visualization_utils.load_evaluation(file_number)
 print('\nINFO:')

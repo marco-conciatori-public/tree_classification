@@ -11,7 +11,6 @@ from data_preprocessing import get_ready_data
 # import parameters
 parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 parameters['verbose'] = 2
-worst_n_predictions = 30
 model_id = int(input('Insert model id number: '))
 partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
 
@@ -77,8 +76,8 @@ with torch.set_grad_enabled(False):
 
 # sort worst_predictions
 worst_predictions.sort(key=lambda x: x[0])
-for i in range(worst_n_predictions):
-    if i > worst_n_predictions:
+for i in range(parameters['worst_n_predictions']):
+    if i > parameters['worst_n_predictions']:
         break
     prediction_of_true_class, img_index, prediction = worst_predictions[i]
 

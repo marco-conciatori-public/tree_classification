@@ -62,7 +62,6 @@ tolerance: 0.01
 data_augmentation_proportion: 5
 balance_data: False
 
-display_confusion_matrix: True
 metrics:
     Accuracy:
         task: multiclass
@@ -88,3 +87,6 @@ metrics:
 img_name_list: null
 jump: 1
 use_targets: False
+
+display_confusion_matrix: True
+worst_n_predictions: 20
