@@ -47,8 +47,8 @@ configuration_counter = 0
 try:
     print(f'\nResuming grid search from configuration {last_configuration_counter}...')
     for model_spec in search_space['model_spec_list']:
-        model_architecture, model_name, weights_name = model_spec
-        print(f'model architecture: {model_architecture}, model version: {model_name}, with weights: {weights_name}')
+        model_architecture, model_version, weights_name = model_spec
+        print(f'model architecture: {model_architecture}, model version: {model_version}, with weights: {weights_name}')
         custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
             weights_name=weights_name,
             verbose=verbose,
@@ -101,12 +101,15 @@ try:
                                     average_loss_test = 0
                                     average_metrics_test = {metric_name: 0
                                                             for metric_name in partial_content['metrics']}
+                                    pretrained_model_parameters = {
+                                        'model_architecture': model_architecture,
+                                        'model_version': model_version,
+                                        'weights_name': weights_name,
+                                        'freeze_layers': freeze_layers,
+                                    }
                                     for i in range(num_tests_for_configuration):
                                         model = model_utils.get_torchvision_model(
-                                            model_architecture=model_architecture,
-                                            model_name=model_name,
-                                            freeze_layers=freeze_layers,
-                                            weights_name=weights_name,
+                                            pretrained_model_parameters=pretrained_model_parameters,
                                             device=device,
                                             training=True,
                                             num_classes=num_classes,
@@ -162,7 +165,7 @@ try:
                                             'data_augmentation_proportion': data_augmentation_proportion,
                                             'optimizer_name': optimizer_name,
                                             'num_epochs': num_epochs,
-                                            'model': (model_name, weights_name),
+                                            'model': (model_version, weights_name),
                                             'freeze_layers': freeze_layers,
                                             'time_used': str(time_delta),
                                             'configuration_counter': configuration_counter,

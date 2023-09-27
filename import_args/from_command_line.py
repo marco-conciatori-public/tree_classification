@@ -1,5 +1,5 @@
-import argparse
 import copy
+import argparse
 
 
 def update_config(default_data_dict: dict) -> dict:

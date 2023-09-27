@@ -114,10 +114,7 @@ try:
                                     average_metrics_test = {metric_name: 0 for metric_name in parameters['metrics']}
                                     for i in range(num_tests_for_configuration):
                                         model = model_utils.get_torchvision_model(
-                                            model_architecture=model_architecture,
-                                            model_name=model_name,
-                                            freeze_layers=freeze_layers,
-                                            weights_name=weights_name,
+                                            pretrained_model_parameters=parameters['pretrained_model_parameters'],
                                             device=parameters['device'],
                                             training=True,
                                             num_classes=num_classes,

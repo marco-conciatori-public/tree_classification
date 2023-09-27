@@ -1,7 +1,10 @@
 verbose: 2
+input_data_folder: step_1/
+# TODO: not fully implemented yet only some of the random operations use this seed
+random_seed: 42  # set to None for different results each time
 
-# CONV_2D NN HYPERPARAMETERS
-model_parameters:
+# CUSTOM MODEL CONFIGURATION
+custom_model_parameters:
     num_conv_layers: 3
     dense_layers: [4096, 512, 64]
     convolution_parameters:
@@ -18,6 +21,29 @@ model_parameters:
         padding: 0
     temp_dense_layer_dimension: 7744  # temporary fix
 
+# PRE-TRAINED MODEL CONFIGURATION
+# Warning: case-sensitive names
+pretrained_model_parameters:
+    # REGNET MODEL
+    # model_architecture: regnet
+    # model_version: regnet_y_1_6gf  # small
+    # weights_name: RegNet_Y_1_6GF_Weights.DEFAULT
+    # model_version: regnet_y_128gf  # big
+    # weights_name: RegNet_Y_128GF_Weights.DEFAULT
+    # RESNET MODEL
+    model_architecture: resnet
+    model_version: resnet50
+    weights_name: ResNet50_Weights.DEFAULT
+    # CONVNEXT MODEL
+    # model_architecture: convnext
+    # model_version: convnext_small
+    # weights_name: ConvNeXt_Small_Weights.DEFAULT
+    # SWIN TRANSFORMER MODEL
+    # model_architecture: swin_transformer
+    # model_version: swin_t
+    # weights_name: Swin_T_Weights.DEFAULT
+    freeze_layers: False
+
 # TRAINING HYPERPARAMETERS
 # width and height of images
 # img_dim: 95
@@ -28,7 +54,15 @@ optimizer_name: Adam
 # optimizer_name: RMSprop
 loss_function_name: CrossEntropyLoss
 shuffle: True
+save_model: True
+# must add up to 1 +/- tolerance
+train_val_test_proportions: [0.8, 0.1, 0.1]
+tolerance: 0.01
+# number of times the original dataset is duplicated with random variations
+data_augmentation_proportion: 5
+balance_data: False
 
+display_confusion_matrix: True
 metrics:
     Accuracy:
         task: multiclass
@@ -46,17 +80,3 @@ metrics:
         task: multiclass
         average: weighted
 #        average: none
-
-save_model: True
-
-# must add up to 1 +/- tolerance
-train_val_test_proportions: [0.8, 0.1, 0.1]
-tolerance: 0.01
-# TODO: not fully implemented yet only some of the random operations use this seed
-random_seed: 42  # set to None for different results each time
-# number of times the original dataset is duplicated with random variations
-data_augmentation_proportion: 5
-balance_data: False
-display_confusion_matrix: True
-
-input_data_folder: step_1/

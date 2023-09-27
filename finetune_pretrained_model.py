@@ -1,4 +1,3 @@
-import utils
 import global_constants
 from import_args import args
 from models import training, evaluation, model_utils
@@ -8,35 +7,10 @@ from data_preprocessing import get_ready_data
 # import parameters
 parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 num_classes = len(global_constants.TREE_INFORMATION)
-# warning: case-sensitive names
-# REGNET MODEL
-# model_architecture = 'regnet'
-# model_version = 'regnet_y_1_6gf'  # small
-# weights_name = 'RegNet_Y_1_6GF_Weights.DEFAULT'
-# weights_name = None
-# model_version = 'regnet_y_128gf'  # big
-# weights_name = 'RegNet_Y_128GF_Weights.DEFAULT'
-# RESNET MODEL
-# model_architecture = 'resnet'
-# model_version = 'resnet50'
-# weights_name = 'ResNet50_Weights.DEFAULT'
-# CONVNEXT MODEL
-# model_architecture = 'convnext'
-# model_version = 'convnext_small'
-# weights_name = 'ConvNeXt_Small_Weights.DEFAULT'
-# SWIN TRANSFORMER MODEL
-model_architecture = 'swin_transformer'
-model_version = 'swin_t'
-weights_name = 'Swin_T_Weights.DEFAULT'
-# freeze_layers = True
-freeze_layers = False
 
 # load model
 model = model_utils.get_torchvision_model(
-    model_architecture=model_architecture,
-    model_name=model_version,
-    weights_name=weights_name,
-    freeze_layers=freeze_layers,
+    pretrained_model_parameters=parameters['pretrained_model_parameters'],
     device=parameters['device'],
     training=True,
     num_classes=num_classes,
@@ -44,7 +18,7 @@ model = model_utils.get_torchvision_model(
 )
 # print(f'model:\n{model}')
 custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
-    weights_name=weights_name,
+    weights_name=parameters['weights_name'],
     verbose=parameters['verbose'],
 )
 

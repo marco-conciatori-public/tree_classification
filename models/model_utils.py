@@ -13,7 +13,7 @@ from models import conv_2d
 def create_model(model_class_name: str,
                  input_shape: tuple,
                  num_output: int,
-                 model_parameters: dict,
+                 custom_model_parameters: dict,
                  device: torch.device,
                  name: str = None,
                  verbose: int = 0,
@@ -31,7 +31,7 @@ def create_model(model_class_name: str,
         print(f'Creating model {name} with id {model_id}...')
         # print(f'Input shape: {input_shape}')
         # print(f'Number of output classes: {num_output}')
-        # print(f'Model parameters: {model_parameters}')
+        # print(f'Model parameters: {custom_model_parameters}')
 
     if model_class_name == 'Conv_2d':
         model = conv_2d.Conv_2d(
@@ -39,7 +39,7 @@ def create_model(model_class_name: str,
             num_output=num_output,
             name=name,
             model_id=model_id,
-            **model_parameters,
+            **custom_model_parameters,
         )
 
     else:
@@ -118,25 +118,26 @@ def print_formatted_results(loss: float,
             print(f'- {metric_name}: {round(result, global_constants.MAX_DECIMAL_PLACES)}')
 
 
-def get_torchvision_model(model_architecture: str,
-                          model_name: str,
+def get_torchvision_model(pretrained_model_parameters: dict,
                           device: torch.device,
-                          weights_name: str = None,
-                          freeze_layers: bool = False,
                           training: bool = False,
                           num_classes: int = None,
                           verbose: int = 0,
                           ) -> torch.nn.Module:
+    model_architecture = pretrained_model_parameters['model_architecture']
+    model_version = pretrained_model_parameters['model_version']
+    weights_name = pretrained_model_parameters['weights_name']
+    freeze_layers = pretrained_model_parameters['freeze_layers']
 
     if freeze_layers and weights_name is None:
         raise ValueError('weights_name must be specified when freeze_layers = True')
 
-    model_full_name = f'{model_name}{global_constants.INTERNAL_PARAMETER_SEPARATOR}Weights' \
+    model_full_name = f'{model_version}{global_constants.INTERNAL_PARAMETER_SEPARATOR}Weights' \
                       f'{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{weights_name}'
     model_id = utils.get_available_id(partial_name=model_full_name, folder_path=global_constants.MODEL_OUTPUT_DIR)
 
     # Initialize model with the given weights
-    model = torchvision_models.get_model(name=model_name.lower(), weights=weights_name)
+    model = torchvision_models.get_model(name=model_version.lower(), weights=weights_name)
     model.name = model_full_name
     model.id = model_id
 
@@ -163,7 +164,7 @@ def get_torchvision_model(model_architecture: str,
     model.to(device=device)
 
     if verbose >= 1:
-        print(f'Readied model: {model_name}, with weights: {weights_name}')
+        print(f'Readied model: {model_version}, with weights: {weights_name}')
     return model
 
 
