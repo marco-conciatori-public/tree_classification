@@ -10,9 +10,8 @@ from data_preprocessing import data_loading
 
 # import parameters
 parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
-model_id = 0
-# partial_name = 'regnet_y_1_6'
-partial_name = 'swin'
+model_id = int(input('Insert model id number: '))
+partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
 use_targets = parameters['use_targets']
 
 model_path, info_path = utils.get_path_by_id(
