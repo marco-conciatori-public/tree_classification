@@ -1,5 +1,5 @@
-import torch
 import cv2
+import torch
 
 import utils
 import global_constants
@@ -13,13 +13,7 @@ parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 model_id = 0
 # partial_name = 'regnet_y_1_6'
 partial_name = 'swin'
-# use only those images, if None, use all images in folder
-# img_name_list = ['buna_s1_0.tif']
-img_name_list = None
-jump = 1
-use_targets = False
-# data_path = global_constants.TO_PREDICT_FOLDER_PATH
-data_path = global_constants.DATA_PATH + 'mixed_species/'
+use_targets = parameters['use_targets']
 
 model_path, info_path = utils.get_path_by_id(
     partial_name=partial_name,
@@ -35,16 +29,16 @@ loaded_model, custom_transforms, meta_data = model_utils.load_model(
 )
 
 img_list, tag_list = data_loading.load_data(
-    data_path=data_path,
-    selected_names=img_name_list,
-    use_targets=use_targets,
+    data_path=parameters['data_path'],
+    selected_names=parameters['img_name_list'],
+    use_targets=parameters['use_targets'],
     verbose=parameters['verbose'],
 )
 print(f'img_list length: {len(img_list)}')
-img_list = img_list[::jump]
+img_list = img_list[::parameters['jump']]
 print(f'img_list length: {len(img_list)}')
 if use_targets:
-    tag_list = tag_list[::jump]
+    tag_list = tag_list[::parameters['jump']]
 
 # get loss function from string name
 loss_function = getattr(torch.nn, parameters['loss_function_name'])()

@@ -1,7 +1,7 @@
 verbose: 2
 input_data_folder: step_1/
 # TODO: not fully implemented yet only some of the random operations use this seed
-random_seed: 42  # set to None for different results each time
+random_seed: 42  # set to null for different results each time
 
 # CUSTOM MODEL CONFIGURATION
 custom_model_parameters:
@@ -80,3 +80,11 @@ metrics:
         task: multiclass
         average: weighted
 #        average: none
+
+
+# MODEL USAGE PARAMETERS
+# use only those images, if null, use all images in folder
+# img_name_list = ['buna_s1_0.tif']
+img_name_list: null
+jump: 1
+use_targets: False

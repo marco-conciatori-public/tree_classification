@@ -7,7 +7,7 @@ bar_width = 0.7
 max_digits = 5
 excluded_key_list = []
 top_n = 20
-file_number = int(input('Insert file number... '))
+file_number = int(input('Insert file number: '))
 parameter_evaluation = visualization_utils.load_evaluation(file_number)
 print('\nINFO:')
 for key in parameter_evaluation:
