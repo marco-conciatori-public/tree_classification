@@ -37,9 +37,7 @@ configuration_counter = 0
 results = []
 try:
     print('\nStarting grid search...')
-    print(f'search_space["model_spec_list"]: {search_space["model_spec_list"]}')
     for model_spec in search_space['model_spec_list']:
-        print(f'\tmodel_spec: {model_spec}')
         model_architecture, model_version, weights_name = model_spec
         print(f'model architecture: {model_architecture}, model version: {model_version}, with weights: {weights_name}')
         custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
