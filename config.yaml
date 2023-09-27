@@ -59,7 +59,7 @@ save_model: True
 train_val_test_proportions: [0.8, 0.1, 0.1]
 tolerance: 0.01
 # number of times the original dataset is duplicated with random variations
-data_augmentation_proportion: 5
+data_augmentation_proportion: 1
 balance_data: False
 
 metrics:
