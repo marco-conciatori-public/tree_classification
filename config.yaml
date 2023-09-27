@@ -111,7 +111,7 @@ grid_search_parameters:
         num_epochs_list: [4]
         # optimizer_name_list: [Adam, RMSprop]
         optimizer_name_list: [Adam]
-        balance_data_list: [True, False]
+        balance_data_list: [False, True]
         # balance_data_list: [False]
         # WARNING: case-sensitive names [model_architecture, model_version, weights_name]
         model_spec_list: [
