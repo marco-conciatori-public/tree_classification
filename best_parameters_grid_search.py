@@ -13,43 +13,18 @@ from models import training, evaluation, model_utils
 # import parameters
 parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 parameters['verbose'] = 0
+parameters['random_seed'] = None
 num_classes = len(global_constants.TREE_INFORMATION)
 interrupted = False
 print('Initial date and time:')
 global_start_time = datetime.datetime.now()
 print(global_start_time.strftime('%Y-%m-%d-%H:%M:%S'))
 
-# number of tests for each configuration, to have a more accurate estimate of the performance
-num_tests_for_configuration: int = 3
-# keys here should match the names of the variables in config.py with '_list' appended
-# e.g. 'augment_data_list' is the key for the list of values for the proportion of data to augment.
 # each combination of values will be tested num_tests_for_configuration times
 # and the average performance will be used to select the best configuration.
-# use lists of one element to test only one value for that variable.
-search_space = {
-    'data_augmentation_proportion_list': [1, 4, 8],
-    # 'data_augmentation_proportion_list': [5],
-    # 'batch_size_list': [8, 16, 32],
-    'batch_size_list': [64],
-    # 'learning_rate_list': [0.005, 0.0001],
-    'learning_rate_list': [1e-04, 1e-05, 1e-06],
-    # 'num_epochs_list': [10, 20],
-    'num_epochs_list': [10],
-    # 'optimizer_name_list': ['Adam', 'RMSprop'],
-    'optimizer_name_list': ['Adam'],
-    'balance_data_list': [True, False],
-    # 'balance_data_list': [False],
-    'model_spec_list': [  # WARNING: case-sensitive names (model_architecture, model_name, weights_name)
-        # ('regnet', 'regnet_y_1_6gf', 'RegNet_Y_1_6GF_Weights.DEFAULT'),
-        # ('regnet', 'regnet_y_1_6gf', None),
-        # ('regnet', 'regnet_y_128gf', 'RegNet_Y_128GF_Weights.IMAGENET1K_SWAG_E2E_V1'),
-        # ('swin_transformer', 'swin_s', 'Swin_S_Weights.DEFAULT'),
-        ('swin_transformer', 'swin_t', 'Swin_T_Weights.DEFAULT'),
-    ],
-    # to train a model from scratch, set weights_name to None
-    # 'freeze_layers_list': [True, False],
-    'freeze_layers_list': [False],
-}
+num_tests_for_configuration = parameters['grid_search_parameters']['num_tests_for_configuration']
+search_space = parameters['grid_search_parameters']['search_space']
+
 # compute number of combinations
 num_different_configurations = 1
 for value in search_space.values():
@@ -62,9 +37,11 @@ configuration_counter = 0
 results = []
 try:
     print('\nStarting grid search...')
+    print(f'search_space["model_spec_list"]: {search_space["model_spec_list"]}')
     for model_spec in search_space['model_spec_list']:
-        model_architecture, model_name, weights_name = model_spec
-        print(f'model architecture: {model_architecture}, model version: {model_name}, with weights: {weights_name}')
+        print(f'\tmodel_spec: {model_spec}')
+        model_architecture, model_version, weights_name = model_spec
+        print(f'model architecture: {model_architecture}, model version: {model_version}, with weights: {weights_name}')
         custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
             weights_name=weights_name,
             verbose=parameters['verbose'],
@@ -170,7 +147,7 @@ try:
                                             'data_augmentation_proportion': data_augmentation_proportion,
                                             'optimizer_name': optimizer_name,
                                             'num_epochs': num_epochs,
-                                            'model': (model_name, weights_name),
+                                            'model': (model_version, weights_name),
                                             'freeze_layers': freeze_layers,
                                             'time_used': str(time_delta),
                                             'configuration_counter': configuration_counter,

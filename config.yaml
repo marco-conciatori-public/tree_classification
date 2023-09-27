@@ -83,7 +83,7 @@ metrics:
 
 # MODEL USAGE PARAMETERS
 # use only those images, if null, use all images in folder
-# img_name_list = ['buna_s1_0.tif']
+# img_name_list = [buna_s1_0.tif, buna_s1_1.tif]
 img_name_list: null
 jump: 1
 use_targets: False
@@ -91,3 +91,37 @@ use_targets: False
 # DISPLAY OPTIONS
 display_confusion_matrix: True
 worst_n_predictions: 20
+
+grid_search_parameters:
+    # number of tests for each configuration, to have a more accurate estimate of the performance
+    num_tests_for_configuration: 3
+    # keys here should match the names of the variables in this config file with '_list' appended
+    # e.g. 'augment_data_list' is the key for the list of values for the proportion of data to augment.
+    # each combination of values will be tested num_tests_for_configuration times
+    # and the average performance will be used to select the best configuration.
+    # use lists of one element to test only one value for that variable.
+    search_space:
+        data_augmentation_proportion_list: [1, 4, 8]
+        # data_augmentation_proportion_list: [5]
+        # batch_size_list: [8, 16, 32]
+        batch_size_list: [64]
+        # learning_rate_list: [0.005, 0.0001]
+        learning_rate_list: [!!float 1e-04, !!float 1e-05, !!float 1e-06]
+        # num_epochs_list: [10, 20]
+        num_epochs_list: [4]
+        # optimizer_name_list: [Adam, RMSprop]
+        optimizer_name_list: [Adam]
+        balance_data_list: [True, False]
+        # balance_data_list: [False]
+        # WARNING: case-sensitive names [model_architecture, model_version, weights_name]
+        model_spec_list: [
+#            [regnet, regnet_y_1_6gf, RegNet_Y_1_6GF_Weights.DEFAULT],
+#            [regnet, regnet_y_1_6gf, None],
+#            [regnet, regnet_y_128gf, RegNet_Y_128GF_Weights.DEFAULT],
+#            [swin_transformer, swin_s, Swin_S_Weights.DEFAULT],
+#            [swin_transformer, swin_t, Swin_T_Weights.DEFAULT],
+            [resnet, resnet50, ResNet50_Weights.DEFAULT],
+            ]
+        # to train a model from scratch, set weights_name to None
+        # freeze_layers_list: [True, False]
+        freeze_layers_list: [False]
