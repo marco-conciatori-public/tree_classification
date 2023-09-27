@@ -18,7 +18,7 @@ model = model_utils.get_torchvision_model(
 )
 # print(f'model:\n{model}')
 custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
-    weights_name=parameters['weights_name'],
+    weights_name=parameters['pretrained_model_parameters']['weights_name'],
     verbose=parameters['verbose'],
 )
 
