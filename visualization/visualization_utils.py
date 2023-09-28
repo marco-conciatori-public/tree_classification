@@ -1,6 +1,7 @@
-import json
 import os
+import json
 import numpy as np
+from pathlib import Path
 
 import global_constants
 
@@ -46,7 +47,7 @@ def extract_parameter_keys(parameters_to_plot: list) -> list:
     return parameter_keys
 
 
-def display_cm(true_values, predictions, labels=None):
+def display_cm(true_values, predictions, labels=None, save_img: bool = False):
     # Plot the confusion matrix
     import matplotlib.pyplot as plt
     import matplotlib.colors as colors
@@ -79,4 +80,11 @@ def display_cm(true_values, predictions, labels=None):
     plt.xlabel('Predictions', fontsize=17)
     plt.ylabel('True values', fontsize=17)
     plt.title('Confusion Matrix', fontsize=17)
-    plt.show()
+
+    if save_img:
+        Path(global_constants.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+        plt.savefig(f'{global_constants.IMG_OUTPUT_DIR}confusion_matrix.png')
+        print(f'Image "confusion_matrix.png" saved in "{global_constants.IMG_OUTPUT_DIR}"')
+    else:
+        plt.show()
+    plt.close()

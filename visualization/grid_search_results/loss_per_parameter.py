@@ -1,8 +1,10 @@
-import pandas as pd
+from pathlib import Path
 import matplotlib.pyplot as plt
 
+import global_constants
 
-def bar_plot(average_loss: dict):
+
+def bar_plot(average_loss: dict, save_img: bool = False):
     counter = 0
     for parameter_name in average_loss:
         print(f'parameter_name: {parameter_name}')
@@ -35,5 +37,10 @@ def bar_plot(average_loss: dict):
     plt.title('Average loss per parameter setting')
     # plt.ylim((0.3, 0.5))
     plt.tight_layout()
-    plt.show()
+    if save_img:
+        Path(global_constants.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+        plt.savefig(f'{global_constants.IMG_OUTPUT_DIR}loss_per_parameter.png')
+        print(f'Image "loss_per_parameter.png" saved in "{global_constants.IMG_OUTPUT_DIR}"')
+    else:
+        plt.show()
     plt.close()

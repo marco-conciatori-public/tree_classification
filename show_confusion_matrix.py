@@ -22,4 +22,4 @@ prediction_list = meta_data['test_confusion_matrix']['predictions']
 print(f'len tag_list: {len(tag_list)}')
 print(f'len prediction_list: {len(prediction_list)}')
 # Plot the confusion matrix
-visualization.visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list)
+visualization.visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list, save_img=False)

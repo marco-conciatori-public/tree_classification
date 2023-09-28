@@ -4,7 +4,7 @@ input_data_folder: step_1/
 random_seed: 42  # set to null for different results each time
 # if project is executed inside a notebook, set this to True. It will
 # - save images instead of displaying them
-notebook_execution: False
+notebook_mode: False
 
 # DISPLAY OPTIONS
 display_confusion_matrix: True

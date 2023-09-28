@@ -9,7 +9,7 @@ parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 
 bar_width = 0.7
 top_n = parameters['best_n_configurations']
-notebook_execution = parameters['notebook_execution']
+notebook_mode = parameters['notebook_mode']
 excluded_key_list = []
 file_number = int(input('Insert file number: '))
 parameter_evaluation = visualization_utils.load_evaluation(file_number)
@@ -36,7 +36,7 @@ if len(parameters_to_plot) == 1:
         excluded_key_list=excluded_key_list,
         hp_evaluation=parameter_evaluation,
         rotate_x_labels=False,
-        save_img=notebook_execution,
+        save_img=notebook_mode,
     )
 
 elif len(parameters_to_plot) == 2:
@@ -45,7 +45,7 @@ elif len(parameters_to_plot) == 2:
         excluded_key_list=excluded_key_list,
         hp_evaluation=parameter_evaluation,
         bar_width=bar_width,
-        save_img=notebook_execution,
+        save_img=notebook_mode,
     )
 
 # show only selected parameters
@@ -58,4 +58,4 @@ top_configurations.print_top_n(
 )
 print()
 average_loss = top_configurations.average_loss_per_parameter(parameter_evaluation=parameter_evaluation)
-loss_per_parameter.bar_plot(average_loss=average_loss)
+loss_per_parameter.bar_plot(average_loss=average_loss, save_img=notebook_mode)

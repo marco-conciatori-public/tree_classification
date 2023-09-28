@@ -114,4 +114,8 @@ if parameters['verbose'] >= 1:
 
 if parameters['display_confusion_matrix']:
     # Plot the confusion matrix
-    visualization.visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list)
+    visualization.visualization_utils.display_cm(
+        true_values=tag_list,
+        predictions=prediction_list,
+        save_img=parameters['notebook_mode'],
+    )

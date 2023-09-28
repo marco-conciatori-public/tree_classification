@@ -140,6 +140,7 @@ try:
                                             display_confusion_matrix=False,
                                             metrics=partial_content['metrics'],
                                             save_results=False,
+                                            notebook_mode=partial_content['notebook_mode'],
                                             verbose=verbose,
                                         )
                                         average_loss_test += test_loss
