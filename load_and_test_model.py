@@ -3,6 +3,7 @@ import torchmetrics
 
 import utils
 import global_constants
+import visualization.visualization_utils
 from import_args import args
 from models import model_utils
 from data_preprocessing import get_ready_data
@@ -113,4 +114,4 @@ if parameters['verbose'] >= 1:
 
 if parameters['display_confusion_matrix']:
     # Plot the confusion matrix
-    utils.display_cm(true_values=tag_list, predictions=prediction_list)
+    visualization.visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list)

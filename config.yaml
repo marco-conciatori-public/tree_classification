@@ -3,6 +3,10 @@ input_data_folder: step_1/
 # TODO: not fully implemented yet only some of the random operations use this seed
 random_seed: 42  # set to null for different results each time
 
+# DISPLAY OPTIONS
+display_confusion_matrix: True
+worst_n_predictions: 20
+
 # CUSTOM MODEL CONFIGURATION
 custom_model_parameters:
     num_conv_layers: 3
@@ -87,10 +91,6 @@ metrics:
 img_name_list: null
 jump: 1
 use_targets: False
-
-# DISPLAY OPTIONS
-display_confusion_matrix: True
-worst_n_predictions: 20
 
 grid_search_parameters:
     # number of tests for each configuration, to have a more accurate estimate of the performance

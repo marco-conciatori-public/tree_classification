@@ -1,7 +1,6 @@
 import torch
 import warnings
 import datetime
-import numpy as np
 from pathlib import Path
 
 import global_constants
@@ -90,42 +89,6 @@ def pretty_print_dict(data, _level: int = 0):
         for i in range(_level):
             print('\t', end='')
         print(data)
-
-
-def display_cm(true_values, predictions, labels=None):
-    # Plot the confusion matrix
-    import matplotlib.pyplot as plt
-    import matplotlib.colors as colors
-    if labels is None:
-        labels = []
-        for el in global_constants.TREE_INFORMATION.values():
-            labels.append(el[global_constants.TREE_NAME_TO_SHOW])
-
-    num_classes = len(global_constants.TREE_INFORMATION)
-    true_values = np.array(true_values)
-    predictions = np.array(predictions)
-    confusion_matrix = np.zeros(shape=(num_classes, num_classes), dtype=np.int64)
-    for i in range(len(true_values)):
-        confusion_matrix[true_values[i], predictions[i]] += 1
-
-    fig, ax = plt.subplots(figsize=(6, 6))
-    ax.matshow(
-        confusion_matrix,
-        cmap=plt.cm.Blues,
-        alpha=0.8,
-        norm=colors.LogNorm(),
-    )
-    for i in range(confusion_matrix.shape[0]):
-        for j in range(confusion_matrix.shape[1]):
-            ax.text(x=j, y=i, s=int(confusion_matrix[i, j]), va='center', ha='center', size=10)
-
-    ax.xaxis.set_ticks_position("bottom")
-    plt.xticks(range(num_classes), labels, rotation=60, fontsize=10)
-    plt.yticks(range(num_classes), labels, fontsize=10)
-    plt.xlabel('Predictions', fontsize=17)
-    plt.ylabel('True values', fontsize=17)
-    plt.title('Confusion Matrix', fontsize=17)
-    plt.show()
 
 
 def timedelta_format(initial_time, final_time, truncate_seconds: bool = True):

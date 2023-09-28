@@ -1,8 +1,8 @@
 import torch
 import torchmetrics
 
-import utils
 import global_constants
+import visualization.visualization_utils
 from models import model_utils
 
 
@@ -114,6 +114,6 @@ def eval(model: torch.nn.Module,
 
     if display_confusion_matrix:
         # Plot the confusion matrix
-        utils.display_cm(true_values=tag_list, predictions=prediction_list)
+        visualization.visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list)
 
     return test_loss, metric_evaluations
