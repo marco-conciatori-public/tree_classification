@@ -75,7 +75,7 @@ def display_cm(true_values, predictions, labels=None, save_img: bool = False):
             ax.text(x=j, y=i, s=int(confusion_matrix[i, j]), va='center', ha='center', size=10)
 
     ax.xaxis.set_ticks_position("bottom")
-    plt.xticks(range(num_classes), labels, rotation=60, fontsize=10, ha="right")
+    plt.xticks(range(num_classes), labels, rotation=50, fontsize=10)
     plt.yticks(range(num_classes), labels, fontsize=10)
     plt.xlabel('Predictions', fontsize=17)
     plt.ylabel('True values', fontsize=17)
