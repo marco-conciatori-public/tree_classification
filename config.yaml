@@ -9,6 +9,7 @@ notebook_execution: False
 # DISPLAY OPTIONS
 display_confusion_matrix: True
 worst_n_predictions: 20
+best_n_configurations: 20
 
 # CUSTOM MODEL CONFIGURATION
 custom_model_parameters:

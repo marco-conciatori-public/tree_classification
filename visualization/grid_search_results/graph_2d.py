@@ -8,7 +8,6 @@ def plot_parameters(hp_to_plot: list,
                     excluded_key_list: list,
                     hp_evaluation: dict,
                     loss_set: str = 'test_loss',
-                    max_digits: int = 5,
                     rotate_x_labels: bool = False,
                     save_img: bool = False,
                     ):
@@ -29,7 +28,7 @@ def plot_parameters(hp_to_plot: list,
     plt.xlabel(hp_to_plot)
     x_ticks_labels = []
     for el in hp_evaluation[hp_to_plot]:
-        x_ticks_labels.append(round(el, max_digits))
+        x_ticks_labels.append(round(el, global_constants.MAX_DECIMAL_PLACES))
     plt.ylabel('Loss Value')
     plt.title(title)
     if not rotate_x_labels:

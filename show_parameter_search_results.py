@@ -1,4 +1,3 @@
-# import utils
 import global_constants
 from import_args import args
 from visualization import visualization_utils
@@ -9,8 +8,7 @@ from visualization.grid_search_results import top_configurations, graph_2d, grap
 parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
 
 bar_width = 0.7
-max_digits = 5
-top_n = 20
+top_n = parameters['best_n_configurations']
 notebook_execution = parameters['notebook_execution']
 excluded_key_list = []
 file_number = int(input('Insert file number: '))
@@ -37,7 +35,6 @@ if len(parameters_to_plot) == 1:
         hp_to_plot=parameters_to_plot,
         excluded_key_list=excluded_key_list,
         hp_evaluation=parameter_evaluation,
-        max_digits=max_digits,
         rotate_x_labels=False,
         save_img=notebook_execution,
     )
