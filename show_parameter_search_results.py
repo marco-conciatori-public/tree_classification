@@ -58,5 +58,4 @@ top_configurations.print_top_n(
 )
 print()
 average_loss = top_configurations.average_loss_per_parameter(parameter_evaluation=parameter_evaluation)
-# utils.pretty_print_dict(average_loss)
 loss_per_parameter.bar_plot(average_loss=average_loss)
