@@ -1,5 +1,6 @@
 import json
 import copy
+import torch
 import datetime
 from pathlib import Path
 
@@ -28,7 +29,7 @@ num_classes = partial_content['num_classes']
 num_tests_for_configuration: int = partial_content['num_tests_for_configuration']
 search_space = partial_content['search_space']
 data_path = partial_content['data_path']
-device = partial_content['device']
+device = torch.device(partial_content['device'])
 # compute number of combinations
 num_different_configurations = 1
 for value in search_space.values():

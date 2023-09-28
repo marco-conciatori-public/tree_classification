@@ -172,7 +172,7 @@ content = {
     'total_duration': str(total_duration),
     'conclusion_date': global_end_time.strftime('%Y-%m-%d-%H:%M:%S'),
     'shuffle': parameters['shuffle'],
-    'device': parameters['device'],
+    'device': str(parameters['device']),
     'data_path': parameters['data_path'],
     'num_classes': num_classes,
     'num_tests_for_configuration': num_tests_for_configuration,
