@@ -5,7 +5,7 @@ import utils
 import global_constants
 from import_args import args
 from models import model_utils
-import visualization.visualization_utils
+from visualization import visualization_utils
 from data_preprocessing import get_ready_data
 
 
@@ -114,7 +114,7 @@ if parameters['verbose'] >= 1:
 
 if parameters['display_confusion_matrix']:
     # Plot the confusion matrix
-    visualization.visualization_utils.display_cm(
+    visualization_utils.display_cm(
         true_values=tag_list,
         predictions=prediction_list,
         save_img=parameters['notebook_mode'],

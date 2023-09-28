@@ -2,6 +2,8 @@ import os
 import json
 import numpy as np
 from pathlib import Path
+import matplotlib.pyplot as plt
+import matplotlib.colors as colors
 
 import global_constants
 
@@ -49,8 +51,6 @@ def extract_parameter_keys(parameters_to_plot: list) -> list:
 
 def display_cm(true_values, predictions, labels=None, save_img: bool = False):
     # Plot the confusion matrix
-    import matplotlib.pyplot as plt
-    import matplotlib.colors as colors
     if labels is None:
         labels = []
         for el in global_constants.TREE_INFORMATION.values():
