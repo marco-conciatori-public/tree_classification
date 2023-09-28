@@ -1,4 +1,7 @@
+from pathlib import Path
 import matplotlib.pyplot as plt
+
+import global_constants
 
 
 def plot_parameters(hp_to_plot: list,
@@ -7,6 +10,7 @@ def plot_parameters(hp_to_plot: list,
                     loss_set: str = 'test_loss',
                     max_digits: int = 5,
                     rotate_x_labels: bool = False,
+                    save_img: bool = False,
                     ):
     results = hp_evaluation['results']
     hp_to_plot = hp_to_plot[0]
@@ -41,5 +45,10 @@ def plot_parameters(hp_to_plot: list,
             horizontalalignment='right',
         )
     plt.tight_layout()
-    plt.show()
+    if save_img:
+        Path(global_constants.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+        plt.savefig(f'{global_constants.IMG_OUTPUT_DIR}param_2d_plot.png')
+        print(f'Image "param_2d_plot.png" saved in "{global_constants.IMG_OUTPUT_DIR}"')
+    else:
+        plt.show()
     plt.close()

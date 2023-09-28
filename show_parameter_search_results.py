@@ -1,11 +1,17 @@
 # import utils
+import global_constants
+from import_args import args
 from visualization import visualization_utils
 from visualization.grid_search_results import top_configurations, graph_2d, graph_3d, loss_per_parameter
 
 
+# import parameters
+parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
+
 bar_width = 0.7
 max_digits = 5
 top_n = 20
+notebook_execution = parameters['notebook_execution']
 excluded_key_list = []
 file_number = int(input('Insert file number: '))
 parameter_evaluation = visualization_utils.load_evaluation(file_number)
@@ -33,6 +39,7 @@ if len(parameters_to_plot) == 1:
         hp_evaluation=parameter_evaluation,
         max_digits=max_digits,
         rotate_x_labels=False,
+        save_img=notebook_execution,
     )
 
 elif len(parameters_to_plot) == 2:
@@ -41,7 +48,7 @@ elif len(parameters_to_plot) == 2:
         excluded_key_list=excluded_key_list,
         hp_evaluation=parameter_evaluation,
         bar_width=bar_width,
-        # max_digits=4,
+        save_img=notebook_execution,
     )
 
 # show only selected parameters

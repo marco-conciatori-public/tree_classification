@@ -1,5 +1,8 @@
 import numpy as np
+from pathlib import Path
 import matplotlib.pyplot as plt
+
+import global_constants
 
 
 def plot_parameters(hp_to_plot: list,
@@ -7,6 +10,7 @@ def plot_parameters(hp_to_plot: list,
                     hp_evaluation: dict,
                     loss_set: str = 'test_loss',
                     bar_width: float = 0.75,
+                    save_img: bool = False,
                     ):
     results = hp_evaluation['results']
     length = len(results)
@@ -116,7 +120,12 @@ def plot_parameters(hp_to_plot: list,
                rotation=35,
                horizontalalignment='right')
     plt.tight_layout()
-    plt.show()
+    if save_img:
+        Path(global_constants.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+        plt.savefig(f'{global_constants.IMG_OUTPUT_DIR}param_3d_plot.png')
+        print(f'Image "param_3d_plot.png" saved in "{global_constants.IMG_OUTPUT_DIR}"')
+    else:
+        plt.show()
     plt.close()
 
     print('mean_loss:', mean_loss)
