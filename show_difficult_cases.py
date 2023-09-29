@@ -1,5 +1,6 @@
 import cv2
 import torch
+import matplotlib.pyplot as plt
 
 import utils
 import global_constants
@@ -103,12 +104,17 @@ def show_difficult_cases_():
 
         # show image
         img = img_list[img_index]
-        cv2.imshow(
-            winname=utils.get_tree_name(tag_list[img_index]).upper(),
-            mat=img,
-        )
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        # convert from BGR to RGB
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        plt.imshow(img)
+        plt.show()
+        plt.close()
+        # cv2.imshow(
+        #     winname=utils.get_tree_name(tag_list[img_index]).upper(),
+        #     mat=img,
+        # )
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
