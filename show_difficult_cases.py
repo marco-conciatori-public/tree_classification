@@ -1,11 +1,11 @@
-import torch
 import cv2
+import torch
 
 import utils
 import global_constants
 from import_args import args
 from models import model_utils
-from data_preprocessing import get_ready_data
+from data_preprocessing import get_ready_data, data_loading
 
 
 def show_difficult_cases_():
@@ -13,6 +13,7 @@ def show_difficult_cases_():
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
     parameters['verbose'] = 2
     parameters['device'] = torch.device('cpu')
+    parameters['shuffle'] = False
     model_id = int(input('Insert model id number: '))
     partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
 
@@ -76,6 +77,14 @@ def show_difficult_cases_():
 
     # sort worst_predictions
     worst_predictions.sort(key=lambda x: x[0])
+
+    # load images again because the transformed version is quite different from the original one.
+    # The transformation is due to the "custom transforms" of torchvision models.
+    # Since shuffling is disabled, the order of the reloaded images is the same
+    img_list, tag_list = data_loading.load_data(
+        data_path=parameters['data_path'],
+        verbose=0,
+    )
     for i in range(parameters['worst_n_predictions']):
         if i > parameters['worst_n_predictions']:
             break
