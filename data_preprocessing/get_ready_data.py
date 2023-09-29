@@ -3,7 +3,6 @@ import shutil
 import random
 from pathlib import Path
 
-import utils
 import global_constants
 from image_processing import resize
 from data_preprocessing import data_loading, custom_dataset, balancing_augmentation
@@ -32,7 +31,7 @@ def get_data(data_path: str,
 
     if data_path is None:
         img_list, tag_list = data_loading.load_data(
-            data_path=global_constants.STEP_1_DATA_PATH,
+            data_path=global_constants.STEP_2_DATA_PATH,
             verbose=verbose,
         )
     else:
