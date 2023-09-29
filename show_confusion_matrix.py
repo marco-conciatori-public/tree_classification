@@ -27,5 +27,5 @@ def show_confusion_matrix_():
     visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list, save_img=False)
 
 
-if __name__ == '__main__':
-    show_confusion_matrix_()
+# if __name__ == '__main__':
+#     show_confusion_matrix_()
