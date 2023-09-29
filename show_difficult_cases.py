@@ -44,6 +44,7 @@ def show_difficult_cases_():
         verbose=parameters['verbose'],
     )
 
+    print('Get all the predictions...')
     img_list = []
     tag_list = []
     for batch in train_dl:
@@ -75,6 +76,7 @@ def show_difficult_cases_():
             prediction_of_true_class = prediction[true_class]
             worst_predictions.append((prediction_of_true_class, img_index, prediction))
 
+    print('Find the worst predictions...')
     # sort worst_predictions
     worst_predictions.sort(key=lambda x: x[0])
 
