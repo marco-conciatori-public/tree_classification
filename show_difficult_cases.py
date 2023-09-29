@@ -12,6 +12,7 @@ def show_difficult_cases_():
     # import parameters
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
     parameters['verbose'] = 2
+    parameters['device'] = torch.device('cpu')
     model_id = int(input('Insert model id number: '))
     partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
 
@@ -67,7 +68,7 @@ def show_difficult_cases_():
             prediction = prediction.squeeze(0)
             prediction = softmax(prediction)
             prediction = prediction.numpy()
-            top_class = prediction.argmax()
+            # top_class = prediction.argmax()
 
             true_class = tag_list[img_index]
             prediction_of_true_class = prediction[true_class]
