@@ -106,6 +106,9 @@ def show_difficult_cases_(**kwargs):
         img = img_list[img_index]
         # convert from BGR to RGB
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        plt.figure(figsize=(1.5, 1.5))
+        plt.axis('off')
+        plt.tight_layout()
         plt.imshow(img)
         plt.show()
         plt.close()
