@@ -5,7 +5,7 @@ import global_constants
 from visualization import visualization_utils
 
 
-def show_confusion_matrix():
+def show_confusion_matrix_():
     # parameters
     model_id = int(input('Insert model id number: '))
     partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
@@ -28,4 +28,4 @@ def show_confusion_matrix():
 
 
 if __name__ == '__main__':
-    show_confusion_matrix()
+    show_confusion_matrix_()
