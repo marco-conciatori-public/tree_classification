@@ -8,8 +8,8 @@ notebook_mode: False
 
 # DISPLAY OPTIONS
 display_confusion_matrix: True
-worst_n_predictions: 20
-best_n_configurations: 20
+worst_n_predictions: 10
+best_n_configurations: 15
 
 # CUSTOM MODEL CONFIGURATION
 custom_model_parameters:
