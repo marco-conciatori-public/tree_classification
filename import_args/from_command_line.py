@@ -13,6 +13,7 @@ def update_config(default_data_dict: dict) -> dict:
         else:
             parser.add_argument(f'--{key}', dest=key, type=type(value))
 
+    parser.add_argument('-f', required=False, type=str)
     updated_data_dict = copy.deepcopy(default_data_dict)
     args = parser.parse_args()
     args_dict = vars(args)
