@@ -8,9 +8,9 @@ from models import model_utils
 from data_preprocessing import data_loading
 
 
-def load_and_use_model_():
+def load_and_use_model_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
+    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     model_id = int(input('Insert model id number: '))
     partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
     use_targets = parameters['use_targets']

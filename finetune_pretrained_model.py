@@ -4,9 +4,9 @@ from models import training, evaluation, model_utils
 from data_preprocessing import get_ready_data
 
 
-def finetune_pretrained_model_():
+def finetune_pretrained_model_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
+    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     num_classes = len(global_constants.TREE_INFORMATION)
 
     # load model

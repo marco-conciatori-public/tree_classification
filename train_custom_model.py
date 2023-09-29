@@ -4,9 +4,9 @@ from data_preprocessing import get_ready_data
 from models import model_utils, training, evaluation
 
 
-def train_custom_model_():
+def train_custom_model_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
+    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
 
     train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
         data_path=parameters['data_path'],

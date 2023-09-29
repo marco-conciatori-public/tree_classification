@@ -4,9 +4,9 @@ from visualization import visualization_utils
 from visualization.grid_search_results import top_configurations, graph_2d, graph_3d, loss_per_parameter
 
 
-def show_parameter_search_results_():
+def show_parameter_search_results_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
+    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
 
     bar_width = 0.7
     top_n = parameters['best_n_configurations']

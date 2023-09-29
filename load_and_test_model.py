@@ -9,9 +9,9 @@ from visualization import visualization_utils
 from data_preprocessing import get_ready_data
 
 
-def load_and_test_model_():
+def load_and_test_model_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
+    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 2
     model_id = int(input('Insert model id number: '))
     partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))

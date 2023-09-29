@@ -2,10 +2,10 @@ import os
 
 import utils
 import global_constants
-from import_args import from_yaml, from_command_line
+from import_args import from_yaml, from_command_line, from_function_arguments
 
 
-def import_and_check(yaml_path) -> dict:
+def import_and_check(yaml_path, **kwargs) -> dict:
     max_iterations = 5
     level_up = 0
     data_dict = None
@@ -18,7 +18,10 @@ def import_and_check(yaml_path) -> dict:
             level_up += 1
             os.chdir("..")
 
+    # command line arguments have priority over yaml arguments
     data_dict = from_command_line.update_config(data_dict)
+    # function arguments have priority over yaml and command line arguments
+    data_dict = from_function_arguments.update_config(data_dict, **kwargs)
 
     # check that proportions adds up to 1, except for rounding errors
     tolerance = data_dict['tolerance']

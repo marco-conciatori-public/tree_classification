@@ -9,10 +9,10 @@ from data_preprocessing import get_ready_data
 from models import training, evaluation, model_utils
 
 
-def best_parameters_grid_search_():
+def best_parameters_grid_search_(**kwargs):
     # for fine-tuning pretrained models, not for training new custom models
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
+    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 0
     parameters['random_seed'] = None
     num_classes = len(global_constants.TREE_INFORMATION)

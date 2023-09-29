@@ -9,10 +9,10 @@ from models import model_utils
 from data_preprocessing import get_ready_data, data_loading
 
 
-def show_difficult_cases_():
+def show_difficult_cases_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH)
-    parameters['verbose'] = 2
+    parameters = args.import_and_check(yaml_path=global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+
     parameters['device'] = torch.device('cpu')
     parameters['shuffle'] = False
     model_id = int(input('Insert model id number: '))
