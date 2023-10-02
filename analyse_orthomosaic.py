@@ -16,7 +16,7 @@ from image_processing import orthomosaic_utils
 # PARAMETERS
 verbose = 2
 model_id = 0
-partial_name = 'DEFAULT'
+partial_name = 'regnet_y'
 img_name = 'Zao1_211005.tif'
 # in pixels
 # set patch_size to None to use the crop_size from the model. Only works for torchvision pretrained models
@@ -152,13 +152,19 @@ for x in range(0, x_max, stride):
 
 print('-------------------- end loop --------------------')
 print(f'species_distribution.shape: {species_distribution.shape}')
-print(f'species_distribution max: {species_distribution[ : , : , : -1].max()}')
-coord_max = species_distribution[ : , : , : -1].argmax(keepdims=True)
+print(f'species_distribution.type: {type(species_distribution)}')
+species_distribution_no_last_layer = species_distribution[ : , : , : -1]
+print(f'species_distribution_no_last_layer shape: {species_distribution_no_last_layer.shape}')
+print(f'species_distribution_no_last_layer max: {species_distribution_no_last_layer.max()}')
+flat_coord_max = species_distribution_no_last_layer.argmax()
+print(f'flat_coord_max: {flat_coord_max}')
+coord_max = np.unravel_index(flat_coord_max, species_distribution_no_last_layer.shape)
 print(f'coord_max: {coord_max}')
-print(f'check max: {species_distribution[coord_max[0], coord_max[1], coord_max[2] ]}')
+# print(f'check max: {species_distribution[coord_max[0], coord_max[1], coord_max[2] ]}')
+print(f'check max: {species_distribution_no_last_layer[coord_max]}')
 # normalize species_distribution using the information in the last channel
-for x in range(0, x_max, stride):
-    for y in range(0, y_max, stride):
+for x in range(x_max):
+    for y in range(y_max):
         for c in range(num_classes_plus_unknown):
             if species_distribution[x, y, c] > species_distribution[x, y, -1]:
                 print('--------------------')
@@ -167,14 +173,16 @@ for x in range(0, x_max, stride):
             species_distribution[x, y, c] = species_distribution[x, y, c] / species_distribution[x, y, -1]
 
 print(f'species_distribution.shape: {species_distribution.shape}')
-print(f'species_distribution max: {species_distribution[ : , : , : -1].max()}')
-coord_max = species_distribution[ : , : , : -1].argmax(keepdims=True)
+print(f'species_distribution.type: {type(species_distribution)}')
+# remove last channel/layer
+species_distribution = species_distribution_no_last_layer
+print(f'species_distribution shape: {species_distribution.shape}')
+print(f'species_distribution max: {species_distribution.max()}')
+flat_coord_max = species_distribution.argmax()
+print(f'flat_coord_max: {flat_coord_max}')
+coord_max = np.unravel_index(flat_coord_max, species_distribution.shape)
 print(f'coord_max: {coord_max}')
-print(f'check max: {species_distribution[coord_max[0], coord_max[1], coord_max[2] ]}')
-
-# remove last channel
-species_distribution = species_distribution[:, :, 0 : num_classes_plus_unknown]
-print(f'species_distribution.shape: {species_distribution.shape}')
+print(f'check max: {species_distribution[coord_max]}')
 
 # create one image for each class, where the alpha channel is the probability of that pixel being that class
 save_path = f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}{img_name_no_extension}/'
