@@ -25,7 +25,8 @@ patch_size = None
 stride = 128
 # confidence prediction probability above which the prediction is considered valid
 confidence_threshold = 0.6
-img_name_no_extension = img_name[ : -4]
+img_name_no_extension = img_name.split('.')[0]
+print(f'Orthomosaic used: {img_name_no_extension}')
 
 # load model
 device = utils.get_available_device(verbose=verbose)
@@ -74,7 +75,7 @@ species_distribution = np.zeros((total_height, total_width, num_classes_plus_unk
 
 # remove fourth channel
 orthomosaic = orthomosaic[:, :, 0:3]
-print(f'remove fourth channel orthomosaic.shape: {orthomosaic.shape}')
+print(f'remove fourth/alpha channel orthomosaic.shape: {orthomosaic.shape}')
 
 # change color space
 # TODO: check if this is needed, probably it is not needed because probably the model is
@@ -103,7 +104,9 @@ for x in range(0, x_max, stride):
         if preprocess is not None:
             patch = preprocess(patch)
             # print(f'transformed patch.shape: {patch.shape}')
-        # cv2.imshow('patch', patch)
+        # print(f'preprocessed patch.shape: {patch.shape}')
+        # to_show_patch = patch.permute(1, 2, 0).numpy()
+        # cv2.imshow('patch', to_show_patch)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
 
@@ -127,7 +130,7 @@ for x in range(0, x_max, stride):
         # print(f'predicted_probability: {predicted_probability}')
         if predicted_probability < confidence_threshold:
             predicted_class = unknown_class_id
-        # print(f'predicted_class unknown?: {predicted_class}')
+            # print('predicted_class unknown')
 
         # print(f'species_distribution[{x} : {x + patch_size}, {y} : {y + patch_size}, : ]: '
         #       f'{species_distribution[x : x + patch_size, y : y + patch_size, : ].shape}')
@@ -147,6 +150,7 @@ for x in range(0, x_max, stride):
         # print(f'{species_distribution[x: x + patch_size, y: y + patch_size, : ].shape}')
         # print(f'{species_distribution[x: x + 5, y: y + 5, : ]}')
 
+print('-------------------- end loop --------------------')
 print(f'species_distribution.shape: {species_distribution.shape}')
 print(f'species_distribution max: {species_distribution[ : , : , : -1].max()}')
 coord_max = species_distribution[ : , : , : -1].argmax(keepdims=True)
@@ -156,7 +160,12 @@ print(f'check max: {species_distribution[coord_max[0], coord_max[1], coord_max[2
 for x in range(0, x_max, stride):
     for y in range(0, y_max, stride):
         for c in range(num_classes_plus_unknown):
+            if species_distribution[x, y, c] > species_distribution[x, y, -1]:
+                print('--------------------')
+                print(f'species_distribution[{x}, {y}, {c}] > species_distribution[{x}, {y}, -1]')
+                print(f'{species_distribution[x, y, c]} > {species_distribution[x, y, -1]}')
             species_distribution[x, y, c] = species_distribution[x, y, c] / species_distribution[x, y, -1]
+
 print(f'species_distribution.shape: {species_distribution.shape}')
 print(f'species_distribution max: {species_distribution[ : , : , : -1].max()}')
 coord_max = species_distribution[ : , : , : -1].argmax(keepdims=True)
