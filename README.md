@@ -10,7 +10,6 @@ The environment needs to be set up with the following packages:
 - pyyaml
 - pathlib
 - matplotlib (optional, for confusion matrix display)
-- sklearn (optional, for confusion matrix display)
 
 The scripts that can be run are in the main folder, the list is as follows:
 - **train_custom_model**: prepares the data, then creates, trains, saves and tests a custom model, and finally displays
