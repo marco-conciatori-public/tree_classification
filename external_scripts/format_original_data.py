@@ -3,7 +3,14 @@ import cv2
 
 import global_constants
 
-original_data_path = global_constants.DATA_PATH + 'original/'
+input_folder = 'original/'
+# input_folder = 'original_no_site_2/'
+# input_folder = 'original_only_site_2/'
+output_folder = 'step_1/'
+# output_folder = 'step_1_no_site_2/'
+# output_folder = 'step_1_only_site_2/'
+
+original_data_path = global_constants.DATA_PATH + input_folder
 pure_path = Path(global_constants.ONE_LEVEL_UP + original_data_path)
 print(f'pure_path: {pure_path}')
 assert pure_path.exists(), f'Path {original_data_path} does not exist'
@@ -28,7 +35,7 @@ for dir_path in pure_path.iterdir():
         tif_list.extend(folder_list)
 
 # save images to the input data folder
-save_folder_path = Path(global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + 'step_1/')
+save_folder_path = Path(global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + output_folder)
 if not save_folder_path.exists():
     save_folder_path.mkdir(parents=False)
 # print(f'save_folder_path: {save_folder_path}')

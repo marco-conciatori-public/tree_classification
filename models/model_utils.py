@@ -106,16 +106,26 @@ def load_model(model_path: str,
 def print_formatted_results(loss: float,
                             metrics: dict,
                             metrics_in_percentage: bool = False,
+                            truncate: bool = True,
                             title: str = 'RESULTS'
                             ):
     print(title)
     print(f'- Loss: {loss}')
     for metric_name in metrics:
         result = metrics[metric_name]
-        if metrics_in_percentage:
-            print(f'- {metric_name}: {round(result * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))} %')
+        if truncate:
+            if metrics_in_percentage:
+                result = round(result * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))
+            else:
+                result = round(result, global_constants.MAX_DECIMAL_PLACES)
         else:
-            print(f'- {metric_name}: {round(result, global_constants.MAX_DECIMAL_PLACES)}')
+            if metrics_in_percentage:
+                result = result * 100
+
+        if metrics_in_percentage:
+            print(f'- {metric_name}: {result} %')
+        else:
+            print(f'- {metric_name}: {result}')
 
 
 def get_torchvision_model(pretrained_model_parameters: dict,
