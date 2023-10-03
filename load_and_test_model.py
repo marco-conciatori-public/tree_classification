@@ -105,7 +105,7 @@ def load_and_test_model_(**kwargs):
     metric_evaluations = {}
     for metric_name in test_metrics:
         metric = test_metrics[metric_name]
-        metric_evaluations[metric_name] = metric.compute()
+        metric_evaluations[metric_name] = metric.compute().item()
 
     if parameters['verbose'] >= 1:
         model_utils.print_formatted_results(
