@@ -104,28 +104,43 @@ def load_model(model_path: str,
 
 
 def print_formatted_results(loss: float,
-                            metrics: dict,
+                            metrics: torch.tensor,
                             metrics_in_percentage: bool = False,
                             truncate: bool = True,
+                            by_class: bool = False,
                             title: str = 'RESULTS'
                             ):
     print(title)
     print(f'- Loss: {loss}')
     for metric_name in metrics:
         result = metrics[metric_name]
-        if truncate:
-            if metrics_in_percentage:
-                result = round(result * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))
-            else:
-                result = round(result, global_constants.MAX_DECIMAL_PLACES)
+        if not by_class:
+            formatted_result = format_value(value=result.item(), in_percentage=metrics_in_percentage, truncate=truncate)
+            print(f'- {metric_name}: {formatted_result}')
         else:
-            if metrics_in_percentage:
-                result = result * 100
+            print(f'- {metric_name}:')
+            for class_index in range(len(result)):
+                formatted_result = format_value(
+                    value=result[class_index].item(),
+                    in_percentage=metrics_in_percentage,
+                    truncate=truncate,
+                )
+                print(f'  - {global_constants.TREE_INFORMATION[class_index][global_constants.TREE_NAME_TO_SHOW]}:'
+                      f' {formatted_result}')
 
-        if metrics_in_percentage:
-            print(f'- {metric_name}: {result} %')
-        else:
-            print(f'- {metric_name}: {result}')
+
+def format_value(value: float,
+                 in_percentage: bool = False,
+                 truncate: bool = True,
+                 ) -> str:
+    max_decimal_places = global_constants.MAX_DECIMAL_PLACES
+    if in_percentage:
+        max_decimal_places = max(global_constants.MAX_DECIMAL_PLACES - 2, 0)
+    if truncate:
+        value = round(value, max_decimal_places)
+    if in_percentage:
+        return f'{value} %'
+    return f'{value}'
 
 
 def get_torchvision_model(pretrained_model_parameters: dict,

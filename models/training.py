@@ -170,10 +170,10 @@ def train(model: torch.nn.Module,
 
         for metric_name in training_metrics:
             metric = training_metrics[metric_name]
-            history['metrics']['train'][metric_name] = metric.compute().item()
+            history['metrics']['train'][metric_name] = metric.compute()
         for metric_name in validation_metrics:
             metric = validation_metrics[metric_name]
-            history['metrics']['validation'][metric_name] = metric.compute().item()
+            history['metrics']['validation'][metric_name] = metric.compute()
 
         if verbose >= 1:
             model_utils.print_formatted_results(

@@ -90,7 +90,7 @@ def eval(model: torch.nn.Module,
     metric_evaluations = {}
     for metric_name in test_metrics:
         metric = test_metrics[metric_name]
-        metric_evaluations[metric_name] = metric.compute().item()
+        metric_evaluations[metric_name] = metric.compute()
 
     if verbose >= 1:
         model_utils.print_formatted_results(
