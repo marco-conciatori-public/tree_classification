@@ -51,12 +51,14 @@ def load_and_test_model_(**kwargs):
     loss_function = getattr(torch.nn, parameters['loss_function_name'])()
 
     test_metrics = {}
+    num_classes = len(global_constants.TREE_INFORMATION)
     for metric_name, metric_args in parameters['metrics'].items():
         try:
             metric_class = getattr(torchmetrics, metric_name)
         except AttributeError:
             raise AttributeError(f'metric {metric_name} not found in torchmetrics')
 
+        metric_args['num_classes'] = num_classes
         test_metrics[metric_name] = metric_class(**metric_args)
 
     softmax = torch.nn.Softmax(dim=0)
