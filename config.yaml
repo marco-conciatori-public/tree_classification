@@ -120,7 +120,7 @@ grid_search_parameters:
         # learning_rate_list: [0.005, 0.0001]
         learning_rate_list: [!!float 1e-04, !!float 1e-05, !!float 1e-06]
         # num_epochs_list: [10, 20]
-        num_epochs_list: [4]
+        num_epochs_list: [8]
         # optimizer_name_list: [Adam, RMSprop]
         optimizer_name_list: [Adam]
         balance_data_list: [False, True]
@@ -130,9 +130,9 @@ grid_search_parameters:
 #            [regnet, regnet_y_1_6gf, RegNet_Y_1_6GF_Weights.DEFAULT],
 #            [regnet, regnet_y_1_6gf, None],
 #            [regnet, regnet_y_128gf, RegNet_Y_128GF_Weights.DEFAULT],
-#            [swin_transformer, swin_s, Swin_S_Weights.DEFAULT],
+            [swin_transformer, swin_s, Swin_S_Weights.DEFAULT],
 #            [swin_transformer, swin_t, Swin_T_Weights.DEFAULT],
-            [resnet, resnet50, ResNet50_Weights.DEFAULT],
+#            [resnet, resnet50, ResNet50_Weights.DEFAULT],
             ]
         # to train a model from scratch, set weights_name to None
         # freeze_layers_list: [True, False]
