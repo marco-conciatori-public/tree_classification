@@ -113,7 +113,7 @@ def print_formatted_results(loss: float,
         result = metrics[metric_name]['result']
         average = metrics[metric_name]['average']
         as_percentage = metrics[metric_name]['as_percentage']
-        if average is None:
+        if average is None or average == 'none':
             print(f'- {metric_name}:')
             for class_index in range(len(result)):
                 formatted_result = format_value(value=result[class_index].item(), as_percentage=as_percentage)
