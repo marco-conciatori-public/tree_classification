@@ -1,6 +1,6 @@
 import copy
-import numpy as np
 import torch
+import numpy as np
 import torchmetrics
 
 import utils
@@ -177,7 +177,6 @@ def train(model: torch.nn.Module,
                 loss=history['loss']['train'][-1],
                 metrics=history['metrics']['train'],
             )
-
             model_utils.print_formatted_results(
                 title='VALIDATION RESULTS',
                 loss=history['loss']['validation'][-1],
