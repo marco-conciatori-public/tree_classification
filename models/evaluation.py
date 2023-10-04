@@ -89,7 +89,7 @@ def eval(model: torch.nn.Module,
 
     test_loss = test_loss / len(test_data)
 
-    metric_evaluations = utils.get_metric_results(test_metrics)
+    metric_evaluations = utils.get_metric_results(test_metrics, metrics)
     if verbose >= 1:
         model_utils.print_formatted_results(
             title='TEST RESULTS',

@@ -169,8 +169,8 @@ def train(model: torch.nn.Module,
         # reload the best model found
         model.load_state_dict(best_model_weights)
 
-        history['metrics']['train'] = utils.get_metric_results(training_metrics)
-        history['metrics']['validation'] = utils.get_metric_results(validation_metrics)
+        history['metrics']['train'] = utils.get_metric_results(training_metrics, metrics)
+        history['metrics']['validation'] = utils.get_metric_results(validation_metrics, metrics)
         if verbose >= 1:
             model_utils.print_formatted_results(
                 title='TRAINING RESULTS',

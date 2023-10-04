@@ -107,12 +107,11 @@ def get_tree_name(species_id: int, name_type: str = global_constants.TREE_NAME_T
     return global_constants.TREE_INFORMATION[species_id][name_type]
 
 
-def get_metric_results(metrics: dict):
+def get_metric_results(metrics: dict, metrics_args: dict):
     evaluation = {}
     for metric_name in metrics:
-        metric = metrics[metric_name]
         evaluation[metric_name] = {}
-        evaluation[metric_name]['result'] = metric.compute()
-        evaluation[metric_name]['average'] = metrics[metric_name]['average']
-        evaluation[metric_name]['as_percentage'] = metrics[metric_name]['as_percentage']
+        evaluation[metric_name]['result'] = metrics[metric_name].compute()
+        evaluation[metric_name]['average'] = metrics_args[metric_name]['average']
+        evaluation[metric_name]['as_percentage'] = metrics_args[metric_name]['as_percentage']
     return evaluation

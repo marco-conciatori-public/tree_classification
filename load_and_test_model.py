@@ -103,7 +103,7 @@ def load_and_test_model_(**kwargs):
 
     test_loss = test_loss / len(test_dl)
 
-    metric_evaluations = utils.get_metric_results(test_metrics)
+    metric_evaluations = utils.get_metric_results(test_metrics, parameters['metrics'])
     if parameters['verbose'] >= 1:
         model_utils.print_formatted_results(
             title='TEST RESULTS',
