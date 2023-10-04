@@ -130,6 +130,7 @@ def format_value(value: float,
     max_decimal_places = global_constants.MAX_DECIMAL_PLACES
     if as_percentage:
         max_decimal_places = max(global_constants.MAX_DECIMAL_PLACES - 2, 0)
+        value = value * 100
     value = round(value, max_decimal_places)
     if as_percentage:
         return f'{value} %'
