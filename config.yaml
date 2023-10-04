@@ -68,12 +68,13 @@ shuffle: True
 save_model: True
 # must add up to 1 +/- tolerance
 train_val_test_proportions: [0.8, 0.1, 0.1]
+#train_val_test_proportions: [0.01, 0.01, 0.98]
 tolerance: 0.01
 # number of times the original dataset is duplicated with random variations
 data_augmentation_proportion: 1
 balance_data: False
 
-# as_percentage controls whether the metrics are displayed as percentages or not
+# "as_percentage" controls whether the metrics are displayed as percentages or not
 metrics:
     Accuracy:
         task: multiclass
@@ -115,7 +116,6 @@ grid_search_parameters:
     search_space:
         data_augmentation_proportion_list: [1, 4, 8]
         # data_augmentation_proportion_list: [5]
-        # batch_size_list: [8, 16, 32]
         batch_size_list: [64]
         # learning_rate_list: [0.005, 0.0001]
         learning_rate_list: [!!float 1e-04, !!float 1e-05, !!float 1e-06]
