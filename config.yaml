@@ -73,23 +73,28 @@ tolerance: 0.01
 data_augmentation_proportion: 1
 balance_data: False
 
+# as_percentage controls whether the metrics are displayed as percentages or not
 metrics:
     Accuracy:
         task: multiclass
         average: weighted
 #        average: none
+        as_percentage: True
     Precision:
         task: multiclass
         average: weighted
 #        average: none
+        as_percentage: True
     Recall:
         task: multiclass
         average: weighted
 #        average: none
+        as_percentage: True
     F1Score:
         task: multiclass
         average: weighted
 #        average: none
+        as_percentage: True
 
 
 # MODEL USAGE PARAMETERS

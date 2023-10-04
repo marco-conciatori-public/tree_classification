@@ -102,18 +102,13 @@ def load_and_test_model_(**kwargs):
                 tag_list.append(target_batch.squeeze(0).item())
 
     test_loss = test_loss / len(test_dl)
-    metric_evaluations = {}
-    for metric_name in test_metrics:
-        metric = test_metrics[metric_name]
-        metric_evaluations[metric_name] = metric.compute()
 
+    metric_evaluations = utils.get_metric_results(test_metrics)
     if parameters['verbose'] >= 1:
         model_utils.print_formatted_results(
             title='TEST RESULTS',
             loss=test_loss,
             metrics=metric_evaluations,
-            metrics_in_percentage=True,
-            by_class=True,
         )
 
     if parameters['display_confusion_matrix']:

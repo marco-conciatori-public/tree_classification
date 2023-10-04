@@ -104,41 +104,34 @@ def load_model(model_path: str,
 
 
 def print_formatted_results(loss: float,
-                            metrics: torch.tensor,
-                            metrics_in_percentage: bool = False,
-                            truncate: bool = True,
-                            by_class: bool = False,
-                            title: str = 'RESULTS'
-                            ):
+                            metrics: dict,
+                            title: str = 'RESULTS',
+                            ) -> None:
     print(title)
     print(f'- Loss: {loss}')
     for metric_name in metrics:
-        result = metrics[metric_name]
-        if not by_class:
-            formatted_result = format_value(value=result.item(), in_percentage=metrics_in_percentage, truncate=truncate)
-            print(f'- {metric_name}: {formatted_result}')
-        else:
+        result = metrics[metric_name]['result']
+        average = metrics[metric_name]['average']
+        as_percentage = metrics[metric_name]['as_percentage']
+        if average is None:
             print(f'- {metric_name}:')
             for class_index in range(len(result)):
-                formatted_result = format_value(
-                    value=result[class_index].item(),
-                    in_percentage=metrics_in_percentage,
-                    truncate=truncate,
-                )
+                formatted_result = format_value(value=result[class_index].item(), as_percentage=as_percentage)
                 print(f'  - {global_constants.TREE_INFORMATION[class_index][global_constants.TREE_NAME_TO_SHOW]}:'
                       f' {formatted_result}')
+        else:
+            formatted_result = format_value(value=result.item(), as_percentage=as_percentage)
+            print(f'- {metric_name}: {formatted_result}')
 
 
 def format_value(value: float,
-                 in_percentage: bool = False,
-                 truncate: bool = True,
+                 as_percentage: bool = False,
                  ) -> str:
     max_decimal_places = global_constants.MAX_DECIMAL_PLACES
-    if in_percentage:
+    if as_percentage:
         max_decimal_places = max(global_constants.MAX_DECIMAL_PLACES - 2, 0)
-    if truncate:
-        value = round(value, max_decimal_places)
-    if in_percentage:
+    value = round(value, max_decimal_places)
+    if as_percentage:
         return f'{value} %'
     return f'{value}'
 
