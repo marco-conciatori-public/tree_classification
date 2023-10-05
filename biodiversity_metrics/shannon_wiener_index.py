@@ -1,6 +1,5 @@
 import math
 
-import global_constants
 from biodiversity_metrics import metric_utils
 
 
