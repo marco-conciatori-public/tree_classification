@@ -1,3 +1,4 @@
+import copy
 import torch
 import torchmetrics
 
@@ -36,7 +37,9 @@ def eval(model: torch.nn.Module,
             raise AttributeError(f'metric {metric_name} not found in torchmetrics')
 
         metric_args['num_classes'] = num_classes
-        test_metrics[metric_name] = metric_class(**metric_args)
+        temp_args = copy.deepcopy(metric_args)
+        del temp_args['as_percentage']
+        test_metrics[metric_name] = metric_class(**temp_args)
 
     test_loss = 0.0
     batch_counter = 0

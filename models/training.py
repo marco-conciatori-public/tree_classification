@@ -49,8 +49,10 @@ def train(model: torch.nn.Module,
             raise AttributeError(f'metric {metric_name} not found in torchmetrics')
 
         metric_args['num_classes'] = num_classes
-        training_metrics[metric_name] = metric_class(**metric_args)
-        validation_metrics[metric_name] = metric_class(**metric_args)
+        temp_args = copy.deepcopy(metric_args)
+        del temp_args['as_percentage']
+        training_metrics[metric_name] = metric_class(**temp_args)
+        validation_metrics[metric_name] = metric_class(**temp_args)
 
     history = {
         'loss': {},
