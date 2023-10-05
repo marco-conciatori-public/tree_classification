@@ -1,5 +1,6 @@
 import json
 import datetime
+import warnings
 from pathlib import Path
 
 import utils
@@ -15,6 +16,10 @@ def best_parameters_grid_search_(**kwargs):
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 0
     parameters['random_seed'] = None
+    for metric in parameters['metrics']:
+        if metric['average'] == 'none' or metric['average'] is None:
+            metric['average'] = 'weighted'
+            warnings.warn(f'Changed metric average to "weighted". By_class results are not useful for grid search.')
     num_classes = len(global_constants.TREE_INFORMATION)
     interrupted = False
     print('Initial date and time:')
@@ -125,7 +130,7 @@ def best_parameters_grid_search_(**kwargs):
                                             )
                                             average_loss_test += test_loss
                                             for metric_name, metric_evaluation in metric_evaluations.items():
-                                                average_metrics_test[metric_name] += metric_evaluation['result']
+                                                average_metrics_test[metric_name] += metric_evaluation['result'].item()
 
                                         average_loss_test = average_loss_test / num_tests_for_configuration
                                         for metric_name in parameters['metrics']:
