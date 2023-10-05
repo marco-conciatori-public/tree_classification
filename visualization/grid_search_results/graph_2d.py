@@ -27,7 +27,7 @@ def plot_parameters(hp_to_plot: list,
     plt.plot(range(len(loss_list)), loss_list)
     plt.xlabel(hp_to_plot)
     x_ticks_labels = []
-    for el in hp_evaluation[hp_to_plot]:
+    for el in hp_evaluation['search_space'][hp_to_plot]:
         x_ticks_labels.append(round(el, global_constants.MAX_DECIMAL_PLACES))
     plt.ylabel('Loss Value')
     plt.title(title)
