@@ -1,8 +1,9 @@
 import copy
-import numpy as np
 import torch
+import numpy as np
 import torchmetrics
 
+import utils
 import global_constants
 from models import model_utils
 
@@ -168,26 +169,18 @@ def train(model: torch.nn.Module,
         # reload the best model found
         model.load_state_dict(best_model_weights)
 
-        for metric_name in training_metrics:
-            metric = training_metrics[metric_name]
-            history['metrics']['train'][metric_name] = metric.compute()
-        for metric_name in validation_metrics:
-            metric = validation_metrics[metric_name]
-            history['metrics']['validation'][metric_name] = metric.compute()
-
+        history['metrics']['train'] = utils.get_metric_results(training_metrics, metrics)
+        history['metrics']['validation'] = utils.get_metric_results(validation_metrics, metrics)
         if verbose >= 1:
             model_utils.print_formatted_results(
                 title='TRAINING RESULTS',
                 loss=history['loss']['train'][-1],
                 metrics=history['metrics']['train'],
-                metrics_in_percentage=True,
             )
-
             model_utils.print_formatted_results(
                 title='VALIDATION RESULTS',
                 loss=history['loss']['validation'][-1],
                 metrics=history['metrics']['validation'],
-                metrics_in_percentage=True,
             )
 
     # if training is interrupted, save the best model obtained so far

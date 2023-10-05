@@ -1,6 +1,7 @@
 import torch
 import torchmetrics
 
+import utils
 import global_constants
 from models import model_utils
 from visualization import visualization_utils
@@ -87,17 +88,13 @@ def eval(model: torch.nn.Module,
             batch_counter += 1
 
     test_loss = test_loss / len(test_data)
-    metric_evaluations = {}
-    for metric_name in test_metrics:
-        metric = test_metrics[metric_name]
-        metric_evaluations[metric_name] = metric.compute()
 
+    metric_evaluations = utils.get_metric_results(test_metrics, metrics)
     if verbose >= 1:
         model_utils.print_formatted_results(
             title='TEST RESULTS',
             loss=test_loss,
             metrics=metric_evaluations,
-            metrics_in_percentage=True,
         )
 
     if save_results:
