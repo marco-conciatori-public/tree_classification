@@ -125,7 +125,7 @@ def best_parameters_grid_search_(**kwargs):
                                             )
                                             average_loss_test += test_loss
                                             for metric_name, metric_evaluation in metric_evaluations.items():
-                                                average_metrics_test[metric_name] += metric_evaluation
+                                                average_metrics_test[metric_name] += metric_evaluation['result']
 
                                         average_loss_test = average_loss_test / num_tests_for_configuration
                                         for metric_name in parameters['metrics']:
