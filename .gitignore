@@ -4,6 +4,7 @@ logs/
 output/
 runs/
 .idea/
+.idea/misc.xml
 *.csv
 *.pth
 
