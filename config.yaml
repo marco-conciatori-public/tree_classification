@@ -125,6 +125,9 @@ grid_search_parameters:
         optimizer_name_list: [Adam]
         balance_data_list: [False, True]
         # balance_data_list: [False]
+        # to train a model from scratch, set weights_name to None
+        # freeze_layers_list: [True, False]
+        freeze_layers_list: [False]
         # WARNING: case-sensitive names [model_architecture, model_version, weights_name]
         model_spec_list: [
 #            [regnet, regnet_y_1_6gf, RegNet_Y_1_6GF_Weights.DEFAULT],
@@ -134,6 +137,3 @@ grid_search_parameters:
 #            [swin_transformer, swin_t, Swin_T_Weights.DEFAULT],
 #            [resnet, resnet50, ResNet50_Weights.DEFAULT],
             ]
-        # to train a model from scratch, set weights_name to None
-        # freeze_layers_list: [True, False]
-        freeze_layers_list: [False]
