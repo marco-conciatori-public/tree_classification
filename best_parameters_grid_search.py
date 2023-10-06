@@ -16,7 +16,7 @@ def best_parameters_grid_search_(**kwargs):
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 0
     parameters['random_seed'] = None
-    for metric in parameters['metrics']:
+    for metric in parameters['metrics'].values():
         if metric['average'] == 'none' or metric['average'] is None:
             metric['average'] = 'weighted'
             warnings.warn(f'Changed metric average to "weighted". By_class results are not useful for grid search.')
