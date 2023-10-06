@@ -5,6 +5,12 @@ def get_total_num_trees(tag_list: list) -> int:
     return len(tag_list)
 
 
+def get_number_of_species(tag_list: list) -> int:
+    tag_array = np.array(tag_list)
+    num_classes = len(np.unique(tag_array))
+    return num_classes
+
+
 def get_num_trees_by_species(tag_list: list) -> dict:
     num_trees_by_species = {}
     for tree in global_constants.TREE_INFORMATION:
