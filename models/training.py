@@ -1,7 +1,6 @@
 import copy
 import torch
 import numpy as np
-import torchmetrics
 
 import utils
 import global_constants
@@ -37,22 +36,9 @@ def train(model: torch.nn.Module,
     for tree_info in global_constants.TREE_INFORMATION.values():
         classes.append(tree_info[global_constants.TREE_NAME_TO_SHOW])
 
-    training_metrics = {}
-    validation_metrics = {}
     num_classes = len(global_constants.TREE_INFORMATION)
-    if metrics is None:
-        metrics = {}
-    for metric_name, metric_args in metrics.items():
-        try:
-            metric_class = getattr(torchmetrics, metric_name)
-        except AttributeError:
-            raise AttributeError(f'metric {metric_name} not found in torchmetrics')
-
-        metric_args['num_classes'] = num_classes
-        temp_args = copy.deepcopy(metric_args)
-        del temp_args['as_percentage']
-        training_metrics[metric_name] = metric_class(**temp_args)
-        validation_metrics[metric_name] = metric_class(**temp_args)
+    training_metrics = model_utils.get_metrics(metrics)
+    validation_metrics = model_utils.get_metrics(metrics)
 
     history = {
         'loss': {},

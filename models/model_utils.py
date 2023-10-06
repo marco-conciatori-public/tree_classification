@@ -1,9 +1,11 @@
 import json
+import copy
 import torch
 import importlib
+import torchmetrics
 from pathlib import Path
 from torchvision import models as torchvision_models
-import torchvision.transforms.functional as tf
+from biodiversity_metrics import biodiversity_collective_metric
 
 import utils
 import global_constants
@@ -243,3 +245,25 @@ def save_test_results(cm_true_values: list,
         json.dump(meta_data, json_file, default=str)
     if verbose >= 1:
         print(f'Meta data updated successfully')
+
+
+def get_metrics(metrics: dict):
+    metric_function_dict = {}
+    num_classes = len(global_constants.TREE_INFORMATION)
+    if metrics is None:
+        metrics = {}
+    for metric_name, metric_args in metrics.items():
+        try:
+            metric_class = getattr(torchmetrics, metric_name)
+        except AttributeError:
+            try:
+                metric_class = getattr(biodiversity_collective_metric, metric_name)
+            except AttributeError:
+                raise AttributeError(f'metric {metric_name} not found in torchmetrics or biodiversity_metrics')
+
+        metric_args['num_classes'] = num_classes
+        temp_args = copy.deepcopy(metric_args)
+        del temp_args['as_percentage']
+        metric_function_dict[metric_name] = metric_class(**temp_args)
+
+    return metric_function_dict

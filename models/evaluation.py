@@ -1,6 +1,4 @@
-import copy
 import torch
-import torchmetrics
 
 import utils
 import global_constants
@@ -26,20 +24,8 @@ def eval(model: torch.nn.Module,
     # get loss function from string name
     loss_function = getattr(torch.nn, loss_function_name)()
 
-    test_metrics = {}
     num_classes = len(global_constants.TREE_INFORMATION)
-    if metrics is None:
-        metrics = {}
-    for metric_name, metric_args in metrics.items():
-        try:
-            metric_class = getattr(torchmetrics, metric_name)
-        except AttributeError:
-            raise AttributeError(f'metric {metric_name} not found in torchmetrics')
-
-        metric_args['num_classes'] = num_classes
-        temp_args = copy.deepcopy(metric_args)
-        del temp_args['as_percentage']
-        test_metrics[metric_name] = metric_class(**temp_args)
+    test_metrics = model_utils.get_metrics(metrics)
 
     test_loss = 0.0
     batch_counter = 0
