@@ -160,7 +160,7 @@ def best_parameters_grid_search_(**kwargs):
                                         )
                                         configuration_counter += 1
 
-    except KeyboardInterrupt as e:
+    except Exception as e:
         print(e)
         interrupted = True
         end_time = datetime.datetime.now()
