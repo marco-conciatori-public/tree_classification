@@ -4,6 +4,7 @@ import torch
 import importlib
 import torchmetrics
 from pathlib import Path
+import torchvision.transforms.functional as tf
 from torchvision import models as torchvision_models
 from biodiversity_metrics import biodiversity_collective_metric
 
@@ -118,17 +119,19 @@ def print_formatted_results(loss: float,
         if average is None or average == 'none':
             print(f'- {metric_name}:')
             for class_index in range(len(result)):
-                formatted_result = format_value(value=result[class_index].item(), as_percentage=as_percentage)
+                formatted_result = format_value(value=result[class_index], as_percentage=as_percentage)
                 print(f'  - {global_constants.TREE_INFORMATION[class_index][global_constants.TREE_NAME_TO_SHOW]}:'
                       f' {formatted_result}')
         else:
-            formatted_result = format_value(value=result.item(), as_percentage=as_percentage)
+            formatted_result = format_value(value=result, as_percentage=as_percentage)
             print(f'- {metric_name}: {formatted_result}')
 
 
-def format_value(value: float,
+def format_value(value,
                  as_percentage: bool = False,
                  ) -> str:
+    if torch.is_tensor(value):
+        value = value.item()
     max_decimal_places = global_constants.MAX_DECIMAL_PLACES
     if as_percentage:
         max_decimal_places = max(global_constants.MAX_DECIMAL_PLACES - 2, 0)

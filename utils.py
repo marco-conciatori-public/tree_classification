@@ -110,8 +110,25 @@ def get_tree_name(species_id: int, name_type: str = global_constants.TREE_NAME_T
 def get_metric_results(metrics: dict, metrics_args: dict):
     evaluation = {}
     for metric_name in metrics:
-        evaluation[metric_name] = {}
-        evaluation[metric_name]['result'] = metrics[metric_name].compute()
-        evaluation[metric_name]['average'] = metrics_args[metric_name]['average']
-        evaluation[metric_name]['as_percentage'] = metrics_args[metric_name]['as_percentage']
+        if metric_name == 'BiodiversityCollectiveMetric':
+            result_dict = metrics[metric_name].compute()
+            biodiversity_metrics_args = metrics_args[metric_name]
+            for biodiversity_metric_name in biodiversity_metrics_args['biodiversity_metric_names']:
+                composite_name = biodiversity_metric_name + '_true'
+                evaluation[composite_name] = {}
+                evaluation[composite_name]['result'] = result_dict[biodiversity_metric_name]['true_result']
+                evaluation[composite_name]['average'] = 'macro'
+                evaluation[composite_name]['as_percentage'] = biodiversity_metrics_args['as_percentage']
+
+                composite_name = biodiversity_metric_name + '_predicted'
+                evaluation[composite_name] = {}
+                evaluation[composite_name]['result'] = result_dict[biodiversity_metric_name]['predicted_result']
+                evaluation[composite_name]['average'] = 'macro'
+                evaluation[composite_name]['as_percentage'] = metrics_args[metric_name]['as_percentage']
+
+        else:
+            evaluation[metric_name] = {}
+            evaluation[metric_name]['result'] = metrics[metric_name].compute()
+            evaluation[metric_name]['average'] = metrics_args[metric_name]['average']
+            evaluation[metric_name]['as_percentage'] = metrics_args[metric_name]['as_percentage']
     return evaluation

@@ -128,19 +128,18 @@ def train(model: torch.nn.Module,
                 print(f'Epoch {epoch + 1}')
 
                 # print metrics results for the current epoch
-                print('Training results:')
-                print(f'\tTraining Loss: {training_loss}')
-                for metric_name in training_metrics:
-                    metric = training_metrics[metric_name]
-                    result = metric.compute()
-                    print(f'\t{metric_name}: {round(result.item(), global_constants.MAX_DECIMAL_PLACES)}')
-
-                print('Validation results:')
-                print(f'\tValidation Loss: {validation_loss}')
-                for metric_name in validation_metrics:
-                    metric = validation_metrics[metric_name]
-                    result = metric.compute()
-                    print(f'\t{metric_name}: {round(result.item(), global_constants.MAX_DECIMAL_PLACES)}')
+                training_results = utils.get_metric_results(training_metrics, metrics)
+                validation_results = utils.get_metric_results(validation_metrics, metrics)
+                model_utils.print_formatted_results(
+                    title='TRAINING RESULTS',
+                    loss=training_loss,
+                    metrics=training_results,
+                )
+                model_utils.print_formatted_results(
+                    title='VALIDATION RESULTS',
+                    loss=validation_loss,
+                    metrics=validation_results,
+                )
 
             history['loss']['train'].append(training_loss)
             history['loss']['validation'].append(validation_loss)
