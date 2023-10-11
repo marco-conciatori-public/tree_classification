@@ -22,16 +22,16 @@ tif_list = []
 # correct wrong 's1' to 's2' naming for Minekaede_s2 folder
 # also correct wrong '＿' to '_' in file names
 for dir_path in pure_path.iterdir():
-    if dir_path.is_dir():
-        if 'Minekaede_s2' in str(dir_path):
-            for file_path in dir_path.iterdir():
-                if file_path.is_file():
-                    # print(f'file_path: {file_path}')
-                    new_file_name = str(file_path.name).replace('_s1＿', '_s2_')
-                    # print(f'new_file_name: {new_file_name}')
-                    new_file_path = f'{file_path.parent}\\{new_file_name}'
-                    # print(f'new_file_path: {new_file_path}')
-                    file_path.rename(new_file_path)
+    # if dir_path.is_dir():
+    #     if 'Minekaede_s2' in str(dir_path):
+    #         for file_path in dir_path.iterdir():
+    #             if file_path.is_file():
+    #                 # print(f'file_path: {file_path}')
+    #                 new_file_name = str(file_path.name).replace('_s1＿', '_s2_')
+    #                 # print(f'new_file_name: {new_file_name}')
+    #                 new_file_path = f'{file_path.parent}\\{new_file_name}'
+    #                 # print(f'new_file_path: {new_file_path}')
+    #                 file_path.rename(new_file_path)
 
     # select only .TIF files
     if dir_path.is_dir():
