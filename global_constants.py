@@ -94,5 +94,14 @@ TREE_INFORMATION = {
         'type': DECIDUOUS,
         'display_color_rgb': (255, 255, 255),  # TODO: change color
     },
+    9: {
+        # 'japanese_reading': 'momi',
+        'japanese_reading': 'fir',
+        'english_name': 'fir',
+        'scientific_name': 'abies ?',
+        'japanese_name': 'モミ',
+        'type': EVERGREEN,
+        'display_color_rgb': (255, 255, 255),  # TODO: change color
+    },
 }
 TREE_NAME_TO_SHOW = 'japanese_reading'
