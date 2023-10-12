@@ -120,7 +120,7 @@ def get_metric_results(metrics: dict, metrics_args: dict):
                 evaluation[composite_name]['average'] = 'macro'
                 evaluation[composite_name]['as_percentage'] = biodiversity_metrics_args['as_percentage']
 
-                composite_name = biodiversity_metric_name + '_predicted'
+                composite_name = biodiversity_metric_name + '_network'
                 evaluation[composite_name] = {}
                 evaluation[composite_name]['result'] = result_dict[biodiversity_metric_name]['predicted_result']
                 evaluation[composite_name]['average'] = 'macro'

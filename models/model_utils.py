@@ -138,7 +138,7 @@ def format_value(value,
         value = value * 100
     value = round(value, max_decimal_places)
     if as_percentage:
-        return f'{value} %'
+        return f'{value}%'
     return f'{value}'
 
 

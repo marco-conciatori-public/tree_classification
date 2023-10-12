@@ -69,7 +69,7 @@ def load_and_use_model_(**kwargs):
             for tree_class in range(len(prediction)):
                 # if prediction[tree_class] >= config.TOLERANCE:
                 text = f' - {utils.get_tree_name(tree_class)}: ' \
-                       f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))} %'
+                       f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}%'
                 if tree_class == top_class:
                     text = utils.to_bold_string(text)
                 print(text)
