@@ -17,9 +17,12 @@ def best_parameters_grid_search_(**kwargs):
     parameters['verbose'] = 0
     parameters['random_seed'] = None
     for metric in parameters['metrics'].values():
-        if metric['average'] == 'none' or metric['average'] is None:
-            metric['average'] = 'weighted'
-            warnings.warn(f'Changed metric average to "weighted". By_class results are not useful for grid search.')
+        try:
+            if metric['average'] == 'none' or metric['average'] is None:
+                metric['average'] = 'weighted'
+                warnings.warn(f'Changed metric average to "weighted". By_class results are not useful for grid search.')
+        except KeyError:
+            continue
     num_classes = len(global_constants.TREE_INFORMATION)
     interrupted = False
     print('Initial date and time:')
