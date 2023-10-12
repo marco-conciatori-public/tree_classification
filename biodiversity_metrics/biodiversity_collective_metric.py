@@ -42,8 +42,8 @@ class BiodiversityCollectiveMetric(torchmetrics.Metric):
             #     self.prediction_list,
             # )
 
-        print(f'biodiversity_results: {biodiversity_results}')
-        print(f'self.biodiversity_metric_names: {self.biodiversity_metric_names}')
+        # print(f'biodiversity_results: {biodiversity_results}')
+        # print(f'self.biodiversity_metric_names: {self.biodiversity_metric_names}')
 
         biodiversity_results['gini_simpson_index']['true_result'] =\
             gini_simpson_index.get_bio_diversity_index(self.tag_list)
