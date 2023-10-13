@@ -53,6 +53,11 @@ def best_parameters_grid_search_(**kwargs):
                 weights_name=weights_name,
                 verbose=parameters['verbose'],
             )
+            pretrained_model_parameters = {
+                'model_architecture': model_architecture,
+                'model_version': model_version,
+                'weights_name': weights_name,
+            }
 
             for batch_size in search_space['batch_size_list']:
                 print(f'\tbatch_size: {batch_size}')
@@ -93,12 +98,14 @@ def best_parameters_grid_search_(**kwargs):
                                             configuration_counter += 1
                                             continue
 
+                                        pretrained_model_parameters['freeze_layers'] = freeze_layers
+
                                         start_time = datetime.datetime.now()
                                         average_loss_test = 0
                                         average_metrics_test = {metric_name: 0 for metric_name in parameters['metrics']}
                                         for i in range(num_tests_for_configuration):
                                             model = model_utils.get_torchvision_model(
-                                                pretrained_model_parameters=parameters['pretrained_model_parameters'],
+                                                pretrained_model_parameters=pretrained_model_parameters,
                                                 device=parameters['device'],
                                                 training=True,
                                                 num_classes=num_classes,
