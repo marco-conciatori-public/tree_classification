@@ -23,6 +23,8 @@ def best_parameters_grid_search_(**kwargs):
                 warnings.warn(f'Changed metric average to "weighted". By_class results are not useful for grid search.')
         except KeyError:
             continue
+    if 'BiodiversityCollectiveMetric' in parameters['metrics']:
+        del parameters['metrics']['BiodiversityCollectiveMetric']
     num_classes = len(global_constants.TREE_INFORMATION)
     interrupted = False
     print('Initial date and time:')
