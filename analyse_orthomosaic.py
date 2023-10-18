@@ -166,12 +166,11 @@ with warnings.catch_warnings():
     for c in range(num_classes_plus_unknown):
         temp_species_distribution[ : , : , c] = species_distribution[ : , : , c] / species_distribution[ : , : , -1]
 np.nan_to_num(temp_species_distribution, copy=False, nan=0.0)
-# print(f'temp_species_distribution count nan: {np.count_nonzero(np.isnan(temp_species_distribution))}')
 species_distribution = temp_species_distribution
-print('Unique values count')
-for species_index in range(num_classes_plus_unknown):
-    print(f'- {global_constants.TREE_INFORMATION[species_index][global_constants.TREE_NAME_TO_SHOW]}:'
-          f' {np.unique(species_distribution[ : , : , species_index], return_counts=True)}')
+# print('Unique values count')
+# for species_index in range(num_classes_plus_unknown):
+#     print(f'- {global_constants.TREE_INFORMATION[species_index][global_constants.TREE_NAME_TO_SHOW]}:'
+#           f' {np.unique(species_distribution[ : , : , species_index], return_counts=True)}')
 
 assert species_distribution.max() <= 1, f'species_distribution.max() > 1. (max = {species_distribution.max()})'
 assert species_distribution.min() >= 0, f'species_distribution.min() < 0. (min = {species_distribution.min()})'
