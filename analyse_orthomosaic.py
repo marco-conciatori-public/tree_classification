@@ -62,8 +62,8 @@ orthomosaic = orthomosaic[10000 : 12000, 10000 : 12000, :]
 print(f'orthomosaic.shape: {orthomosaic.shape}')
 # print(f'orthomosaic type: {type(orthomosaic)}')
 # print(f'orthomosaic[0, 0, 0] type: {type(orthomosaic[0, 0, 0])}')
-total_width = orthomosaic.shape[1]
-total_height = orthomosaic.shape[0]
+total_width = orthomosaic.shape[0]
+total_height = orthomosaic.shape[1]
 max_x = total_width - patch_size
 max_y = total_height - patch_size
 print(f'max_x: {max_x}, max_y: {max_y}')
@@ -75,7 +75,7 @@ print(f'num_classes: {meta_data["num_classes"]}, num_classes_plus_unknown: {num_
 # initialize species distribution
 # the last channel is used to count the number of times a pixel has been predicted
 # the second to last channel is used to count the number of times a pixel has been predicted as unknown
-species_distribution = np.zeros((total_height, total_width, num_classes_plus_unknown + 1), dtype=np.int8)
+species_distribution = np.zeros((total_width, total_height, num_classes_plus_unknown + 1), dtype=np.int8)
 
 # remove fourth channel
 orthomosaic = orthomosaic[ : , : , 0 : 3]
