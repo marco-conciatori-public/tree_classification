@@ -1,4 +1,3 @@
-import cv2
 import torch
 import numpy as np
 import tifffile as tifi
@@ -74,7 +73,7 @@ num_classes_plus_unknown = meta_data['num_classes'] + 1
 species_distribution = np.zeros((total_height, total_width, num_classes_plus_unknown + 1), dtype=np.int8)
 
 # remove fourth channel
-orthomosaic = orthomosaic[:, :, 0:3]
+orthomosaic = orthomosaic[ : , : , 0:3]
 print(f'remove fourth/alpha channel orthomosaic.shape: {orthomosaic.shape}')
 
 # change color space
@@ -82,6 +81,13 @@ print(f'remove fourth/alpha channel orthomosaic.shape: {orthomosaic.shape}')
 #  trained with images without this conversion
 # orthomosaic = cv2.cvtColor(orthomosaic, cv2.COLOR_BGR2RGB)
 # print(f'change color space orthomosaic.shape: {orthomosaic.shape}')
+
+# save_path = f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}{img_name_no_extension}/'
+# cv2.imwrite(
+#     f'{save_path}sub_img.png',
+#     orthomosaic,
+# )
+# exit()
 
 # to tensor
 orthomosaic = tf.to_tensor(orthomosaic)
@@ -153,55 +159,40 @@ for x in range(0, x_max, stride):
 print('-------------------- end loop --------------------')
 print(f'species_distribution.shape: {species_distribution.shape}')
 print(f'species_distribution.type: {type(species_distribution)}')
-species_distribution_no_last_layer = species_distribution[ : , : , : -1]
-print(f'species_distribution_no_last_layer shape: {species_distribution_no_last_layer.shape}')
-print(f'species_distribution_no_last_layer max: {species_distribution_no_last_layer.max()}')
-flat_coord_max = species_distribution_no_last_layer.argmax()
-print(f'flat_coord_max: {flat_coord_max}')
-coord_max = np.unravel_index(flat_coord_max, species_distribution_no_last_layer.shape)
-print(f'coord_max: {coord_max}')
-# print(f'check max: {species_distribution[coord_max[0], coord_max[1], coord_max[2] ]}')
-print(f'check max: {species_distribution_no_last_layer[coord_max]}')
+
 # normalize species_distribution using the information in the last channel
-for x in range(x_max):
-    for y in range(y_max):
+for x in range(species_distribution.shape[0]):
+    for y in range(species_distribution.shape[1]):
         for c in range(num_classes_plus_unknown):
-            if species_distribution[x, y, c] > species_distribution[x, y, -1]:
-                print('--------------------')
-                print(f'species_distribution[{x}, {y}, {c}] > species_distribution[{x}, {y}, -1]')
-                print(f'{species_distribution[x, y, c]} > {species_distribution[x, y, -1]}')
-            species_distribution[x, y, c] = species_distribution[x, y, c] / species_distribution[x, y, -1]
+            if species_distribution[x, y, c] > 0:
+                species_distribution[x, y, c] = species_distribution[x, y, c] / species_distribution[x, y, -1]
+
+# remove last channel/layer
+species_distribution = species_distribution[ : , : , : -1]
 
 print(f'species_distribution.shape: {species_distribution.shape}')
-print(f'species_distribution.type: {type(species_distribution)}')
-# remove last channel/layer
-species_distribution = species_distribution_no_last_layer
-print(f'species_distribution shape: {species_distribution.shape}')
-print(f'species_distribution max: {species_distribution.max()}')
-flat_coord_max = species_distribution.argmax()
-print(f'flat_coord_max: {flat_coord_max}')
-coord_max = np.unravel_index(flat_coord_max, species_distribution.shape)
-print(f'coord_max: {coord_max}')
-print(f'check max: {species_distribution[coord_max]}')
+# print(f'species_distribution.type: {type(species_distribution)}')
+# print(f'unique values count: {np.unique(species_distribution, return_counts=True)}')
+
+assert species_distribution.max() <= 1, f'species_distribution.max() > 1. (max = {species_distribution.max()})'
+assert species_distribution.min() >= 0, f'species_distribution.min() < 0. (min = {species_distribution.min()})'
 
 # create one image for each class, where the alpha channel is the probability of that pixel being that class
 save_path = f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}{img_name_no_extension}/'
 Path(save_path).mkdir(parents=True, exist_ok=True)
 for c in range(num_classes_plus_unknown):
     temp_img = np.zeros((total_height, total_width, 4), dtype=np.uint8)
-    temp_img[:, :, 3] = species_distribution[:, :, c] * 255
+    temp_img[ : , : , 3] = species_distribution[ : , : , c] * 255
     if c == unknown_class_id:
         colors = (0, 0, 0)
     else:
         colors = global_constants.TREE_INFORMATION[c]['display_color_rgb']
-    temp_img[:, :, 0] = colors[0]
-    temp_img[:, :, 1] = colors[1]
-    temp_img[:, :, 2] = colors[2]
-    # cv2.imshow(f'{img_name_no_extension}_{c}', temp_img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    cv2.imwrite(
-        f'{save_path}{img_name_no_extension}_{c}.png',
-        temp_img,
-    )
+    temp_img[ : , : , 0] = colors[0]
+    temp_img[ : , : , 1] = colors[1]
+    temp_img[ : , : , 2] = colors[2]
 
+    # print(f'temp_img.dtype: {temp_img.dtype}')
+    tifi.imwrite(file=f'{save_path}{img_name_no_extension}_{c}.tif', data=temp_img)
+    test_img = tifi.imread(f'{save_path}{img_name_no_extension}_{c}.tif')
+    print(f'test_img.shape: {test_img.shape}')
+    print(f'test_img.dtype: {test_img.dtype}')
