@@ -1,4 +1,5 @@
 import torch
+import warnings
 import numpy as np
 import tifffile as tifi
 from pathlib import Path
@@ -14,8 +15,10 @@ from image_processing import orthomosaic_utils
 
 # PARAMETERS
 verbose = 2
-model_id = 0
-partial_name = 'regnet_y'
+# model_id = 0
+# partial_name = 'regnet_y'
+model_id = 1
+partial_name = 'swin_t'
 img_name = 'Zao1_211005.tif'
 # in pixels
 # set patch_size to None to use the crop_size from the model. Only works for torchvision pretrained models
@@ -61,11 +64,13 @@ print(f'orthomosaic.shape: {orthomosaic.shape}')
 # print(f'orthomosaic[0, 0, 0] type: {type(orthomosaic[0, 0, 0])}')
 total_width = orthomosaic.shape[1]
 total_height = orthomosaic.shape[0]
-x_max = total_width - patch_size
-y_max = total_height - patch_size
+max_x = total_width - patch_size
+max_y = total_height - patch_size
+print(f'max_x: {max_x}, max_y: {max_y}')
 
 unknown_class_id = meta_data['num_classes']
 num_classes_plus_unknown = meta_data['num_classes'] + 1
+print(f'num_classes: {meta_data["num_classes"]}, num_classes_plus_unknown: {num_classes_plus_unknown}')
 
 # initialize species distribution
 # the last channel is used to count the number of times a pixel has been predicted
@@ -73,21 +78,10 @@ num_classes_plus_unknown = meta_data['num_classes'] + 1
 species_distribution = np.zeros((total_height, total_width, num_classes_plus_unknown + 1), dtype=np.int8)
 
 # remove fourth channel
-orthomosaic = orthomosaic[ : , : , 0:3]
+orthomosaic = orthomosaic[ : , : , 0 : 3]
 print(f'remove fourth/alpha channel orthomosaic.shape: {orthomosaic.shape}')
 
-# change color space
-# TODO: check if this is needed, probably it is not needed because probably the model is
-#  trained with images without this conversion
-# orthomosaic = cv2.cvtColor(orthomosaic, cv2.COLOR_BGR2RGB)
-# print(f'change color space orthomosaic.shape: {orthomosaic.shape}')
-
-# save_path = f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}{img_name_no_extension}/'
-# cv2.imwrite(
-#     f'{save_path}sub_img.png',
-#     orthomosaic,
-# )
-# exit()
+# TODO: check if the model is trained with images with inverted colors (because this is with normal colors)
 
 # to tensor
 orthomosaic = tf.to_tensor(orthomosaic)
@@ -99,8 +93,8 @@ print(f'to tensor orthomosaic.shape: {orthomosaic.shape}')
 
 softmax = torch.nn.Softmax(dim=0)
 # to limit the amount of ram used, one patch at a time is extracted from the orthomosaic image and fed to the model
-for x in range(0, x_max, stride):
-    for y in range(0, y_max, stride):
+for x in range(0, max_x, stride):
+    for y in range(0, max_y, stride):
         # print(f'x: {x}, y: {y}')
         # extract patch
         patch = orthomosaic_utils.get_patch(img=orthomosaic, size=patch_size, top_left_coord=(x, y))
@@ -148,8 +142,8 @@ for x in range(0, x_max, stride):
             predicted_class,
         ] += 1
         species_distribution[
-            x:x + patch_size,
-            y:y + patch_size,
+            x : x + patch_size,
+            y : y + patch_size,
             -1,
         ] += 1
         # print('species_distribution[x: x + patch_size, y: y + patch_size, : ] shape: ')
@@ -158,21 +152,26 @@ for x in range(0, x_max, stride):
 
 print('-------------------- end loop --------------------')
 print(f'species_distribution.shape: {species_distribution.shape}')
-print(f'species_distribution.type: {type(species_distribution)}')
-
-# normalize species_distribution using the information in the last channel
-for x in range(species_distribution.shape[0]):
-    for y in range(species_distribution.shape[1]):
-        for c in range(num_classes_plus_unknown):
-            if species_distribution[x, y, c] > 0:
-                species_distribution[x, y, c] = species_distribution[x, y, c] / species_distribution[x, y, -1]
-
-# remove last channel/layer
-species_distribution = species_distribution[ : , : , : -1]
-
+effective_max_x = x + patch_size
+effective_max_y = y + patch_size
+print(f'effective_max_x: {effective_max_x}, effective_max_y: {effective_max_y}')
+species_distribution = species_distribution[ : effective_max_x, : effective_max_y, : ]
 print(f'species_distribution.shape: {species_distribution.shape}')
-# print(f'species_distribution.type: {type(species_distribution)}')
-# print(f'unique values count: {np.unique(species_distribution, return_counts=True)}')
+
+# without last channel/layer (prediction count)
+temp_species_distribution = np.zeros(shape=species_distribution[ : , : , : -1].shape, dtype=np.float32)
+print(f'temp_species_distribution.shape: {temp_species_distribution.shape}')
+with warnings.catch_warnings():
+    warnings.simplefilter(action='ignore', category=RuntimeWarning)
+    for c in range(num_classes_plus_unknown):
+        temp_species_distribution[ : , : , c] = species_distribution[ : , : , c] / species_distribution[ : , : , -1]
+np.nan_to_num(temp_species_distribution, copy=False, nan=0.0)
+# print(f'temp_species_distribution count nan: {np.count_nonzero(np.isnan(temp_species_distribution))}')
+species_distribution = temp_species_distribution
+print('Unique values count')
+for species_index in range(num_classes_plus_unknown):
+    print(f'- {global_constants.TREE_INFORMATION[species_index][global_constants.TREE_NAME_TO_SHOW]}:'
+          f' {np.unique(species_distribution[ : , : , species_index], return_counts=True)}')
 
 assert species_distribution.max() <= 1, f'species_distribution.max() > 1. (max = {species_distribution.max()})'
 assert species_distribution.min() >= 0, f'species_distribution.min() < 0. (min = {species_distribution.min()})'
@@ -181,7 +180,7 @@ assert species_distribution.min() >= 0, f'species_distribution.min() < 0. (min =
 save_path = f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}{img_name_no_extension}/'
 Path(save_path).mkdir(parents=True, exist_ok=True)
 for c in range(num_classes_plus_unknown):
-    temp_img = np.zeros((total_height, total_width, 4), dtype=np.uint8)
+    temp_img = np.zeros((effective_max_x, effective_max_y, 4), dtype=np.uint8)
     temp_img[ : , : , 3] = species_distribution[ : , : , c] * 255
     if c == unknown_class_id:
         colors = (0, 0, 0)
@@ -191,8 +190,21 @@ for c in range(num_classes_plus_unknown):
     temp_img[ : , : , 1] = colors[1]
     temp_img[ : , : , 2] = colors[2]
 
+    # print(f'temp_img.shape: {temp_img.shape}')
     # print(f'temp_img.dtype: {temp_img.dtype}')
+    # print(f'temp_img[ : 20, : 20, 3]: {temp_img[ : 20, : 20, 3]}')
+
     tifi.imwrite(file=f'{save_path}{img_name_no_extension}_{c}.tif', data=temp_img)
-    test_img = tifi.imread(f'{save_path}{img_name_no_extension}_{c}.tif')
-    print(f'test_img.shape: {test_img.shape}')
-    print(f'test_img.dtype: {test_img.dtype}')
+    # test_img = tifi.imread(f'{save_path}{img_name_no_extension}_{c}.tif')
+    # print(f'test_img.shape: {test_img.shape}')
+    # print(f'test_img.dtype: {test_img.dtype}')
+
+print(f'orthomosaic.shape: {orthomosaic.shape}')
+orthomosaic = orthomosaic.permute(1, 2, 0).numpy()
+print(f'orthomosaic.shape: {orthomosaic.shape}')
+orthomosaic = orthomosaic[ : effective_max_x, : effective_max_y, : ]
+print(f'orthomosaic.shape: {orthomosaic.shape}')
+tifi.imwrite(
+    file=f'{save_path}subset_img.tif',
+    data=orthomosaic,
+)
