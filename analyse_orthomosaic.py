@@ -94,8 +94,8 @@ orthomosaic = tf.to_tensor(orthomosaic)
 print(f'to tensor orthomosaic.shape: {orthomosaic.shape}')
 
 # # to device
-# image_processing = image_processing.to(device)
-# print(f'to device {device}, image_processing type: {type(image_processing)}')
+# orthomosaic = orthomosaic.to(device)
+# print(f'to device {device}, orthomosaic type: {type(orthomosaic)}')
 
 softmax = torch.nn.Softmax(dim=0)
 # to limit the amount of ram used, one patch at a time is extracted from the orthomosaic image and fed to the model
@@ -109,12 +109,6 @@ for x in range(0, max_x, stride):
         # apply preprocessing
         if preprocess is not None:
             patch = preprocess(patch)
-            # print(f'transformed patch.shape: {patch.shape}')
-        # print(f'preprocessed patch.shape: {patch.shape}')
-        # to_show_patch = patch.permute(1, 2, 0).numpy()
-        # cv2.imshow('patch', to_show_patch)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
 
         # to device
         patch = patch.to(device)
@@ -138,10 +132,6 @@ for x in range(0, max_x, stride):
             predicted_class = unknown_class_id
             # print('predicted_class unknown')
 
-        # print(f'species_distribution[{x} : {x + patch_size}, {y} : {y + patch_size}, : ]: '
-        #       f'{species_distribution[x : x + patch_size, y : y + patch_size, : ].shape}')
-        # print(f'{species_distribution[x: x + 5, y: y + 5, : ].shape}')
-        # print(f'{species_distribution[x: x + 5, y: y + 5, : ]}')
         species_distribution[
             x : x + patch_size,
             y : y + patch_size,
@@ -152,9 +142,6 @@ for x in range(0, max_x, stride):
             y : y + patch_size,
             -1,
         ] += 1
-        # print('species_distribution[x: x + patch_size, y: y + patch_size, : ] shape: ')
-        # print(f'{species_distribution[x: x + patch_size, y: y + patch_size, : ].shape}')
-        # print(f'{species_distribution[x: x + 5, y: y + 5, : ]}')
 
 print('-------------------- end loop --------------------')
 print(f'species_distribution.shape: {species_distribution.shape}')
@@ -181,36 +168,13 @@ species_distribution = temp_species_distribution
 assert species_distribution.max() <= 1, f'species_distribution.max() > 1. (max = {species_distribution.max()})'
 assert species_distribution.min() >= 0, f'species_distribution.min() < 0. (min = {species_distribution.min()})'
 
-# create one image for each class, where the alpha channel is the probability of that pixel being that class
 save_path = f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}{img_name_no_extension}/'
-Path(save_path).mkdir(parents=True, exist_ok=True)
-for c in range(num_classes_plus_unknown):
-    temp_img = np.zeros((effective_max_x, effective_max_y, 4), dtype=np.uint8)
-    temp_img[ : , : , 3] = species_distribution[ : , : , c] * 255
-    if c == unknown_class_id:
-        colors = (0, 0, 0)
-    else:
-        colors = global_constants.TREE_INFORMATION[c]['display_color_rgb']
-    temp_img[ : , : , 0] = colors[0]
-    temp_img[ : , : , 1] = colors[1]
-    temp_img[ : , : , 2] = colors[2]
-
-    # print(f'temp_img.shape: {temp_img.shape}')
-    # print(f'temp_img.dtype: {temp_img.dtype}')
-    # print(f'temp_img[ : 20, : 20, 3]: {temp_img[ : 20, : 20, 3]}')
-
-    class_name = global_constants.TREE_INFORMATION[c][global_constants.TREE_NAME_TO_SHOW]
-    tifi.imwrite(file=f'{save_path}{img_name_no_extension}_{class_name}.tif', data=temp_img)
-    # test_img = tifi.imread(f'{save_path}{img_name_no_extension}_{c}.tif')
-    # print(f'test_img.shape: {test_img.shape}')
-    # print(f'test_img.dtype: {test_img.dtype}')
-
-print(f'orthomosaic.shape: {orthomosaic.shape}')
-orthomosaic = orthomosaic.permute(1, 2, 0).numpy()
-print(f'orthomosaic shape colors last: {orthomosaic.shape}')
-orthomosaic = orthomosaic[ : effective_max_x, : effective_max_y, : ]
-print(f'orthomosaic effective shape: {orthomosaic.shape}')
-tifi.imwrite(
-    file=f'{save_path}subset_img.tif',
-    data=orthomosaic,
+orthomosaic_utils.save_output(
+    num_classes_plus_unknown=num_classes_plus_unknown,
+    unknown_class_id=unknown_class_id,
+    species_distribution=species_distribution,
+    save_path=save_path,
+    effective_max_x=effective_max_x,
+    effective_max_y=effective_max_y,
+    orthomosaic=orthomosaic,
 )

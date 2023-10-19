@@ -1,4 +1,11 @@
 import torch
+import numpy as np
+import tifffile as tifi
+from pathlib import Path
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+import global_constants
 
 
 def get_patch(img: torch.Tensor, size: int, top_left_coord: tuple):
@@ -11,3 +18,60 @@ def get_patch(img: torch.Tensor, size: int, top_left_coord: tuple):
             y : y + size,
     ].detach().clone()
     return patch
+
+
+def save_class_layers(num_classes_plus_unknown: int,
+                      unknown_class_id: int,
+                      species_distribution: np.ndarray,
+                      save_path: str,
+                      ):
+    # create one image for each class, where the alpha channel is the probability of that pixel being that class
+    Path(save_path).mkdir(parents=True, exist_ok=True)
+    for c in range(num_classes_plus_unknown):
+        temp_img = np.zeros((species_distribution.shape[0], species_distribution.shape[1], 4), dtype=np.uint8)
+        temp_img[:, :, 3] = species_distribution[:, :, c] * 255
+        if c == unknown_class_id:
+            colors = (0, 0, 0)
+        else:
+            colors = global_constants.TREE_INFORMATION[c]['display_color_rgb']
+        temp_img[:, :, 0] = colors[0]
+        temp_img[:, :, 1] = colors[1]
+        temp_img[:, :, 2] = colors[2]
+
+        class_name = global_constants.TREE_INFORMATION[c][global_constants.TREE_NAME_TO_SHOW]
+        tifi.imwrite(f'{save_path}{class_name}.tif', data=temp_img)
+
+
+def save_effective_orthomosaic(orthomosaic: torch.Tensor, effective_max_x: int, effective_max_y: int, save_path: str):
+    Path(save_path).mkdir(parents=True, exist_ok=True)
+    print(f'orthomosaic.shape: {orthomosaic.shape}')
+    orthomosaic = orthomosaic.permute(1, 2, 0).numpy()
+    print(f'orthomosaic shape colors last: {orthomosaic.shape}')
+    orthomosaic = orthomosaic[: effective_max_x, : effective_max_y, :]
+    print(f'orthomosaic effective shape: {orthomosaic.shape}')
+    tifi.imwrite(
+        f'{save_path}subset_img.tif',
+        data=orthomosaic,
+    )
+
+
+def save_output(orthomosaic: torch.Tensor,
+                species_distribution: np.ndarray,
+                effective_max_x: int,
+                effective_max_y: int,
+                num_classes_plus_unknown: int,
+                unknown_class_id: int,
+                save_path: str,
+                ):
+    save_class_layers(
+        num_classes_plus_unknown=num_classes_plus_unknown,
+        unknown_class_id=unknown_class_id,
+        species_distribution=species_distribution,
+        save_path=save_path,
+    )
+    save_effective_orthomosaic(
+        orthomosaic=orthomosaic,
+        effective_max_x=effective_max_x,
+        effective_max_y=effective_max_y,
+        save_path=save_path,
+    )
