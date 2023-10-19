@@ -57,7 +57,7 @@ if custom_transforms is not None:
 else:
     assert patch_size is not None, 'patch_size must be specified if no custom_transforms are used'
     preprocess = None
-print(f'network patch_size: {patch_size}')
+print(f'patch_size: {patch_size}')
 
 # load orthomosaic image
 orthomosaic_path = global_constants.ORTHOMOSAIC_DATA_PATH + img_name
@@ -199,7 +199,8 @@ for c in range(num_classes_plus_unknown):
     # print(f'temp_img.dtype: {temp_img.dtype}')
     # print(f'temp_img[ : 20, : 20, 3]: {temp_img[ : 20, : 20, 3]}')
 
-    tifi.imwrite(file=f'{save_path}{img_name_no_extension}_{c}.tif', data=temp_img)
+    class_name = global_constants.TREE_INFORMATION[c][global_constants.TREE_NAME_TO_SHOW]
+    tifi.imwrite(file=f'{save_path}{img_name_no_extension}_{class_name}.tif', data=temp_img)
     # test_img = tifi.imread(f'{save_path}{img_name_no_extension}_{c}.tif')
     # print(f'test_img.shape: {test_img.shape}')
     # print(f'test_img.dtype: {test_img.dtype}')
