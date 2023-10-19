@@ -55,6 +55,28 @@ def save_effective_orthomosaic(orthomosaic: torch.Tensor, effective_max_x: int, 
     )
 
 
+def save_legend(save_path: str, num_classes_plus_unknown: int, unknown_class_id: int, expand=(0, 0, 0, 0)):
+    # create a legend with the colors of the classes
+    patches = []
+    for c in range(num_classes_plus_unknown):
+        color = [0, 0, 0]
+        name = 'unknown'
+        if c != unknown_class_id:
+            name = global_constants.TREE_INFORMATION[c][global_constants.TREE_NAME_TO_SHOW]
+            color = list(global_constants.TREE_INFORMATION[c]['display_color_rgb'])
+            for rgb_index in range(3):
+                color[rgb_index] = color[rgb_index] / 255
+        patches.append(mpatches.Patch(color=color, label=name))
+    legend = plt.legend(handles=patches)
+    fig = legend.figure
+    fig.canvas.draw()
+    bbox = legend.get_window_extent()
+    bbox = bbox.from_extents(*(bbox.extents + np.array(expand)))
+    bbox = bbox.transformed(fig.dpi_scale_trans.inverted())
+    fig.savefig(f'{save_path}legend.png', dpi="figure", bbox_inches=bbox)
+    plt.close()
+
+
 def save_output(orthomosaic: torch.Tensor,
                 species_distribution: np.ndarray,
                 effective_max_x: int,
@@ -74,4 +96,9 @@ def save_output(orthomosaic: torch.Tensor,
         effective_max_x=effective_max_x,
         effective_max_y=effective_max_y,
         save_path=save_path,
+    )
+    save_legend(
+        save_path=save_path,
+        num_classes_plus_unknown=num_classes_plus_unknown,
+        unknown_class_id=unknown_class_id,
     )
