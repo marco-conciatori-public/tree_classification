@@ -63,7 +63,8 @@ print(f'network patch_size: {patch_size}')
 orthomosaic_path = global_constants.ORTHOMOSAIC_DATA_PATH + img_name
 orthomosaic = tifi.imread(orthomosaic_path)
 # TODO: remove this line, only for speeding up testing
-orthomosaic = orthomosaic[10000 : 12000, 10000 : 12000, :]
+# orthomosaic = orthomosaic[10000 : 12000, 10000 : 12000, :]
+orthomosaic = orthomosaic[10000 : 15000, 15000 : 25000, :]
 print(f'orthomosaic.shape: {orthomosaic.shape}')
 # print(f'orthomosaic type: {type(orthomosaic)}')
 # print(f'orthomosaic[0, 0, 0] type: {type(orthomosaic[0, 0, 0])}')
@@ -205,9 +206,9 @@ for c in range(num_classes_plus_unknown):
 
 print(f'orthomosaic.shape: {orthomosaic.shape}')
 orthomosaic = orthomosaic.permute(1, 2, 0).numpy()
-print(f'orthomosaic.shape: {orthomosaic.shape}')
+print(f'orthomosaic shape colors last: {orthomosaic.shape}')
 orthomosaic = orthomosaic[ : effective_max_x, : effective_max_y, : ]
-print(f'orthomosaic.shape: {orthomosaic.shape}')
+print(f'orthomosaic effective shape: {orthomosaic.shape}')
 tifi.imwrite(
     file=f'{save_path}subset_img.tif',
     data=orthomosaic,
