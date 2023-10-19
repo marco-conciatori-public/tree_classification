@@ -28,10 +28,10 @@ img_name = 'Zao1_211005.tif'
 # TODO: try with smaller patch_size, the dimension of the patch used for training
 # TODO: try with moving window and record only when certainty of prediction is above a certain
 #  threshold (very high, es. 96%)
-patch_size = None
-stride = 128
+patch_size = 95
+stride = 50
 # confidence prediction probability above which the prediction is considered valid
-confidence_threshold = 0.6
+confidence_threshold = 0.5
 img_name_no_extension = img_name.split('.')[0]
 print(f'Orthomosaic used: {img_name_no_extension}')
 
