@@ -27,18 +27,18 @@ def save_class_layers(num_classes_plus_unknown: int,
                       ):
     # create one image for each class, where the alpha channel is the probability of that pixel being that class
     Path(save_path).mkdir(parents=True, exist_ok=True)
-    for c in range(num_classes_plus_unknown):
+    for class_index in range(num_classes_plus_unknown):
         temp_img = np.zeros((species_distribution.shape[0], species_distribution.shape[1], 4), dtype=np.uint8)
-        temp_img[:, :, 3] = species_distribution[:, :, c] * 255
-        if c == unknown_class_id:
-            colors = (0, 0, 0)
-        else:
-            colors = global_constants.TREE_INFORMATION[c]['display_color_rgb']
+        temp_img[:, :, 3] = species_distribution[:, :, class_index] * 255
+        colors = (0, 0, 0)
+        class_name = 'unknown'
+        if class_index != unknown_class_id:
+            colors = global_constants.TREE_INFORMATION[class_index]['display_color_rgb']
+            class_name = global_constants.TREE_INFORMATION[class_index][global_constants.TREE_NAME_TO_SHOW]
         temp_img[:, :, 0] = colors[0]
         temp_img[:, :, 1] = colors[1]
         temp_img[:, :, 2] = colors[2]
 
-        class_name = global_constants.TREE_INFORMATION[c][global_constants.TREE_NAME_TO_SHOW]
         tifi.imwrite(f'{save_path}{class_name}.tif', data=temp_img)
 
 

@@ -156,8 +156,8 @@ temp_species_distribution = np.zeros(shape=species_distribution[ : , : , : -1].s
 print(f'temp_species_distribution.shape: {temp_species_distribution.shape}')
 with warnings.catch_warnings():
     warnings.simplefilter(action='ignore', category=RuntimeWarning)
-    for c in range(num_classes_plus_unknown):
-        temp_species_distribution[ : , : , c] = species_distribution[ : , : , c] / species_distribution[ : , : , -1]
+    for class_index in range(num_classes_plus_unknown):
+        temp_species_distribution[ : , : , class_index] = species_distribution[: , : , class_index] / species_distribution[: , : , -1]
 np.nan_to_num(temp_species_distribution, copy=False, nan=0.0)
 species_distribution = temp_species_distribution
 # print('Unique values count')
