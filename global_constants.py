@@ -27,7 +27,7 @@ TREE_INFORMATION = {
         'scientific_name': 'fagus crenata',
         'japanese_name': 'ブナ',
         'type': DECIDUOUS,
-        'display_color_rgb': (0, 0, 255),
+        'display_color_rgb': (0, 255, 0),
     },
     1: {
         'japanese_reading': 'matsu',
@@ -35,7 +35,7 @@ TREE_INFORMATION = {
         'scientific_name': 'pinus spp',
         'japanese_name': 'マツ',
         'type': EVERGREEN,
-        'display_color_rgb': (0, 255, 0),
+        'display_color_rgb': (255, 0, 255),
     },
     2: {
         'japanese_reading': 'minekaede',
@@ -43,7 +43,7 @@ TREE_INFORMATION = {
         'scientific_name': 'acer tschonoskii',
         'japanese_name': 'ミネカエデ',
         'type': DECIDUOUS,
-        'display_color_rgb': (255, 0, 0),
+        'display_color_rgb': (0, 127.5, 0),
     },
     3: {
         'japanese_reading': 'mizunara',
@@ -51,7 +51,7 @@ TREE_INFORMATION = {
         'scientific_name': 'quescus crispula',
         'japanese_name': 'ミズナラ',
         'type': DECIDUOUS,
-        'display_color_rgb': (255, 255, 0),
+        'display_color_rgb': (255, 127.5, 0),
     },
     4: {
         'japanese_reading': 'nanakamado',
@@ -60,7 +60,7 @@ TREE_INFORMATION = {
         'scientific_name': 'sorbus commixta',
         'japanese_name': 'ナナカマド',
         'type': DECIDUOUS,
-        'display_color_rgb': (0, 255, 255),
+        'display_color_rgb': (127.5, 191.25, 127.5),
     },
     5: {
         'japanese_reading': 'kyaraboku',
@@ -68,7 +68,7 @@ TREE_INFORMATION = {
         'scientific_name': 'taxus cuspidata',
         'japanese_name': 'キャラボク',
         'type': EVERGREEN,
-        'display_color_rgb': (255, 0, 255),
+        'display_color_rgb': (115.79, 115.79, 147.34),
     },
     6: {
         'japanese_reading': 'inutsuge',
@@ -76,7 +76,7 @@ TREE_INFORMATION = {
         'scientific_name': 'ilex crenata',
         'japanese_name': 'イヌツゲ',
         'type': EVERGREEN,
-        'display_color_rgb': (127, 255, 255),
+        'display_color_rgb': (253.4, 126.06, 199.52),
     },
     7: {
         'japanese_reading': 'mizuki',
@@ -84,7 +84,7 @@ TREE_INFORMATION = {
         'scientific_name': 'cornus controversa',
         'japanese_name': 'ミズキ',
         'type': DECIDUOUS,
-        'display_color_rgb': (255, 127, 255),
+        'display_color_rgb': (46.99, 254.31, 251.28),
     },
     8: {
         'japanese_reading': 'koshiabura',
@@ -92,7 +92,7 @@ TREE_INFORMATION = {
         'scientific_name': 'chengiopanax sciadophylloides',
         'japanese_name': 'コシアブラ',
         'type': DECIDUOUS,
-        'display_color_rgb': (255, 255, 127),
+        'display_color_rgb': (255, 0, 0),
     },
     9: {
         # 'japanese_reading': 'momi',
@@ -101,7 +101,7 @@ TREE_INFORMATION = {
         'scientific_name': 'abies ?',
         'japanese_name': 'モミ',
         'type': EVERGREEN,
-        'display_color_rgb': (127, 127, 255),
+        'display_color_rgb': (39.57, 129.04, 10.19),
     },
 }
 TREE_NAME_TO_SHOW = 'japanese_reading'
