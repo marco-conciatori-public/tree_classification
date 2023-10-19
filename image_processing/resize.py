@@ -35,3 +35,18 @@ def resize_img_list(img_list: list, standard_img_dim: int = None, verbose: int =
             continue
         resized_img_list.append(img)
     return resized_img_list
+
+
+def get_mean_pixel_size(img_list: list, verbose: int = 0) -> int:
+    total_width = 0
+    for img in img_list:
+        try:
+            width = img.shape[0]
+            total_width += width
+        except Exception as e:
+            warnings.warn(f'WARNING: could not get shape of image. Exception: {e}')
+            continue
+    mean_width = total_width // len(img_list)
+    if verbose >= 2:
+        print(f'img mean_width: {mean_width}')
+    return mean_width

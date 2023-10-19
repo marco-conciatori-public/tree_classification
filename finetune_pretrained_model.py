@@ -23,7 +23,7 @@ def finetune_pretrained_model_(**kwargs):
         verbose=parameters['verbose'],
     )
 
-    train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
+    train_dl, val_dl, test_dl, img_shape, img_original_pixel_size = get_ready_data.get_data(
         data_path=parameters['data_path'],
         batch_size=parameters['batch_size'],
         shuffle=parameters['shuffle'],
@@ -52,6 +52,8 @@ def finetune_pretrained_model_(**kwargs):
     parameters_to_save['random_seed'] = parameters['random_seed']
     parameters_to_save['augmentation_proportion'] = parameters['data_augmentation_proportion']
     parameters_to_save['balance_classes'] = parameters['balance_data']
+    parameters_to_save['img_original_pixel_size'] = parameters['img_original_pixel_size']
+    parameters_to_save['img_shape'] = img_shape
     training_history = training.train(
         model=model,
         training_data=train_dl,

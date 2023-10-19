@@ -47,6 +47,8 @@ def get_data(data_path: str,
             verbose=verbose,
         )
 
+    img_original_pixel_size = resize.get_mean_pixel_size(img_list=img_list, verbose=verbose)
+
     # split dataset
     total_length = len(img_list)
     split_lengths = [int(total_length * proportion) for proportion in train_val_test_proportions]
@@ -167,4 +169,4 @@ def get_data(data_path: str,
     if verbose >= 1:
         print('Step 2 data generated and saved')
 
-    return train_dl, val_dl, test_dl, img_shape
+    return train_dl, val_dl, test_dl, img_shape, img_original_pixel_size

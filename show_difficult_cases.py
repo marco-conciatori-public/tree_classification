@@ -32,7 +32,7 @@ def show_difficult_cases_(**kwargs):
         verbose=parameters['verbose'],
     )
 
-    train_dl, val_dl, test_dl, img_shape = get_ready_data.get_data(
+    train_dl, val_dl, test_dl, _, _ = get_ready_data.get_data(
         data_path=parameters['data_path'],
         shuffle=False,
         batch_size=1,
