@@ -52,7 +52,7 @@ def finetune_pretrained_model_(**kwargs):
     parameters_to_save['random_seed'] = parameters['random_seed']
     parameters_to_save['augmentation_proportion'] = parameters['data_augmentation_proportion']
     parameters_to_save['balance_classes'] = parameters['balance_data']
-    parameters_to_save['img_original_pixel_size'] = parameters['img_original_pixel_size']
+    parameters_to_save['img_original_pixel_size'] = img_original_pixel_size
     parameters_to_save['img_shape'] = img_shape
     training_history = training.train(
         model=model,
