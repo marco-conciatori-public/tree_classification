@@ -101,7 +101,7 @@ TREE_INFORMATION = {
         'scientific_name': 'abies ?',
         'japanese_name': 'モミ',
         'type': EVERGREEN,
-        'display_color_rgb': (39.57, 129.04, 10.19),
+        'display_color_rgb': (0, 0, 255),
     },
 }
 TREE_NAME_TO_SHOW = 'japanese_reading'
