@@ -48,7 +48,7 @@ TREE_INFORMATION = {
     3: {
         'japanese_reading': 'mizunara',
         'english_name': 'oak',
-        'scientific_name': 'quescus crispula',
+        'scientific_name': 'quercus crispula',
         'japanese_name': 'ミズナラ',
         'type': DECIDUOUS,
         'display_color_rgb': (255, 127.5, 0),
