@@ -3,7 +3,8 @@ from visualization import visualization_utils
 
 def print_top_n(results: list, top_n: int = 10, select_parameters: list = None):
     # select_parameters is a dict of lists:
-    # {parameter_1: [value_1, value_2, ...],
+    # {
+    #   parameter_1: [value_1, value_2, ...],
     #   parameter_2: [value_1, value_2, ...],
     #   ...
     #   parameter_n: [value_1, value_2, ...]
