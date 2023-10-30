@@ -164,7 +164,7 @@ def best_parameters_grid_search_(**kwargs):
                                                 'data_augmentation_proportion': data_augmentation_proportion,
                                                 'optimizer_name': optimizer_name,
                                                 'num_epochs': num_epochs,
-                                                'model': (model_version, weights_name),
+                                                'model': (model_architecture, model_version, weights_name),
                                                 'freeze_layers': freeze_layers,
                                                 'time_used': str(time_delta),
                                                 'configuration_counter': configuration_counter,
