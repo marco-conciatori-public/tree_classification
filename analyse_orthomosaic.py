@@ -175,7 +175,7 @@ def analyse_orthomosaic_(**kwargs):
 
 if __name__ == '__main__':
     verbose = 2
-    partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
+    partial_name = str(input('Insert name or part of the name of a model: '))
     model_id = int(input('Insert model id number: '))
     # img_name = str(input('Insert name of the orthomosaic to analyse: '))
     img_name = 'Zao1_211005.tif'

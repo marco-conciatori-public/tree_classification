@@ -83,6 +83,6 @@ def load_and_use_model_(**kwargs):
 
 
 if __name__ == '__main__':
-    partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
+    partial_name = str(input('Insert name or part of the name of a model: '))
     model_id = int(input('Insert model id number: '))
     load_and_use_model_(partial_name=partial_name, model_id=model_id)

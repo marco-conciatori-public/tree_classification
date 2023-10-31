@@ -7,8 +7,8 @@ from visualization import visualization_utils
 
 def show_confusion_matrix_():
     # parameters
+    partial_name = str(input('Insert name or part of the name of a model: '))
     model_id = int(input('Insert model id number: '))
-    partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
 
     _, meta_data_path = utils.get_path_by_id(
         partial_name=partial_name,
