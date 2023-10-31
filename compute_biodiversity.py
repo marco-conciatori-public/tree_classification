@@ -74,5 +74,6 @@ def load_and_use_model_(**kwargs):
         print(f'Shannon-Wiener index: {sw_index}')
         print(f'Species richness: {sr_index}')
 
+
 if __name__ == '__main__':
     load_and_use_model_()
