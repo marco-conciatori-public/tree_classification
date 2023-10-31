@@ -137,7 +137,6 @@ def best_parameters_grid_search_(**kwargs):
                                                 display_confusion_matrix=False,
                                                 metrics=parameters['metrics'],
                                                 save_results=False,
-                                                notebook_mode=parameters['notebook_mode'],
                                                 verbose=parameters['verbose'],
                                             )
                                             average_loss_test += test_loss
@@ -204,7 +203,6 @@ def best_parameters_grid_search_(**kwargs):
         'random_seed': parameters['random_seed'],
         'metrics': parameters['metrics'],
         'search_space': search_space,
-        'notebook_mode': parameters['notebook_mode'],
         'results': results,
     }
 

@@ -77,7 +77,6 @@ def train_custom_model_(**kwargs):
         metrics=parameters['metrics'],
         save_results=parameters['save_model'],
         save_path=global_constants.MODEL_OUTPUT_DIR,
-        notebook_mode=parameters['notebook_mode'],
         verbose=parameters['verbose'],
     )
     print(f'test_loss: {test_loss}')

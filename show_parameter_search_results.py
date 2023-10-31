@@ -10,7 +10,6 @@ def show_parameter_search_results_(**kwargs):
 
     bar_width = 0.7
     top_n = parameters['best_n_configurations']
-    notebook_mode = parameters['notebook_mode']
     excluded_key_list = []
     file_number = int(input('Insert file number: '))
     parameter_evaluation = visualization_utils.load_evaluation(file_number)
@@ -37,7 +36,6 @@ def show_parameter_search_results_(**kwargs):
             excluded_key_list=excluded_key_list,
             hp_evaluation=parameter_evaluation,
             rotate_x_labels=False,
-            save_img=notebook_mode,
         )
 
     elif len(parameters_to_plot) == 2:
@@ -46,7 +44,6 @@ def show_parameter_search_results_(**kwargs):
             excluded_key_list=excluded_key_list,
             hp_evaluation=parameter_evaluation,
             bar_width=bar_width,
-            save_img=notebook_mode,
         )
 
     # show only selected parameters
@@ -59,7 +56,7 @@ def show_parameter_search_results_(**kwargs):
     )
     print()
     average_loss = top_configurations.average_loss_per_parameter(parameter_evaluation=parameter_evaluation)
-    loss_per_parameter.bar_plot(average_loss=average_loss, save_img=notebook_mode)
+    loss_per_parameter.bar_plot(average_loss=average_loss)
 
 
 if __name__ == '__main__':

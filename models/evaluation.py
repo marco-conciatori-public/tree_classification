@@ -14,7 +14,6 @@ def eval(model: torch.nn.Module,
          display_confusion_matrix: bool = False,
          save_results: bool = False,
          save_path=None,
-         notebook_mode: bool = False,
          verbose: int = 0,
          ) -> (float, dict):
 
@@ -101,6 +100,6 @@ def eval(model: torch.nn.Module,
 
     if display_confusion_matrix:
         # Plot the confusion matrix
-        visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list, save_img=notebook_mode)
+        visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list)
 
     return test_loss, metric_evaluations

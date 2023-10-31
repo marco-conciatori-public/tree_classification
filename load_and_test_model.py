@@ -103,11 +103,7 @@ def load_and_test_model_(**kwargs):
 
     if parameters['display_confusion_matrix']:
         # Plot the confusion matrix
-        visualization_utils.display_cm(
-            true_values=tag_list,
-            predictions=prediction_list,
-            save_img=parameters['notebook_mode'],
-        )
+        visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list)
 
 
 if __name__ == '__main__':
