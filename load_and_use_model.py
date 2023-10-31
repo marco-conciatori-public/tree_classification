@@ -11,13 +11,11 @@ from data_preprocessing import data_loading
 def load_and_use_model_(**kwargs):
     # import parameters
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
-    partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
-    model_id = int(input('Insert model id number: '))
     use_targets = parameters['use_targets']
 
     model_path, info_path = utils.get_path_by_id(
-        partial_name=partial_name,
-        model_id=model_id,
+        partial_name=kwargs['partial_name'],
+        model_id=kwargs['model_id'],
         folder_path=global_constants.MODEL_OUTPUT_DIR,
     )
     loaded_model, custom_transforms, meta_data = model_utils.load_model(
@@ -85,4 +83,6 @@ def load_and_use_model_(**kwargs):
 
 
 if __name__ == '__main__':
-    load_and_use_model_()
+    partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
+    model_id = int(input('Insert model id number: '))
+    load_and_use_model_(partial_name=partial_name, model_id=model_id)

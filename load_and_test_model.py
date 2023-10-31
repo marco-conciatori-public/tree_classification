@@ -13,14 +13,12 @@ def load_and_test_model_(**kwargs):
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 2
     parameters['shuffle'] = False
-    partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
-    model_id = int(input('Insert model id number: '))
 
     device = parameters['device']
 
     model_path, info_path = utils.get_path_by_id(
-        partial_name=partial_name,
-        model_id=model_id,
+        partial_name=kwargs['partial_name'],
+        model_id=kwargs['model_id'],
         folder_path=global_constants.MODEL_OUTPUT_DIR,
     )
 
@@ -112,4 +110,6 @@ def load_and_test_model_(**kwargs):
 
 
 if __name__ == '__main__':
-    load_and_test_model_()
+    partial_name = str(input('Insert name or part of the name to distinguish between models with the same id number: '))
+    model_id = int(input('Insert model id number: '))
+    load_and_test_model_(partial_name=partial_name, model_id=model_id)
