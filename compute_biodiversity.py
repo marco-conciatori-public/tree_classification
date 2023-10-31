@@ -34,11 +34,12 @@ def load_and_use_model_(**kwargs):
 
         _, _, test_dl, _, _ = get_ready_data.get_data(
             data_path=parameters['data_path'],
-            shuffle=parameters['shuffle'],
+            shuffle=True,
             balance_data=False,
             batch_size=parameters['batch_size'],
             train_val_test_proportions=[0.01, 0.01, 0.98],
             # standard_img_dim=config.IMG_DIM,
+            no_resizing=True,
             custom_transforms=custom_transforms,
             augmentation_proportion=1,
             random_seed=parameters['random_seed'],
@@ -61,7 +62,7 @@ def load_and_use_model_(**kwargs):
         _, tag_list = data_loading.load_data(
             data_path=parameters['data_path'],
             selected_names=parameters['img_name_list'],
-            use_targets=parameters['use_targets'],
+            use_targets=use_targets,
             verbose=parameters['verbose'],
         )
         print(f'tag_list length: {len(tag_list)}')
