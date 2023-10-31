@@ -13,6 +13,7 @@ def load_and_test_model_(**kwargs):
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 2
     parameters['shuffle'] = False
+    parameters['train_val_test_proportions'] = [0.01, 0.01, 0.98]
 
     device = parameters['device']
 
