@@ -1,5 +1,6 @@
 import cv2
 from pathlib import Path
+import json
 
 import global_constants
 
@@ -21,6 +22,9 @@ assert pure_path.exists(), f'Path {original_data_path} does not exist'
 tif_list = []
 # correct wrong 's1' to 's2' naming for Minekaede_s2 folder
 # also correct wrong '＿' to '_' in file names
+print('num patches by folder:')
+dict_info = {}
+dict_info['num_patches_by_folder'] = {}
 for dir_path in pure_path.iterdir():
     # if dir_path.is_dir():
     #     if 'Minekaede_s2' in str(dir_path):
@@ -36,7 +40,12 @@ for dir_path in pure_path.iterdir():
     # select only .TIF files
     if dir_path.is_dir():
         folder_list = list(dir_path.glob('*.TIF'))
+        dict_info['num_patches_by_folder'][dir_path.name] = len(folder_list)
+        print(f'- {dir_path.name}: {len(folder_list)}')
         tif_list.extend(folder_list)
+
+print(f'total num patches: {len(tif_list)}')
+dict_info['total_num_patches'] = len(tif_list)
 
 # save images to the input data folder
 save_folder_path = Path(global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + output_folder)
@@ -47,3 +56,12 @@ for tif_path in tif_list:
     img_new_path = str(save_folder_path) + '/' + tif_path.name.lower()
     # print(f'img_new_path: {save_path}')
     cv2.imwrite(img_new_path, cv2.imread(str(tif_path)))
+
+info_folder_str = global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + 'step_1_info/'
+info_folder_path = Path(info_folder_str)
+if not info_folder_path.exists():
+    info_folder_path.mkdir(parents=False)
+
+info_str = info_folder_str + output_folder[:-1] + '.json'
+with open(info_str, 'w') as info_file:
+    json.dump(dict_info, info_file)
