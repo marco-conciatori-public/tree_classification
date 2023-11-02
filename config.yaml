@@ -58,8 +58,8 @@ pretrained_model_parameters:
 # width and height of images
 # img_dim: 95
 batch_size: 16
-num_epochs: 4
-learning_rate: !!float 5e-5
+num_epochs: 8
+learning_rate: !!float 1e-5
 optimizer_name: Adam
 # optimizer_name: RMSprop
 loss_function_name: CrossEntropyLoss
