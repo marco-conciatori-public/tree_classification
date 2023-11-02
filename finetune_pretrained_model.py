@@ -1,7 +1,7 @@
 import global_constants
 from import_args import args
-from models import training, evaluation, model_utils
 from data_preprocessing import get_ready_data
+from models import training, evaluation, model_utils
 
 
 def finetune_pretrained_model_(**kwargs):

@@ -120,7 +120,7 @@ def print_formatted_results(loss: float,
             print(f'- {metric_name}:')
             for class_index in range(len(result)):
                 formatted_result = format_value(value=result[class_index], as_percentage=as_percentage)
-                print(f'  - {global_constants.TREE_INFORMATION[class_index][global_constants.TREE_NAME_TO_SHOW]}:'
+                print(f'  - {global_constants.TREE_INFORMATION[class_index][global_constants.SPECIES_LANGUAGE]}:'
                       f' {formatted_result}')
         else:
             formatted_result = format_value(value=result, as_percentage=as_percentage)

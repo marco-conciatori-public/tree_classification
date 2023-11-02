@@ -54,7 +54,7 @@ def display_cm(true_values, predictions, labels=None, save_img: bool = False):
     if labels is None:
         labels = []
         for el in global_constants.TREE_INFORMATION.values():
-            labels.append(el[global_constants.TREE_NAME_TO_SHOW])
+            labels.append(el[global_constants.SPECIES_LANGUAGE])
 
     num_classes = len(global_constants.TREE_INFORMATION)
     true_values = np.array(true_values)

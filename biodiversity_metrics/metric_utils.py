@@ -18,7 +18,7 @@ def get_unique_species(tag_list: list) -> list:
     class_indexes = np.unique(tag_array)
     class_names = []
     for class_index in class_indexes:
-        class_names.append(global_constants.TREE_INFORMATION[class_index][global_constants.TREE_NAME_TO_SHOW])
+        class_names.append(global_constants.TREE_INFORMATION[class_index][global_constants.SPECIES_LANGUAGE])
     return class_names
 
 
@@ -31,7 +31,7 @@ def get_num_trees_by_species(tag_list: list) -> dict:
 
     for tag in tag_list:
         tree_class = global_constants.TREE_INFORMATION[tag]
-        tree_name = tree_class[global_constants.TREE_NAME_TO_SHOW]
+        tree_name = tree_class[global_constants.SPECIES_LANGUAGE]
         num_trees_by_species[tree_name] += 1
 
     return num_trees_by_species

@@ -155,7 +155,7 @@ def analyse_orthomosaic_(**kwargs):
     species_distribution = temp_species_distribution
     # print('Unique values count')
     # for species_index in range(num_classes_plus_unknown):
-    #     print(f'- {global_constants.TREE_INFORMATION[species_index][global_constants.TREE_NAME_TO_SHOW]}:'
+    #     print(f'- {global_constants.TREE_INFORMATION[species_index][global_constants.SPECIES_LANGUAGE]}:'
     #           f' {np.unique(species_distribution[ : , : , species_index], return_counts=True)}')
 
     assert species_distribution.max() <= 1, f'species_distribution.max() > 1. (max = {species_distribution.max()})'

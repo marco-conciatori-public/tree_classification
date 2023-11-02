@@ -34,7 +34,7 @@ def train(model: torch.nn.Module,
     optimizer = getattr(torch.optim, optimizer_name)(params=model.parameters(), lr=learning_rate)
     classes = []
     for tree_info in global_constants.TREE_INFORMATION.values():
-        classes.append(tree_info[global_constants.TREE_NAME_TO_SHOW])
+        classes.append(tree_info[global_constants.SPECIES_LANGUAGE])
 
     num_classes = len(global_constants.TREE_INFORMATION)
     training_metrics = model_utils.get_metrics(metrics)
