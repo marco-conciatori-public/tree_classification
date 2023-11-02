@@ -103,5 +103,13 @@ TREE_INFORMATION = {
         'type': EVERGREEN,
         'display_color_rgb': (0, 0, 255),
     },
+    10: {
+        'japanese_romaji': 'hauchiwakaede',
+        'english': 'fullmoon maple',
+        'latin': 'acer japonicum',
+        'japanese': 'はうちは楓',
+        'type': DECIDUOUS,
+        'display_color_rgb': (0, 255, 255),
+    },
 }
 SPECIES_LANGUAGE = 'japanese_romaji'
