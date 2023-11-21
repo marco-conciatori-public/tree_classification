@@ -7,6 +7,7 @@ input_data_folder: step_1/
 #input_data_folder: step_1_unique_no_fir_s2/
 # TODO: not fully implemented yet only some of the random operations use this seed
 random_seed: 42  # set to null for different results each time
+num_models_to_train: 5
 
 # DISPLAY OPTIONS
 display_confusion_matrix: True
