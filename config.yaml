@@ -35,34 +35,36 @@ custom_model_parameters:
 # PRE-TRAINED MODEL CONFIGURATION
 # Warning: case-sensitive names
 pretrained_model_parameters:
-    # REGNET MODEL
-    # model_architecture: regnet
-    # model_version: regnet_y_1_6gf  # small
-    # weights_name: RegNet_Y_1_6GF_Weights.DEFAULT
-    # model_version: regnet_y_128gf  # big
-    # weights_name: RegNet_Y_128GF_Weights.DEFAULT
-    # RESNET MODEL
-    model_architecture: resnet
-    model_version: resnet50
-    weights_name: ResNet50_Weights.DEFAULT
-    # CONVNEXT MODEL
-    # model_architecture: convnext
-    # model_version: convnext_small
-    # weights_name: ConvNeXt_Small_Weights.DEFAULT
-    # SWIN TRANSFORMER MODEL
-    # model_architecture: swin_transformer
-    # model_version: swin_t
-    # weights_name: Swin_T_Weights.DEFAULT
+#    REGNET MODEL
+#    model_architecture: regnet
+#    model_version: regnet_y_1_6gf  # small
+#    weights_name: RegNet_Y_1_6GF_Weights.DEFAULT
+#    model_version: regnet_y_128gf  # big
+#    weights_name: RegNet_Y_128GF_Weights.DEFAULT
+#    RESNET MODEL
+#    model_architecture: resnet
+#    model_version: resnet50
+#    weights_name: ResNet50_Weights.DEFAULT
+#    CONVNEXT MODEL
+#    model_architecture: convnext
+#    model_version: convnext_small
+#    weights_name: ConvNeXt_Small_Weights.DEFAULT
+#    SWIN TRANSFORMER MODEL
+    model_architecture: swin_transformer
+#    model_version: swin_b
+#    weights_name: Swin_B_Weights.DEFAULT
+    model_version: swin_s
+    weights_name: Swin_S_Weights.DEFAULT
     freeze_layers: False
 
 # TRAINING HYPERPARAMETERS
 # width and height of images
-# img_dim: 95
 batch_size: 16
-num_epochs: 8
+#img_dim: 95
+num_epochs: 20
 learning_rate: !!float 1e-5
 optimizer_name: Adam
-# optimizer_name: RMSprop
+#optimizer_name: RMSprop
 loss_function_name: CrossEntropyLoss
 shuffle: True
 save_model: True
@@ -71,7 +73,7 @@ train_val_test_proportions: [0.8, 0.1, 0.1]
 #train_val_test_proportions: [0.89, 0.1, 0.01]
 tolerance: 0.01
 # number of times the original dataset is duplicated with random variations
-data_augmentation_proportion: 1
+data_augmentation_proportion: 15
 #data_augmentation_proportion: 4
 balance_data: False
 
@@ -103,7 +105,7 @@ metrics:
 
 # MODEL USAGE PARAMETERS
 # use only those images, if null, use all images in folder
-# img_name_list = [buna_s1_0.tif, buna_s1_1.tif]
+#img_name_list = [buna_s1_0.tif, buna_s1_1.tif]
 img_name_list: null
 jump: 1
 use_targets: False
@@ -117,26 +119,29 @@ grid_search_parameters:
     # and the average performance will be used to select the best configuration.
     # use lists of one element to test only one value for that variable.
     search_space:
-        data_augmentation_proportion_list: [1, 4, 8]
-        # data_augmentation_proportion_list: [5]
+        data_augmentation_proportion_list: [15, 20]
+#        data_augmentation_proportion_list: [1]
         batch_size_list: [64]
-        # learning_rate_list: [0.005, 0.0001]
-        learning_rate_list: [!!float 1e-04, !!float 1e-05, !!float 1e-06]
-        # num_epochs_list: [10, 20]
-        num_epochs_list: [8]
-        # optimizer_name_list: [Adam, RMSprop]
+#        learning_rate_list: [0.0001]
+#        learning_rate_list: [!!float 1e-04, !!float 1e-05, !!float 1e-06]
+        learning_rate_list: [!!float 1e-05, !!float 1e-06, !!float 1e-07]
+        num_epochs_list: [20]
+#        num_epochs_list: [10]
+#        optimizer_name_list: [Adam, RMSprop]
         optimizer_name_list: [Adam]
-        balance_data_list: [False, True]
-        # balance_data_list: [False]
+#        balance_data_list: [False, True]
+        balance_data_list: [False]
         # to train a model from scratch, set weights_name to None
-        # freeze_layers_list: [True, False]
+#        freeze_layers_list: [True, False]
         freeze_layers_list: [False]
         # WARNING: case-sensitive names [model_architecture, model_version, weights_name]
         model_spec_list: [
 #            [regnet, regnet_y_1_6gf, RegNet_Y_1_6GF_Weights.DEFAULT],
-#            [regnet, regnet_y_1_6gf, None],
 #            [regnet, regnet_y_128gf, RegNet_Y_128GF_Weights.DEFAULT],
-            [swin_transformer, swin_s, Swin_S_Weights.DEFAULT],
-#            [swin_transformer, swin_t, Swin_T_Weights.DEFAULT],
 #            [resnet, resnet50, ResNet50_Weights.DEFAULT],
+#            [resnet, resnet101, ResNet101_Weights.DEFAULT],
+#            [convnext, convnext_small, ConvNeXt_Small_Weights.DEFAULT],
+#            [swin_transformer, swin_t, Swin_T_Weights.DEFAULT],
+            [swin_transformer, swin_s, Swin_S_Weights.DEFAULT],
+#            [swin_transformer, swin_b, Swin_B_Weights.DEFAULT],
             ]
