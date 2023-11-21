@@ -30,21 +30,21 @@ def show_parameter_search_results_(**kwargs):
     print('parameters tested:\n', parameters_to_plot)
 
     excluded_key_list.extend(parameters_to_plot)
-    if len(parameters_to_plot) == 1:
-        graph_2d.plot_parameters(
-            hp_to_plot=parameters_to_plot,
-            excluded_key_list=excluded_key_list,
-            hp_evaluation=parameter_evaluation,
-            rotate_x_labels=False,
-        )
-
-    elif len(parameters_to_plot) == 2:
-        graph_3d.plot_parameters(
-            hp_to_plot=parameters_to_plot,
-            excluded_key_list=excluded_key_list,
-            hp_evaluation=parameter_evaluation,
-            bar_width=bar_width,
-        )
+    # if len(parameters_to_plot) == 1:
+    #     graph_2d.plot_parameters(
+    #         hp_to_plot=parameters_to_plot,
+    #         excluded_key_list=excluded_key_list,
+    #         hp_evaluation=parameter_evaluation,
+    #         rotate_x_labels=False,
+    #     )
+    #
+    # elif len(parameters_to_plot) == 2:
+    #     graph_3d.plot_parameters(
+    #         hp_to_plot=parameters_to_plot,
+    #         excluded_key_list=excluded_key_list,
+    #         hp_evaluation=parameter_evaluation,
+    #         bar_width=bar_width,
+    #     )
 
     # show only selected parameters
     select_parameters = ['test_loss']
