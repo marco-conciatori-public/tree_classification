@@ -10,7 +10,7 @@ random_seed: 42  # set to null for different results each time
 num_models_to_train: 5
 
 # DISPLAY OPTIONS
-display_confusion_matrix: True
+display_confusion_matrix: False
 worst_n_predictions: 10
 best_n_configurations: 15
 
@@ -51,10 +51,10 @@ pretrained_model_parameters:
 #    weights_name: ConvNeXt_Small_Weights.DEFAULT
 #    SWIN TRANSFORMER MODEL
     model_architecture: swin_transformer
-#    model_version: swin_b
-#    weights_name: Swin_B_Weights.DEFAULT
-    model_version: swin_s
-    weights_name: Swin_S_Weights.DEFAULT
+    model_version: swin_t
+    weights_name: Swin_T_Weights.DEFAULT
+#    model_version: swin_s
+#    weights_name: Swin_S_Weights.DEFAULT
     freeze_layers: False
 
 # TRAINING HYPERPARAMETERS
