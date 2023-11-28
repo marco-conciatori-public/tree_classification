@@ -62,9 +62,11 @@ pretrained_model_parameters:
 batch_size: 16
 #img_dim: 95
 num_epochs: 20
-learning_rate: !!float 1e-5
-optimizer_name: Adam
-#optimizer_name: RMSprop
+optimizer_parameters:
+    optimizer_name: Adam
+    weight_decay: 0.001
+    learning_rate: !!float 1e-5
+
 loss_function_name: CrossEntropyLoss
 shuffle: True
 save_model: True
@@ -122,13 +124,17 @@ grid_search_parameters:
         data_augmentation_proportion_list: [15, 20]
 #        data_augmentation_proportion_list: [1]
         batch_size_list: [64]
-#        learning_rate_list: [0.0001]
-#        learning_rate_list: [!!float 1e-04, !!float 1e-05, !!float 1e-06]
-        learning_rate_list: [!!float 1e-05, !!float 1e-06, !!float 1e-07]
         num_epochs_list: [20]
 #        num_epochs_list: [10]
-#        optimizer_name_list: [Adam, RMSprop]
-        optimizer_name_list: [Adam]
+        optimizer_parameters_list:
+            -
+                optimizer_name: Adam
+                weight_decay: 0.001
+                learning_rate: !!float 1e-05
+#            -
+#                optimizer_name: RMSprop
+#                learning_rate: !!float 1e-05
+
 #        balance_data_list: [False, True]
         balance_data_list: [False]
         # to train a model from scratch, set weights_name to None

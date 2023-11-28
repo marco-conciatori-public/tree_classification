@@ -11,8 +11,7 @@ def train(model: torch.nn.Module,
           training_data,
           validation_data,
           loss_function_name: str,
-          optimizer_name: str,
-          learning_rate: float,
+          optimizer_parameters: dict,
           device: torch.device,
           num_epochs: int,
           save_model: bool,
@@ -31,7 +30,11 @@ def train(model: torch.nn.Module,
 
     # get optimizer from string name
     # TODO: if freeze_layers is True, the optimizer should only take as parameters the parameters of the last layer/s
-    optimizer = getattr(torch.optim, optimizer_name)(params=model.parameters(), lr=learning_rate)
+    optimizer = getattr(torch.optim, optimizer_parameters['optimizer_name'])(
+        params=model.parameters(),
+        lr=optimizer_parameters['learning_rate'],
+        weight_decay=optimizer_parameters['weight_decay'],
+    )
     classes = []
     for tree_info in global_constants.TREE_INFORMATION.values():
         classes.append(tree_info[global_constants.SPECIES_LANGUAGE])
@@ -177,10 +180,9 @@ def train(model: torch.nn.Module,
             print('Saving model before exiting...')
             print(f'With validation loss: {min_valid_loss}')
             model.load_state_dict(best_model_weights)
-            extra_info_to_save['learning_rate'] = learning_rate
             extra_info_to_save['num_epochs'] = num_epochs
             extra_info_to_save['loss_function_name'] = loss_function_name
-            extra_info_to_save['optimizer_name'] = optimizer_name
+            extra_info_to_save['optimizer_parameters'] = optimizer_parameters
             extra_info_to_save['training_length'] = len(training_data)
             extra_info_to_save['interrupted'] = True
             extra_info_to_save['batch_size'] = batch_size
@@ -200,10 +202,9 @@ def train(model: torch.nn.Module,
 
     # save model (weights and configuration) and other useful information
     if save_model:
-        extra_info_to_save['learning_rate'] = learning_rate
         extra_info_to_save['num_epochs'] = num_epochs
         extra_info_to_save['loss_function_name'] = loss_function_name
-        extra_info_to_save['optimizer_name'] = optimizer_name
+        extra_info_to_save['optimizer_parameters'] = optimizer_parameters
         extra_info_to_save['training_length'] = len(training_data)
         extra_info_to_save['interrupted'] = False
         extra_info_to_save['batch_size'] = batch_size

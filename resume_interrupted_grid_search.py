@@ -22,8 +22,8 @@ def resume_interrupted_grid_search_():
     with open(partial_results_path, 'r') as json_file:
         partial_content = json.load(json_file)
 
-    assert partial_content['interrupted'], 'This script is only for resuming interrupted grid search. The file provided' \
-                                           ' is not for an interrupted grid search.'
+    assert partial_content['interrupted'], 'This script is only for resuming interrupted grid search. ' \
+                                           'The file provided is not for an interrupted grid search.'
 
     num_classes = partial_content['num_classes']
     # number of tests for each configuration, to have a more accurate estimate of the performance
@@ -50,7 +50,8 @@ def resume_interrupted_grid_search_():
         print(f'\nResuming grid search from configuration {last_configuration_counter}...')
         for model_spec in search_space['model_spec_list']:
             model_architecture, model_version, weights_name = model_spec
-            print(f'model architecture: {model_architecture}, model version: {model_version}, with weights: {weights_name}')
+            print(f'model architecture: {model_architecture}, model version:'
+                  f' {model_version}, with weights: {weights_name}')
             custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
                 weights_name=weights_name,
                 verbose=verbose,
@@ -78,102 +79,98 @@ def resume_interrupted_grid_search_():
                         end_time = datetime.datetime.now()
                         print(f'\t\t\tdata processing/loading time: {utils.timedelta_format(start_time, end_time)}')
 
-                        for optimizer_name in search_space['optimizer_name_list']:
-                            print(f'\t\t\t\toptimizer: {optimizer_name}')
-                            for learning_rate in search_space['learning_rate_list']:
-                                print(f'\t\t\t\t\tlearning_rate: {learning_rate}')
-                                for num_epochs in search_space['num_epochs_list']:
-                                    print(f'\t\t\t\t\t\tnum_epochs: {num_epochs}')
-                                    for freeze_layers in search_space['freeze_layers_list']:
-                                        print(f'\t\t\t\t\t\t\tfreeze_layers: {freeze_layers}')
-                                        print(f'\t\t\t\t\t\t\t\tconfiguration {configuration_counter + 1} / '
-                                              f'{num_different_configurations}')
+                        for optimizer_parameters in search_space['optimizer_parameters_list']:
+                            print(f'\t\t\t\toptimizer_parameters: {optimizer_parameters}')
+                            for num_epochs in search_space['num_epochs_list']:
+                                print(f'\t\t\t\t\tnum_epochs: {num_epochs}')
+                                for freeze_layers in search_space['freeze_layers_list']:
+                                    print(f'\t\t\t\t\t\tfreeze_layers: {freeze_layers}')
+                                    print(f'\t\t\t\t\t\t\tconfiguration {configuration_counter + 1} / '
+                                          f'{num_different_configurations}')
 
-                                        if configuration_counter <= last_configuration_counter:
-                                            configuration_counter += 1
-                                            continue
-
-                                        if freeze_layers and weights_name is None:
-                                            print('\t\t\t\t\t\t\t\tSkipping this configuration because incompatible'
-                                                  ' parameter values (freeze_layers=True and weights_name=None)')
-                                            configuration_counter += 1
-                                            continue
-
-                                        start_time = datetime.datetime.now()
-                                        average_loss_test = 0
-                                        average_metrics_test = {metric_name: 0
-                                                                for metric_name in partial_content['metrics']}
-                                        pretrained_model_parameters = {
-                                            'model_architecture': model_architecture,
-                                            'model_version': model_version,
-                                            'weights_name': weights_name,
-                                            'freeze_layers': freeze_layers,
-                                        }
-                                        for i in range(num_tests_for_configuration):
-                                            model = model_utils.get_torchvision_model(
-                                                pretrained_model_parameters=pretrained_model_parameters,
-                                                device=device,
-                                                training=True,
-                                                num_classes=num_classes,
-                                                verbose=verbose,
-                                            )
-
-                                            training.train(
-                                                model=model,
-                                                training_data=train_dl,
-                                                validation_data=val_dl,
-                                                num_epochs=num_epochs,
-                                                learning_rate=learning_rate,
-                                                loss_function_name=partial_content['loss_function_name'],
-                                                optimizer_name=optimizer_name,
-                                                device=device,
-                                                verbose=verbose,
-                                                save_model=False,
-                                                custom_transforms=custom_transforms,
-                                                extra_info_to_save=None,
-                                            )
-
-                                            test_loss, metric_evaluations = evaluation.eval(
-                                                model=model,
-                                                test_data=test_dl,
-                                                loss_function_name=partial_content['loss_function_name'],
-                                                device=device,
-                                                display_confusion_matrix=False,
-                                                metrics=partial_content['metrics'],
-                                                save_results=False,
-                                                verbose=verbose,
-                                            )
-                                            average_loss_test += test_loss
-                                            for metric_name, metric_evaluation in metric_evaluations.items():
-                                                average_metrics_test[metric_name] += metric_evaluation
-
-                                        average_loss_test = average_loss_test / num_tests_for_configuration
-                                        for metric_name in partial_content['metrics']:
-                                            average_metrics_test[metric_name] = average_metrics_test[metric_name] / \
-                                                                                num_tests_for_configuration
-
-                                        print(f'\t\t\t\t\t\t\t\taverage_loss_test: {average_loss_test}')
-                                        end_time = datetime.datetime.now()
-                                        time_delta = utils.timedelta_format(start_time, end_time)
-                                        print(f'\t\t\t\t\t\t\t\t{num_tests_for_configuration} identical models trained'
-                                              f' and tested in: {time_delta}')
-                                        results.append(
-                                            {
-                                                'test_loss': average_loss_test,
-                                                'test_metrics': average_metrics_test,
-                                                'learning_rate': learning_rate,
-                                                'balance_data': balance_data,
-                                                'batch_size': batch_size,
-                                                'data_augmentation_proportion': data_augmentation_proportion,
-                                                'optimizer_name': optimizer_name,
-                                                'num_epochs': num_epochs,
-                                                'model': (model_architecture, model_version, weights_name),
-                                                'freeze_layers': freeze_layers,
-                                                'time_used': str(time_delta),
-                                                'configuration_counter': configuration_counter,
-                                            },
-                                        )
+                                    if configuration_counter <= last_configuration_counter:
                                         configuration_counter += 1
+                                        continue
+
+                                    if freeze_layers and weights_name is None:
+                                        print('\t\t\t\t\t\t\tSkipping this configuration because incompatible'
+                                              ' parameter values (freeze_layers=True and weights_name=None)')
+                                        configuration_counter += 1
+                                        continue
+
+                                    start_time = datetime.datetime.now()
+                                    average_loss_test = 0
+                                    average_metrics_test = {metric_name: 0
+                                                            for metric_name in partial_content['metrics']}
+                                    pretrained_model_parameters = {
+                                        'model_architecture': model_architecture,
+                                        'model_version': model_version,
+                                        'weights_name': weights_name,
+                                        'freeze_layers': freeze_layers,
+                                    }
+                                    for i in range(num_tests_for_configuration):
+                                        model = model_utils.get_torchvision_model(
+                                            pretrained_model_parameters=pretrained_model_parameters,
+                                            device=device,
+                                            training=True,
+                                            num_classes=num_classes,
+                                            verbose=verbose,
+                                        )
+
+                                        training.train(
+                                            model=model,
+                                            training_data=train_dl,
+                                            validation_data=val_dl,
+                                            num_epochs=num_epochs,
+                                            loss_function_name=partial_content['loss_function_name'],
+                                            optimizer_parameters=optimizer_parameters,
+                                            device=device,
+                                            verbose=verbose,
+                                            save_model=False,
+                                            custom_transforms=custom_transforms,
+                                            extra_info_to_save=None,
+                                        )
+
+                                        test_loss, metric_evaluations = evaluation.eval(
+                                            model=model,
+                                            test_data=test_dl,
+                                            loss_function_name=partial_content['loss_function_name'],
+                                            device=device,
+                                            display_confusion_matrix=False,
+                                            metrics=partial_content['metrics'],
+                                            save_results=False,
+                                            verbose=verbose,
+                                        )
+                                        average_loss_test += test_loss
+                                        for metric_name, metric_evaluation in metric_evaluations.items():
+                                            average_metrics_test[metric_name] += metric_evaluation
+
+                                    average_loss_test = average_loss_test / num_tests_for_configuration
+                                    for metric_name in partial_content['metrics']:
+                                        average_metrics_test[metric_name] = average_metrics_test[metric_name] / \
+                                                                            num_tests_for_configuration
+
+                                    print(f'\t\t\t\t\t\t\taverage_loss_test: {average_loss_test}')
+                                    end_time = datetime.datetime.now()
+                                    time_delta = utils.timedelta_format(start_time, end_time)
+                                    print(f'\t\t\t\t\t\t\t{num_tests_for_configuration} identical models trained'
+                                          f' and tested in: {time_delta}')
+                                    results.append(
+                                        {
+                                            'test_loss': average_loss_test,
+                                            'test_metrics': average_metrics_test,
+                                            'balance_data': balance_data,
+                                            'batch_size': batch_size,
+                                            'data_augmentation_proportion': data_augmentation_proportion,
+                                            'optimizer_parameters': optimizer_parameters,
+                                            'num_epochs': num_epochs,
+                                            'model': (model_architecture, model_version, weights_name),
+                                            'freeze_layers': freeze_layers,
+                                            'time_used': str(time_delta),
+                                            'configuration_counter': configuration_counter,
+                                        },
+                                    )
+                                    configuration_counter += 1
 
     except Exception as e:
         print(e)
