@@ -16,11 +16,11 @@ def analyse_orthomosaic_(**kwargs):
     start_time = global_start_time
     # compute species probability distribution for each pixel in the image_processing image
 
-    # in pixels
-    # set patch_size to None to use the crop_size from the model. Only works for torchvision pretrained models
     # TODO: use probabilities instead of the top class
-    patch_size = 95
-    stride = 50
+    # set patch_size to None to use the crop_size from the model. Only works for torchvision pretrained models
+    # in pixels
+    patch_size = 103
+    stride = patch_size // 3
     # confidence prediction probability above which the prediction is considered valid
     confidence_threshold = 0.5
     img_name_no_extension = kwargs['img_name'].split('.')[0]
@@ -56,9 +56,9 @@ def analyse_orthomosaic_(**kwargs):
     start_time = end_time
     orthomosaic_path = global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_name']
     orthomosaic = tifi.imread(orthomosaic_path)
-    # TODO: remove this line, only for speeding up testing
-    orthomosaic = orthomosaic[10000 : 11000, 10000 : 11000, :]
-    # orthomosaic = orthomosaic[10000 : 15000, 15000 : 25000, :]
+    # default orthomosaic dimensions: 43597 x 26482 pixels
+    # orthomosaic = orthomosaic[10000 : 11000, 10000 : 11000, :]
+    orthomosaic = orthomosaic[ : 20000, : 15000, :]
     print(f'orthomosaic.shape: {orthomosaic.shape}')
     # print(f'orthomosaic type: {type(orthomosaic)}')
     # print(f'orthomosaic[0, 0, 0] type: {type(orthomosaic[0, 0, 0])}')
