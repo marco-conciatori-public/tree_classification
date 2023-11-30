@@ -1,10 +1,5 @@
 verbose: 2
-input_data_folder: step_1/
-#input_data_folder: step_1_no_site_2/
-#input_data_folder: step_1_only_site_2/
-#input_data_folder: small_set/
-#input_data_folder: step_1_plus_fir_s2/
-#input_data_folder: step_1_unique_no_fir_s2/
+input_data_folder: paper_nhung/
 # TODO: not fully implemented yet only some of the random operations use this seed
 random_seed: 42  # set to null for different results each time
 num_models_to_train: 5
