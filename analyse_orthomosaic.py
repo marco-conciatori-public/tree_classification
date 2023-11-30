@@ -18,12 +18,7 @@ def analyse_orthomosaic_(**kwargs):
 
     # in pixels
     # set patch_size to None to use the crop_size from the model. Only works for torchvision pretrained models
-    # TODO: chiedere a quanti pixel corrisponde una patch reale di 2m x 2m
     # TODO: use probabilities instead of the top class
-    # TODO: try with smaller stride
-    # TODO: try with smaller patch_size, the dimension of the patch used for training
-    # TODO: try with moving window and record only when certainty of prediction is above a certain
-    #  threshold (very high, es. 96%)
     patch_size = 95
     stride = 50
     # confidence prediction probability above which the prediction is considered valid
