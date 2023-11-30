@@ -1,4 +1,5 @@
 import torch
+import datetime
 import warnings
 import numpy as np
 import tifffile as tifi
@@ -11,6 +12,8 @@ from image_processing import orthomosaic_utils
 
 
 def analyse_orthomosaic_(**kwargs):
+    global_start_time = datetime.datetime.now()
+    start_time = global_start_time
     # compute species probability distribution for each pixel in the image_processing image
 
     # in pixels
@@ -51,8 +54,11 @@ def analyse_orthomosaic_(**kwargs):
         assert patch_size is not None, 'patch_size must be specified if no custom_transforms are used'
         preprocess = None
     print(f'patch_size: {patch_size}')
+    end_time = datetime.datetime.now()
+    print(f'load model time: {utils.timedelta_format(start_time, end_time)}')
 
     # load orthomosaic image
+    start_time = end_time
     orthomosaic_path = global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_name']
     orthomosaic = tifi.imread(orthomosaic_path)
     # TODO: remove this line, only for speeding up testing
@@ -89,7 +95,11 @@ def analyse_orthomosaic_(**kwargs):
     # # to device
     # orthomosaic = orthomosaic.to(device)
     # print(f'to device {device}, orthomosaic type: {type(orthomosaic)}')
+    end_time = datetime.datetime.now()
+    print(f'load orthomosaic time: {utils.timedelta_format(start_time, end_time)}')
 
+    # loop through the orthomosaic image_processing image
+    start_time = end_time
     softmax = torch.nn.Softmax(dim=0)
     # to limit the amount of ram used, one patch at a time is extracted from the orthomosaic image and fed to the model
     for x in range(0, max_x, stride):
@@ -136,7 +146,11 @@ def analyse_orthomosaic_(**kwargs):
                 -1,
             ] += 1
 
-    print('-------------------- end loop --------------------')
+    end_time = datetime.datetime.now()
+    print(f'loop time: {utils.timedelta_format(start_time, end_time)}')
+
+    # create and save one image for each species
+    start_time = end_time
     print(f'species_distribution.shape: {species_distribution.shape}')
     effective_max_x = x + patch_size
     effective_max_y = y + patch_size
@@ -171,6 +185,9 @@ def analyse_orthomosaic_(**kwargs):
         effective_max_y=effective_max_y,
         orthomosaic=orthomosaic,
     )
+    end_time = datetime.datetime.now()
+    print(f'species image creation and saving time: {utils.timedelta_format(start_time, end_time)}')
+    print(f'TOTAL TIME: {utils.timedelta_format(global_start_time, end_time)}')
 
 
 if __name__ == '__main__':
