@@ -15,21 +15,25 @@ for file_path in pure_path.iterdir():
     if file_path.is_file():
         # print(f'file_path: {file_path}')
         file_name = file_path.name
-        # print(f'file_name: {file_name}')
-        new_file_name = file_name.lower()
-        # print(f'new_file_name: {new_file_name}')
-        if new_file_name.startswith('nana_'):
-            new_file_name = new_file_name.replace('nana_', 'nanakamado_')
-            # print(f'new_file_name: {new_file_name}')
-        new_file_path = f'{file_path.parent}\\{new_file_name}'
-        # print(f'new_file_path: {new_file_path}')
-        file_path.rename(new_file_path)
-        file_name = new_file_name
-        # print(f'actual file_path: {file_path}')
+        # # print(f'file_name: {file_name}')
+        # new_file_name = file_name.lower()
+        # # print(f'new_file_name: {new_file_name}')
+        # if new_file_name.startswith('nana_'):
+        #     new_file_name = new_file_name.replace('nana_', 'nanakamado_')
+        #     # print(f'new_file_name: {new_file_name}')
+        # new_file_path = f'{file_path.parent}\\{new_file_name}'
+        # # print(f'new_file_path: {new_file_path}')
+        # file_path.rename(new_file_path)
+        # file_name = new_file_name
+        # # print(f'actual file_path: {file_path}')
 
-        species_name = file_name.split('_')[0]
-        if species_name not in species_counter:
-            species_counter[species_name] = 0
-        species_counter[species_name] += 1
+        species_name, site_name, _ = file_name.split('_')
+        # print(f'species_name: {species_name}')
+        # print(f'site_name: {site_name}')
+        if site_name not in species_counter:
+            species_counter[site_name] = {}
+        if species_name not in species_counter[site_name]:
+            species_counter[site_name][species_name] = 0
+        species_counter[site_name][species_name] += 1
 
 print(f'species_counter: {species_counter}')
