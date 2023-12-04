@@ -1,3 +1,4 @@
+import json
 import torch
 import numpy as np
 import tifffile as tifi
@@ -84,6 +85,7 @@ def save_output(orthomosaic: torch.Tensor,
                 num_classes_plus_unknown: int,
                 unknown_class_id: int,
                 save_path: str,
+                info: dict,
                 ):
     save_class_layers(
         num_classes_plus_unknown=num_classes_plus_unknown,
@@ -102,3 +104,5 @@ def save_output(orthomosaic: torch.Tensor,
         num_classes_plus_unknown=num_classes_plus_unknown,
         unknown_class_id=unknown_class_id,
     )
+    with open(f'{save_path}{global_constants.INFO_FILE_NAME}', 'w') as file:
+        json.dump(info, file, indent=4)

@@ -176,6 +176,19 @@ def analyse_orthomosaic_(**kwargs):
     )
     save_path = f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}' \
                 f'{img_name_no_extension}_{folder_id}/'
+    info = {
+        'model_path': str(model_path),
+        'model_id': kwargs['model_id'],
+        'model_meta_data': meta_data,
+        'orthomosaic_path': orthomosaic_path,
+        'confidence_threshold': confidence_threshold,
+        'patch_size': patch_size,
+        'stride': stride,
+        'effective_max_x': effective_max_x,
+        'effective_max_y': effective_max_y,
+        'num_classes_plus_unknown': num_classes_plus_unknown,
+        'unknown_class_id': unknown_class_id,
+    }
     orthomosaic_utils.save_output(
         num_classes_plus_unknown=num_classes_plus_unknown,
         unknown_class_id=unknown_class_id,
@@ -184,6 +197,7 @@ def analyse_orthomosaic_(**kwargs):
         effective_max_x=effective_max_x,
         effective_max_y=effective_max_y,
         orthomosaic=orthomosaic,
+        info=info,
     )
     end_time = datetime.datetime.now()
     print(f'species image creation and saving time: {utils.timedelta_format(start_time, end_time)}')
