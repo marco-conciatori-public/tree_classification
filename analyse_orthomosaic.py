@@ -57,7 +57,7 @@ def analyse_orthomosaic_(**kwargs):
     orthomosaic_path = global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_name']
     orthomosaic = tifi.imread(orthomosaic_path)
     # default orthomosaic dimensions: 43597 x 26482 pixels
-    # orthomosaic = orthomosaic[10000 : 11000, 10000 : 11000, :]
+    # orthomosaic = orthomosaic[10000 : 10500, 10000 : 10500, :]
     orthomosaic = orthomosaic[ : 20000, : 15000, :]
     print(f'orthomosaic.shape: {orthomosaic.shape}')
     # print(f'orthomosaic type: {type(orthomosaic)}')
