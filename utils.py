@@ -14,11 +14,13 @@ def get_available_id(partial_name: str, folder_path: str) -> int:
         for path in matching_paths:
             # also remove the separator character between the model name and model id
             path_name_removed = path.name[len(partial_name) + 1:]
-            last_id = ''
             counter = 0
-            while path_name_removed[counter].isdigit():
-                counter += 1
-            last_id += path_name_removed[:counter]
+            for character in path_name_removed:
+                if character.isdigit():
+                    counter += 1
+                else:
+                    break
+            last_id = path_name_removed[:counter]
             last_id = int(last_id)
             current_ids.add(last_id)
 
