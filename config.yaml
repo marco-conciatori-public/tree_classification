@@ -1,5 +1,5 @@
 verbose: 2
-input_data_folder: paper_nhung/
+input_data_folder: step_1_paper_nhung/
 # TODO: not fully implemented yet only some of the random operations use this seed
 random_seed: 42  # set to null for different results each time
 num_models_to_train: 5
