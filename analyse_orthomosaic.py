@@ -170,7 +170,12 @@ def analyse_orthomosaic_(**kwargs):
     assert species_distribution.max() <= 1, f'species_distribution.max() > 1. (max = {species_distribution.max()})'
     assert species_distribution.min() >= 0, f'species_distribution.min() < 0. (min = {species_distribution.min()})'
 
-    save_path = f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}{img_name_no_extension}/'
+    folder_id = utils.get_available_id(
+        partial_name=img_name_no_extension,
+        folder_path=f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}',
+    )
+    save_path = f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}' \
+                f'{img_name_no_extension}_{folder_id}/'
     orthomosaic_utils.save_output(
         num_classes_plus_unknown=num_classes_plus_unknown,
         unknown_class_id=unknown_class_id,
