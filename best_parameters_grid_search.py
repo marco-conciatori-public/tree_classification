@@ -69,7 +69,7 @@ def best_parameters_grid_search_(**kwargs):
                     for data_augmentation_proportion in search_space['data_augmentation_proportion_list']:
                         print(f'\t\t\tdata_augmentation_proportion: {data_augmentation_proportion}')
                         start_time = datetime.datetime.now()
-                        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size = get_ready_data.get_data(
+                        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_list = get_ready_data.get_data(
                             data_path=parameters['data_path'],
                             batch_size=batch_size,
                             shuffle=parameters['shuffle'],

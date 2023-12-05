@@ -47,6 +47,9 @@ def get_data(data_path: str,
             verbose=verbose,
         )
 
+    class_list = set(tag_list)
+    class_list = list(class_list)
+
     img_original_pixel_size = resize.get_mean_pixel_size(img_list=img_list, verbose=verbose)
 
     # split dataset
@@ -169,4 +172,4 @@ def get_data(data_path: str,
     if verbose >= 1:
         print('Step 2 data generated and saved')
 
-    return train_dl, val_dl, test_dl, img_shape, img_original_pixel_size
+    return train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_list

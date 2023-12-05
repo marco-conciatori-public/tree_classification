@@ -31,7 +31,7 @@ def load_and_test_model_(**kwargs):
         verbose=parameters['verbose'],
     )
 
-    _, _, test_dl, _, _ = get_ready_data.get_data(
+    _, _, test_dl, _, _, class_list = get_ready_data.get_data(
         data_path=parameters['data_path'],
         shuffle=parameters['shuffle'],
         balance_data=False,

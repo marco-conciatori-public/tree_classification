@@ -10,7 +10,7 @@ def train_custom_model_(**kwargs):
     for model_num in range(parameters['num_models_to_train']):
         print(f'Model {model_num + 1} of {parameters["num_models_to_train"]}')
 
-        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size = get_ready_data.get_data(
+        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_list = get_ready_data.get_data(
             data_path=parameters['data_path'],
             batch_size=parameters['batch_size'],
             shuffle=parameters['shuffle'],

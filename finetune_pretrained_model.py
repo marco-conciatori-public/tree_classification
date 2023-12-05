@@ -25,7 +25,7 @@ def finetune_pretrained_model_(**kwargs):
             verbose=parameters['verbose'],
         )
 
-        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size = get_ready_data.get_data(
+        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_list = get_ready_data.get_data(
             data_path=parameters['data_path'],
             batch_size=parameters['batch_size'],
             shuffle=parameters['shuffle'],
