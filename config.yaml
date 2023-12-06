@@ -1,5 +1,6 @@
 verbose: 2
 input_data_folder: step_1_paper_nhung/
+#input_data_folder: step_1_unique_5_species/
 # TODO: not fully implemented yet only some of the random operations use this seed
 random_seed: 42  # set to null for different results each time
 num_models_to_train: 5
@@ -104,11 +105,8 @@ metrics:
 #        as_percentage: False
 
 # MODEL USAGE PARAMETERS
-# use only those images, if null, use all images in folder
-#img_name_list = [buna_s1_0.tif, buna_s1_1.tif]
-img_name_list: null
 jump: 1
-use_targets: False
+use_targets: True
 
 grid_search_parameters:
     # number of tests for each configuration, to have a more accurate estimate of the performance

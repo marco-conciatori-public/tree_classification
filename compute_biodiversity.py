@@ -32,7 +32,7 @@ def load_and_use_model_(**kwargs):
             verbose=parameters['verbose'],
         )
 
-        _, _, test_dl, _, _, class_list = get_ready_data.get_data(
+        _, _, test_dl, _, _, _ = get_ready_data.get_data(
             data_path=parameters['data_path'],
             shuffle=True,
             balance_data=False,
@@ -46,7 +46,7 @@ def load_and_use_model_(**kwargs):
             verbose=parameters['verbose'],
         )
 
-        test_loss, metric_evaluations = evaluation.eval(
+        _, _ = evaluation.eval(
             model=loaded_model,
             test_data=test_dl,
             loss_function_name=parameters['loss_function_name'],

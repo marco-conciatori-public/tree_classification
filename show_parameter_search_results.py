@@ -8,7 +8,7 @@ def show_parameter_search_results_(**kwargs):
     # import parameters
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
 
-    bar_width = 0.7
+    # bar_width = 0.7
     top_n = parameters['best_n_configurations']
     excluded_key_list = []
     file_number = int(input('Insert file number: '))
