@@ -22,7 +22,7 @@ def analyse_orthomosaic_(**kwargs):
     patch_size = 103
     stride = patch_size // 3
     # confidence prediction probability above which the prediction is considered valid
-    confidence_threshold = 0.5
+    confidence_threshold = 0.4
     img_name_no_extension = kwargs['img_name'].split('.')[0]
     print(f'Orthomosaic used: {img_name_no_extension}')
 
@@ -58,7 +58,7 @@ def analyse_orthomosaic_(**kwargs):
     orthomosaic = tifi.imread(orthomosaic_path)
     # default orthomosaic dimensions: 43597 x 26482 pixels
     # orthomosaic = orthomosaic[10000 : 10500, 10000 : 10500, :]
-    orthomosaic = orthomosaic[ : 20000, : 15000, :]
+    # orthomosaic = orthomosaic[ : 20000, : 15000, :]
     print(f'orthomosaic.shape: {orthomosaic.shape}')
     # print(f'orthomosaic type: {type(orthomosaic)}')
     # print(f'orthomosaic[0, 0, 0] type: {type(orthomosaic[0, 0, 0])}')

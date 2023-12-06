@@ -96,9 +96,9 @@ metrics:
         average: weighted
 #        average: none
         as_percentage: True
-    BiodiversityCollectiveMetric:
-        biodiversity_metric_names: [gini_simpson_index, shannon_wiener_index, species_richness]
-        as_percentage: False
+#    BiodiversityCollectiveMetric:
+#        biodiversity_metric_names: [gini_simpson_index, shannon_wiener_index, species_richness]
+#        as_percentage: False
 
 # MODEL USAGE PARAMETERS
 # use only those images, if null, use all images in folder
