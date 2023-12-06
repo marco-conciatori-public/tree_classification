@@ -41,6 +41,7 @@ def load_and_use_model_(**kwargs):
             # standard_img_dim=config.IMG_DIM,
             no_resizing=True,
             custom_transforms=custom_transforms,
+            use_only_classes=parameters['use_only_classes'],
             augmentation_proportion=1,
             random_seed=parameters['random_seed'],
             verbose=parameters['verbose'],
@@ -51,6 +52,7 @@ def load_and_use_model_(**kwargs):
             test_data=test_dl,
             loss_function_name=parameters['loss_function_name'],
             device=parameters['device'],
+            class_information=meta_data['class_information'],
             display_confusion_matrix=parameters['display_confusion_matrix'],
             metrics=parameters['metrics'],
             save_results=parameters['save_model'],
@@ -59,7 +61,7 @@ def load_and_use_model_(**kwargs):
         )
 
     else:
-        _, tag_list, _ = data_loading.load_data(
+        _, tag_list, class_information = data_loading.load_data(
             data_path=parameters['data_path'],
             use_targets=use_targets,
             use_only_classes=parameters['use_only_classes'],
@@ -67,8 +69,14 @@ def load_and_use_model_(**kwargs):
         )
         print(f'tag_list length: {len(tag_list)}')
 
-        gs_index = gini_simpson_index.get_bio_diversity_index(tag_list=tag_list)
-        sw_index = shannon_wiener_index.get_bio_diversity_index(tag_list=tag_list)
+        gs_index = gini_simpson_index.get_bio_diversity_index(
+            tag_list=tag_list,
+            class_information=class_information,
+        )
+        sw_index = shannon_wiener_index.get_bio_diversity_index(
+            tag_list=tag_list,
+            class_information=class_information,
+        )
         sr_index = species_richness.get_bio_diversity_index(tag_list=tag_list)
         print(f'Gini-Simpson index: {gs_index}')
         print(f'Shannon-Wiener index: {sw_index}')

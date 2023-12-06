@@ -30,7 +30,7 @@ def get_data(data_path: str,
     if verbose >= 1:
         print('Loading data...')
 
-    img_list, tag_list, class_list = data_loading.load_data(
+    img_list, tag_list, class_information = data_loading.load_data(
         data_path=data_path,
         use_only_classes=use_only_classes,
         verbose=verbose,
@@ -44,16 +44,6 @@ def get_data(data_path: str,
         )
 
     img_original_pixel_size = resize.get_mean_pixel_size(img_list=img_list, verbose=verbose)
-
-    # select relevant class information
-    class_index = 0
-    class_information = {}
-    for class_name in class_list:
-        for tree_species in global_constants.CLASS_INFORMATION.values():
-            if tree_species[global_constants.SPECIES_LANGUAGE] == class_name:
-                class_information[class_index] = tree_species
-                class_index += 1
-                break
 
     # split dataset
     total_length = len(img_list)
@@ -105,6 +95,7 @@ def get_data(data_path: str,
             tag_list=train_tags,
             balance_data=balance_data,
             augmentation_proportion=augmentation_proportion,
+            class_information=class_information,
             verbose=verbose,
         )
     

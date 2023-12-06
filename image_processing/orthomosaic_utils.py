@@ -25,6 +25,7 @@ def save_class_layers(num_classes_plus_unknown: int,
                       unknown_class_id: int,
                       species_distribution: np.ndarray,
                       save_path: str,
+                      class_information: dict,
                       ):
     # create one image for each class, where the alpha channel is the probability of that pixel being that class
     Path(save_path).mkdir(parents=True, exist_ok=True)
@@ -34,8 +35,8 @@ def save_class_layers(num_classes_plus_unknown: int,
         colors = (0, 0, 0)
         class_name = 'unknown'
         if class_index != unknown_class_id:
-            colors = global_constants.CLASS_INFORMATION[class_index]['display_color_rgb']
-            class_name = global_constants.CLASS_INFORMATION[class_index][global_constants.SPECIES_LANGUAGE]
+            colors = class_information[class_index]['display_color_rgb']
+            class_name = class_information[class_index][global_constants.SPECIES_LANGUAGE]
         temp_img[:, :, 0] = colors[0]
         temp_img[:, :, 1] = colors[1]
         temp_img[:, :, 2] = colors[2]
@@ -56,15 +57,20 @@ def save_effective_orthomosaic(orthomosaic: torch.Tensor, effective_max_x: int, 
     )
 
 
-def save_legend(save_path: str, num_classes_plus_unknown: int, unknown_class_id: int, expand=(0, 0, 0, 0)):
+def save_legend(save_path: str,
+                num_classes_plus_unknown: int,
+                unknown_class_id: int,
+                class_information: dict,
+                expand=(0, 0, 0, 0),
+                ):
     # create a legend with the colors of the classes
     patches = []
-    for c in range(num_classes_plus_unknown):
+    for class_id in range(num_classes_plus_unknown):
         color = [0, 0, 0]
         name = 'unknown'
-        if c != unknown_class_id:
-            name = global_constants.CLASS_INFORMATION[c][global_constants.SPECIES_LANGUAGE]
-            color = list(global_constants.CLASS_INFORMATION[c]['display_color_rgb'])
+        if class_id != unknown_class_id:
+            name = class_information[class_id][global_constants.SPECIES_LANGUAGE]
+            color = list(class_information[class_id]['display_color_rgb'])
             for rgb_index in range(3):
                 color[rgb_index] = color[rgb_index] / 255
         patches.append(mpatches.Patch(color=color, label=name))
@@ -92,6 +98,7 @@ def save_output(orthomosaic: torch.Tensor,
         unknown_class_id=unknown_class_id,
         species_distribution=species_distribution,
         save_path=save_path,
+        class_information=info['model_meta_data']['class_information'],
     )
     save_effective_orthomosaic(
         orthomosaic=orthomosaic,
@@ -103,6 +110,7 @@ def save_output(orthomosaic: torch.Tensor,
         save_path=save_path,
         num_classes_plus_unknown=num_classes_plus_unknown,
         unknown_class_id=unknown_class_id,
+        class_information=info['model_meta_data']['class_information'],
     )
     with open(f'{save_path}{global_constants.INFO_FILE_NAME}.json', 'w') as file:
         json.dump(info, file, indent=4)

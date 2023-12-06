@@ -108,6 +108,7 @@ def load_model(model_path: str,
 
 def print_formatted_results(loss: float,
                             metrics: dict,
+                            class_information: dict,
                             title: str = 'RESULTS',
                             ) -> None:
     print(title)
@@ -120,7 +121,7 @@ def print_formatted_results(loss: float,
             print(f'- {metric_name}:')
             for class_index in range(len(result)):
                 formatted_result = format_value(value=result[class_index], as_percentage=as_percentage)
-                print(f'  - {global_constants.CLASS_INFORMATION[class_index][global_constants.SPECIES_LANGUAGE]}:'
+                print(f'  - {class_information[class_index][global_constants.SPECIES_LANGUAGE]}:'
                       f' {formatted_result}')
         else:
             formatted_result = format_value(value=result, as_percentage=as_percentage)
@@ -250,9 +251,8 @@ def save_test_results(cm_true_values: list,
         print(f'Meta data updated successfully')
 
 
-def get_metrics(metrics: dict):
+def get_metrics(metrics: dict, num_classes: int, class_information: dict = None):
     metric_function_dict = {}
-    num_classes = len(global_constants.CLASS_INFORMATION)
     if metrics is None:
         metrics = {}
     for metric_name, metric_args in metrics.items():
@@ -261,6 +261,7 @@ def get_metrics(metrics: dict):
         except AttributeError:
             try:
                 metric_class = getattr(biodiversity_collective_metric, metric_name)
+                metric_args['class_information'] = class_information
             except AttributeError:
                 raise AttributeError(f'metric {metric_name} not found in torchmetrics or biodiversity_metrics')
 

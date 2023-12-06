@@ -24,7 +24,12 @@ def show_confusion_matrix_():
     print(f'len tag_list: {len(tag_list)}')
     print(f'len prediction_list: {len(prediction_list)}')
     # Plot the confusion matrix
-    visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list, save_img=False)
+    visualization_utils.display_cm(
+        true_values=tag_list,
+        predictions=prediction_list,
+        class_information=meta_data['class_information'],
+        save_img=False,
+    )
 
 
 if __name__ == '__main__':

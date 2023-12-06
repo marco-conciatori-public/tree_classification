@@ -39,6 +39,7 @@ def show_difficult_cases_(**kwargs):
         balance_data=False,
         train_val_test_proportions=parameters['train_val_test_proportions'],
         # standard_img_dim=config.IMG_DIM,
+        use_only_classes=parameters['use_only_classes'],
         custom_transforms=custom_transforms,
         augmentation_proportion=1,
         random_seed=parameters['random_seed'],
@@ -84,7 +85,7 @@ def show_difficult_cases_(**kwargs):
     # load images again because the transformed version is quite different from the original one.
     # The transformation is due to the "custom transforms" of torchvision models.
     # Since shuffling is disabled, the order of the reloaded images is the same
-    img_list, tag_list, class_list = data_loading.load_data(
+    img_list, tag_list, _ = data_loading.load_data(
         data_path=parameters['data_path'],
         use_only_classes=parameters['use_only_classes'],
         verbose=0,

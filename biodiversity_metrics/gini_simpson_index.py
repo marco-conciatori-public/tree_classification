@@ -1,11 +1,14 @@
 from biodiversity_metrics import metric_utils
 
 
-def get_bio_diversity_index(tag_list: list):
+def get_bio_diversity_index(tag_list: list, class_information: dict) -> float:
     # Gini-Simpson index
     # https://en.wikipedia.org/wiki/Diversity_index#Gini%E2%80%93Simpson_index
 
-    proportion_of_trees_by_species = metric_utils.get_proportion_of_trees_by_species(tag_list)
+    proportion_of_trees_by_species = metric_utils.get_proportion_of_trees_by_species(
+        tag_list=tag_list,
+        class_information=class_information,
+    )
 
     gini_simpson_index = 0
     for tree in proportion_of_trees_by_species:

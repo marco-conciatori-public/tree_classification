@@ -1,6 +1,8 @@
 import cv2
 from pathlib import Path
+
 from data_preprocessing import get_class
+import global_constants
 
 
 def get_img_path_list(data_path: str, verbose: int = 0) -> list:
@@ -27,6 +29,8 @@ def load_data(data_path: str,
     pure_path = Path(data_path)
     assert pure_path.exists(), f'Path "{data_path}" does not exist'
     assert pure_path.is_dir(), f'Path "{data_path}" is not a directory'
+    if use_only_classes is not None and len(use_only_classes) > 0:
+        assert use_targets, '"use_targets" must be True if "use_only_classes" is not None'
 
     img_list = []
     tag_list = []
@@ -54,12 +58,27 @@ def load_data(data_path: str,
                     if img_class not in classes_used:
                         classes_used.append(img_class)
 
+    if use_only_classes is not None and len(use_only_classes) > 0:
+        for img_class in use_only_classes:
+            assert img_class in classes_found, f'Class "{img_class}" not found in chosen data "{data_path}"'
+    else:
+        classes_used = classes_found
+    classes_used.sort()
+
     if verbose >= 2:
         print(f'Loaded {len(img_list)} images')
         print(f'classes_found: {classes_found}')
         print(f'classes_used: {classes_used}')
 
-    for img_class in use_only_classes:
-        assert img_class in classes_found, f'Class "{img_class}" not found in chosen data "{data_path}"'
+    # select relevant class information
+    new_class_id = 0
+    class_information = {}
+    for class_id in classes_used:
+        class_information[new_class_id] = global_constants.CLASS_INFORMATION[class_id]
+        new_class_id += 1
 
-    return img_list, tag_list, classes_used
+    # update tag_list
+    for i in range(len(tag_list)):
+        tag_list[i] = classes_used.index(tag_list[i])
+
+    return img_list, tag_list, class_information

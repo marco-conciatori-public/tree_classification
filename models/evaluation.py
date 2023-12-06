@@ -9,6 +9,7 @@ def eval(model: torch.nn.Module,
          test_data,
          loss_function_name: str,
          device: torch.device,
+         class_information: dict,
          metrics: dict = None,
          display_confusion_matrix: bool = False,
          save_results: bool = False,
@@ -21,7 +22,11 @@ def eval(model: torch.nn.Module,
 
     # get loss function from string name
     loss_function = getattr(torch.nn, loss_function_name)()
-    test_metrics = model_utils.get_metrics(metrics)
+    test_metrics = model_utils.get_metrics(
+        metrics=metrics,
+        num_classes=len(class_information),
+        class_information=class_information,
+    )
 
     test_loss = 0.0
     batch_counter = 0
@@ -80,6 +85,7 @@ def eval(model: torch.nn.Module,
             title='TEST RESULTS',
             loss=test_loss,
             metrics=metric_evaluations,
+            class_information=class_information,
         )
 
     if save_results:
@@ -97,6 +103,10 @@ def eval(model: torch.nn.Module,
 
     if display_confusion_matrix:
         # Plot the confusion matrix
-        visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list)
+        visualization_utils.display_cm(
+            true_values=tag_list,
+            predictions=prediction_list,
+            class_information=class_information,
+        )
 
     return test_loss, metric_evaluations

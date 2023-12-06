@@ -72,7 +72,7 @@ def balance_augment_data(img_list: list,
     # balance data (and augment if required)
     if balance_data:
         imgs_by_class = {}
-        for tag in global_constants.CLASS_INFORMATION:
+        for tag in class_information:
             imgs_by_class[tag] = []
         for img_index in range(len(img_list)):
             imgs_by_class[tag_list[img_index]].append(copy.deepcopy(img_list[img_index]))

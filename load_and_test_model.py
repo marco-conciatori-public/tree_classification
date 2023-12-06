@@ -38,6 +38,7 @@ def load_and_test_model_(**kwargs):
         batch_size=1,
         train_val_test_proportions=parameters['train_val_test_proportions'],
         # standard_img_dim=config.IMG_DIM,
+        use_only_classes=parameters['use_only_classes'],
         custom_transforms=custom_transforms,
         augmentation_proportion=1,
         random_seed=parameters['random_seed'],
@@ -49,7 +50,11 @@ def load_and_test_model_(**kwargs):
     # get loss function from string name
     loss_function = getattr(torch.nn, parameters['loss_function_name'])()
 
-    test_metrics = model_utils.get_metrics(parameters['metrics'])
+    test_metrics = model_utils.get_metrics(
+        metrics=parameters['metrics'],
+        num_classes=meta_data['num_classes'],
+        class_information=meta_data['class_information'],
+    )
 
     softmax = torch.nn.Softmax(dim=0)
     prediction_list = []
@@ -99,11 +104,16 @@ def load_and_test_model_(**kwargs):
             title='TEST RESULTS',
             loss=test_loss,
             metrics=metric_evaluations,
+            class_information=meta_data['class_information'],
         )
 
     if parameters['display_confusion_matrix']:
         # Plot the confusion matrix
-        visualization_utils.display_cm(true_values=tag_list, predictions=prediction_list)
+        visualization_utils.display_cm(
+            true_values=tag_list,
+            predictions=prediction_list,
+            class_information=meta_data['class_information'],
+        )
 
 
 if __name__ == '__main__':

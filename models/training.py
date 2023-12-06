@@ -3,7 +3,6 @@ import torch
 import numpy as np
 
 import utils
-import global_constants
 from models import model_utils
 
 
@@ -15,6 +14,7 @@ def train(model: torch.nn.Module,
           device: torch.device,
           num_epochs: int,
           save_model: bool,
+          class_information: dict,
           metrics: dict = None,
           save_path=None,
           custom_transforms=None,
@@ -35,13 +35,18 @@ def train(model: torch.nn.Module,
         lr=optimizer_parameters['learning_rate'],
         weight_decay=optimizer_parameters['weight_decay'],
     )
-    classes = []
-    for tree_info in global_constants.CLASS_INFORMATION.values():
-        classes.append(tree_info[global_constants.SPECIES_LANGUAGE])
 
-    num_classes = len(global_constants.CLASS_INFORMATION)
-    training_metrics = model_utils.get_metrics(metrics)
-    validation_metrics = model_utils.get_metrics(metrics)
+    num_classes = len(class_information)
+    training_metrics = model_utils.get_metrics(
+        metrics=metrics,
+        num_classes=num_classes,
+        class_information=class_information,
+    )
+    validation_metrics = model_utils.get_metrics(
+        metrics=metrics,
+        num_classes=num_classes,
+        class_information=class_information,
+    )
 
     history = {
         'loss': {},
@@ -137,11 +142,13 @@ def train(model: torch.nn.Module,
                     title='TRAINING RESULTS',
                     loss=training_loss,
                     metrics=training_results,
+                    class_information=class_information,
                 )
                 model_utils.print_formatted_results(
                     title='VALIDATION RESULTS',
                     loss=validation_loss,
                     metrics=validation_results,
+                    class_information=class_information,
                 )
 
             history['loss']['train'].append(training_loss)
@@ -166,11 +173,13 @@ def train(model: torch.nn.Module,
                 title='TRAINING RESULTS',
                 loss=history['loss']['train'][-1],
                 metrics=history['metrics']['train'],
+                class_information=class_information,
             )
             model_utils.print_formatted_results(
                 title='VALIDATION RESULTS',
                 loss=history['loss']['validation'][-1],
                 metrics=history['metrics']['validation'],
+                class_information=class_information,
             )
 
     # if training is interrupted, save the best model obtained so far
@@ -187,7 +196,7 @@ def train(model: torch.nn.Module,
             extra_info_to_save['interrupted'] = True
             extra_info_to_save['batch_size'] = batch_size
             extra_info_to_save['num_classes'] = num_classes
-            extra_info_to_save['classes'] = classes
+            extra_info_to_save['class_information'] = class_information
             extra_info_to_save['last_complete_epoch'] = epoch - 1
             extra_info_to_save['history'] = history
 
@@ -209,7 +218,7 @@ def train(model: torch.nn.Module,
         extra_info_to_save['interrupted'] = False
         extra_info_to_save['batch_size'] = batch_size
         extra_info_to_save['num_classes'] = num_classes
-        extra_info_to_save['classes'] = classes
+        extra_info_to_save['class_information'] = class_information
         extra_info_to_save['last_complete_epoch'] = epoch
         extra_info_to_save['history'] = history
 
