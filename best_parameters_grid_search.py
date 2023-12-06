@@ -25,7 +25,6 @@ def best_parameters_grid_search_(**kwargs):
             continue
     if 'BiodiversityCollectiveMetric' in parameters['metrics']:
         del parameters['metrics']['BiodiversityCollectiveMetric']
-    num_classes = len(global_constants.TREE_INFORMATION)
     interrupted = False
     print('Initial date and time:')
     global_start_time = datetime.datetime.now()
@@ -109,7 +108,7 @@ def best_parameters_grid_search_(**kwargs):
                                             pretrained_model_parameters=pretrained_model_parameters,
                                             device=parameters['device'],
                                             training=True,
-                                            num_classes=num_classes,
+                                            num_classes=len(class_list),
                                             verbose=parameters['verbose'],
                                         )
 
@@ -189,7 +188,7 @@ def best_parameters_grid_search_(**kwargs):
         'shuffle': parameters['shuffle'],
         'device': str(parameters['device']),
         'data_path': parameters['data_path'],
-        'num_classes': num_classes,
+        'num_classes': len(class_list),
         'img_original_pixel_size': img_original_pixel_size,
         'img_shape': img_shape,
         'num_tests_for_configuration': num_tests_for_configuration,

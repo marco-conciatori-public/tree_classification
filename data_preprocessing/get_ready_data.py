@@ -4,6 +4,7 @@ import random
 from pathlib import Path
 
 import global_constants
+from biodiversity_metrics import metric_utils
 from image_processing import resize
 from data_preprocessing import data_loading, custom_dataset, balancing_augmentation
 
@@ -47,8 +48,7 @@ def get_data(data_path: str,
             verbose=verbose,
         )
 
-    class_list = set(tag_list)
-    class_list = list(class_list)
+    class_list = metric_utils.get_number_of_species(tag_list=tag_list)
 
     img_original_pixel_size = resize.get_mean_pixel_size(img_list=img_list, verbose=verbose)
 

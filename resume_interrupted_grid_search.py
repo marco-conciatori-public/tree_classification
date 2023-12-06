@@ -113,7 +113,7 @@ def resume_interrupted_grid_search_():
                                             pretrained_model_parameters=pretrained_model_parameters,
                                             device=device,
                                             training=True,
-                                            num_classes=num_classes,
+                                            num_classes=len(class_list),
                                             verbose=verbose,
                                         )
 
