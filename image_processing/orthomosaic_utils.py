@@ -104,5 +104,5 @@ def save_output(orthomosaic: torch.Tensor,
         num_classes_plus_unknown=num_classes_plus_unknown,
         unknown_class_id=unknown_class_id,
     )
-    with open(f'{save_path}{global_constants.INFO_FILE_NAME}', 'w') as file:
+    with open(f'{save_path}{global_constants.INFO_FILE_NAME}.json', 'w') as file:
         json.dump(info, file, indent=4)
