@@ -23,7 +23,7 @@ def eval(model: torch.nn.Module,
     # get loss function from string name
     loss_function = getattr(torch.nn, loss_function_name)()
 
-    num_classes = len(global_constants.TREE_INFORMATION)
+    num_classes = len(global_constants.CLASS_INFORMATION)
     test_metrics = model_utils.get_metrics(metrics)
 
     test_loss = 0.0

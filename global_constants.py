@@ -20,7 +20,7 @@ CONFIG_PARAMETER_PATH = 'config.yaml'
 
 DECIDUOUS = 'deciduous'
 EVERGREEN = 'evergreen'
-TREE_INFORMATION = {
+CLASS_INFORMATION = {
     0: {
         'japanese_romaji': 'buna',
         'english': 'beech',

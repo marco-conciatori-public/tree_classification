@@ -36,10 +36,10 @@ def train(model: torch.nn.Module,
         weight_decay=optimizer_parameters['weight_decay'],
     )
     classes = []
-    for tree_info in global_constants.TREE_INFORMATION.values():
+    for tree_info in global_constants.CLASS_INFORMATION.values():
         classes.append(tree_info[global_constants.SPECIES_LANGUAGE])
 
-    num_classes = len(global_constants.TREE_INFORMATION)
+    num_classes = len(global_constants.CLASS_INFORMATION)
     training_metrics = model_utils.get_metrics(metrics)
     validation_metrics = model_utils.get_metrics(metrics)
 

@@ -53,10 +53,10 @@ def display_cm(true_values, predictions, labels=None, save_img: bool = False):
     # Plot the confusion matrix
     if labels is None:
         labels = []
-        for el in global_constants.TREE_INFORMATION.values():
+        for el in global_constants.CLASS_INFORMATION.values():
             labels.append(el[global_constants.SPECIES_LANGUAGE])
 
-    num_classes = len(global_constants.TREE_INFORMATION)
+    num_classes = len(global_constants.CLASS_INFORMATION)
     true_values = np.array(true_values)
     predictions = np.array(predictions)
     confusion_matrix = np.zeros(shape=(num_classes, num_classes), dtype=np.int64)

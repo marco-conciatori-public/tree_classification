@@ -120,7 +120,7 @@ def print_formatted_results(loss: float,
             print(f'- {metric_name}:')
             for class_index in range(len(result)):
                 formatted_result = format_value(value=result[class_index], as_percentage=as_percentage)
-                print(f'  - {global_constants.TREE_INFORMATION[class_index][global_constants.SPECIES_LANGUAGE]}:'
+                print(f'  - {global_constants.CLASS_INFORMATION[class_index][global_constants.SPECIES_LANGUAGE]}:'
                       f' {formatted_result}')
         else:
             formatted_result = format_value(value=result, as_percentage=as_percentage)
@@ -252,7 +252,7 @@ def save_test_results(cm_true_values: list,
 
 def get_metrics(metrics: dict):
     metric_function_dict = {}
-    num_classes = len(global_constants.TREE_INFORMATION)
+    num_classes = len(global_constants.CLASS_INFORMATION)
     if metrics is None:
         metrics = {}
     for metric_name, metric_args in metrics.items():

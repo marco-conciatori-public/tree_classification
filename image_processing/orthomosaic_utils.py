@@ -34,8 +34,8 @@ def save_class_layers(num_classes_plus_unknown: int,
         colors = (0, 0, 0)
         class_name = 'unknown'
         if class_index != unknown_class_id:
-            colors = global_constants.TREE_INFORMATION[class_index]['display_color_rgb']
-            class_name = global_constants.TREE_INFORMATION[class_index][global_constants.SPECIES_LANGUAGE]
+            colors = global_constants.CLASS_INFORMATION[class_index]['display_color_rgb']
+            class_name = global_constants.CLASS_INFORMATION[class_index][global_constants.SPECIES_LANGUAGE]
         temp_img[:, :, 0] = colors[0]
         temp_img[:, :, 1] = colors[1]
         temp_img[:, :, 2] = colors[2]
@@ -63,8 +63,8 @@ def save_legend(save_path: str, num_classes_plus_unknown: int, unknown_class_id:
         color = [0, 0, 0]
         name = 'unknown'
         if c != unknown_class_id:
-            name = global_constants.TREE_INFORMATION[c][global_constants.SPECIES_LANGUAGE]
-            color = list(global_constants.TREE_INFORMATION[c]['display_color_rgb'])
+            name = global_constants.CLASS_INFORMATION[c][global_constants.SPECIES_LANGUAGE]
+            color = list(global_constants.CLASS_INFORMATION[c]['display_color_rgb'])
             for rgb_index in range(3):
                 color[rgb_index] = color[rgb_index] / 255
         patches.append(mpatches.Patch(color=color, label=name))

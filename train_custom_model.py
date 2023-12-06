@@ -25,7 +25,7 @@ def train_custom_model_(**kwargs):
         model = model_utils.create_model(
             model_class_name='Conv_2d',
             input_shape=img_shape,
-            num_output=len(global_constants.TREE_INFORMATION),
+            num_output=len(global_constants.CLASS_INFORMATION),
             custom_model_parameters=parameters['custom_model_parameters'],
             device=parameters['device'],
             name='test_conv_2d',
