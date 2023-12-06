@@ -251,13 +251,14 @@ def save_test_results(cm_true_values: list,
         print(f'Meta data updated successfully')
 
 
-def get_metrics(metrics: dict, num_classes: int, class_information: dict = None):
+def get_metrics(metrics: dict, class_information: dict):
     metric_function_dict = {}
     if metrics is None:
         metrics = {}
     for metric_name, metric_args in metrics.items():
         try:
             metric_class = getattr(torchmetrics, metric_name)
+            metric_args['num_classes'] = len(class_information)
         except AttributeError:
             try:
                 metric_class = getattr(biodiversity_collective_metric, metric_name)
@@ -265,7 +266,6 @@ def get_metrics(metrics: dict, num_classes: int, class_information: dict = None)
             except AttributeError:
                 raise AttributeError(f'metric {metric_name} not found in torchmetrics or biodiversity_metrics')
 
-        metric_args['num_classes'] = num_classes
         temp_args = copy.deepcopy(metric_args)
         del temp_args['as_percentage']
         metric_function_dict[metric_name] = metric_class(**temp_args)

@@ -52,7 +52,6 @@ def load_and_test_model_(**kwargs):
 
     test_metrics = model_utils.get_metrics(
         metrics=parameters['metrics'],
-        num_classes=meta_data['num_classes'],
         class_information=meta_data['class_information'],
     )
 

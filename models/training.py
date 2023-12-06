@@ -39,12 +39,10 @@ def train(model: torch.nn.Module,
     num_classes = len(class_information)
     training_metrics = model_utils.get_metrics(
         metrics=metrics,
-        num_classes=num_classes,
         class_information=class_information,
     )
     validation_metrics = model_utils.get_metrics(
         metrics=metrics,
-        num_classes=num_classes,
         class_information=class_information,
     )
 

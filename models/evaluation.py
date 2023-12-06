@@ -24,7 +24,6 @@ def eval(model: torch.nn.Module,
     loss_function = getattr(torch.nn, loss_function_name)()
     test_metrics = model_utils.get_metrics(
         metrics=metrics,
-        num_classes=len(class_information),
         class_information=class_information,
     )
 
