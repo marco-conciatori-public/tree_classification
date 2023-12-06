@@ -7,25 +7,14 @@ from models import training, evaluation, model_utils
 def finetune_pretrained_model_(**kwargs):
     # import parameters
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
-    # num_classes = len(global_constants.TREE_INFORMATION)
-    num_classes = 5
     for model_num in range(parameters['num_models_to_train']):
         print(f'Model {model_num + 1} of {parameters["num_models_to_train"]}')
 
-        # load model
-        model = model_utils.get_torchvision_model(
-            pretrained_model_parameters=parameters['pretrained_model_parameters'],
-            device=parameters['device'],
-            training=True,
-            num_classes=num_classes,
-            verbose=parameters['verbose'],
-        )
-        # print(f'model:\n{model}')
+        # get data
         custom_transforms, resize_in_attributes = model_utils.get_custom_transforms(
             weights_name=parameters['pretrained_model_parameters']['weights_name'],
             verbose=parameters['verbose'],
         )
-
         train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_list = get_ready_data.get_data(
             data_path=parameters['data_path'],
             batch_size=parameters['batch_size'],
@@ -38,6 +27,16 @@ def finetune_pretrained_model_(**kwargs):
             random_seed=parameters['random_seed'],
             verbose=parameters['verbose'],
         )
+
+        # load model
+        model = model_utils.get_torchvision_model(
+            pretrained_model_parameters=parameters['pretrained_model_parameters'],
+            device=parameters['device'],
+            training=True,
+            num_classes=len(class_list),
+            verbose=parameters['verbose'],
+        )
+        # print(f'model:\n{model}')
 
         # check image shape
         print(f'img_shape: {img_shape}')
