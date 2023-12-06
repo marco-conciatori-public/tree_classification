@@ -59,10 +59,10 @@ def load_and_use_model_(**kwargs):
         )
 
     else:
-        _, tag_list = data_loading.load_data(
+        _, tag_list, _ = data_loading.load_data(
             data_path=parameters['data_path'],
-            selected_names=parameters['img_name_list'],
             use_targets=use_targets,
+            use_only_classes=parameters['use_only_classes'],
             verbose=parameters['verbose'],
         )
         print(f'tag_list length: {len(tag_list)}')

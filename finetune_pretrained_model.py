@@ -15,7 +15,7 @@ def finetune_pretrained_model_(**kwargs):
             weights_name=parameters['pretrained_model_parameters']['weights_name'],
             verbose=parameters['verbose'],
         )
-        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_list = get_ready_data.get_data(
+        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_information = get_ready_data.get_data(
             data_path=parameters['data_path'],
             batch_size=parameters['batch_size'],
             shuffle=parameters['shuffle'],
@@ -33,7 +33,7 @@ def finetune_pretrained_model_(**kwargs):
             pretrained_model_parameters=parameters['pretrained_model_parameters'],
             device=parameters['device'],
             training=True,
-            num_classes=len(class_list),
+            num_classes=len(class_information),
             verbose=parameters['verbose'],
         )
         # print(f'model:\n{model}')
@@ -56,6 +56,7 @@ def finetune_pretrained_model_(**kwargs):
         parameters_to_save['balance_classes'] = parameters['balance_data']
         parameters_to_save['img_original_pixel_size'] = img_original_pixel_size
         parameters_to_save['img_shape'] = img_shape
+        parameters_to_save['class_information'] = class_information
         training_history = training.train(
             model=model,
             training_data=train_dl,

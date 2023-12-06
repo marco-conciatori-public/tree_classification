@@ -10,7 +10,7 @@ def train_custom_model_(**kwargs):
     for model_num in range(parameters['num_models_to_train']):
         print(f'Model {model_num + 1} of {parameters["num_models_to_train"]}')
 
-        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_list = get_ready_data.get_data(
+        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_information = get_ready_data.get_data(
             data_path=parameters['data_path'],
             batch_size=parameters['batch_size'],
             shuffle=parameters['shuffle'],
@@ -25,7 +25,7 @@ def train_custom_model_(**kwargs):
         model = model_utils.create_model(
             model_class_name='Conv_2d',
             input_shape=img_shape,
-            num_output=len(global_constants.CLASS_INFORMATION),
+            num_output=len(class_information),
             custom_model_parameters=parameters['custom_model_parameters'],
             device=parameters['device'],
             name='test_conv_2d',
@@ -53,6 +53,7 @@ def train_custom_model_(**kwargs):
         parameters_to_save['custom_model_parameters'] = parameters['balance_data']
         parameters_to_save['img_shape'] = img_shape
         parameters_to_save['img_original_pixel_size'] = img_original_pixel_size
+        parameters_to_save['class_information'] = class_information
         training_history = training.train(
             model=model,
             training_data=train_dl,

@@ -32,7 +32,7 @@ def show_difficult_cases_(**kwargs):
         verbose=parameters['verbose'],
     )
 
-    train_dl, val_dl, test_dl, _, _, class_list = get_ready_data.get_data(
+    train_dl, val_dl, test_dl, _, _, class_information = get_ready_data.get_data(
         data_path=parameters['data_path'],
         shuffle=False,
         batch_size=1,
@@ -84,8 +84,9 @@ def show_difficult_cases_(**kwargs):
     # load images again because the transformed version is quite different from the original one.
     # The transformation is due to the "custom transforms" of torchvision models.
     # Since shuffling is disabled, the order of the reloaded images is the same
-    img_list, tag_list = data_loading.load_data(
+    img_list, tag_list, class_list = data_loading.load_data(
         data_path=parameters['data_path'],
+        use_only_classes=parameters['use_only_classes'],
         verbose=0,
     )
     for i in range(parameters['worst_n_predictions']):
@@ -95,11 +96,11 @@ def show_difficult_cases_(**kwargs):
 
         print('-------------------')
         print(f'TRUE LABEL: '
-              f'{utils.get_tree_name(tag_list[img_index]).upper()}')
+              f'{class_information[tag_list[img_index]][global_constants.SPECIES_LANGUAGE].upper()}')
         print('NETWORK EVALUATION:')
         for tree_class in range(len(prediction)):
             if prediction[tree_class] >= parameters['tolerance']:
-                print(f' - {utils.get_tree_name(tree_class)}: '
+                print(f' - {class_information[tree_class][global_constants.SPECIES_LANGUAGE]}: '
                       f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
 
         # show image

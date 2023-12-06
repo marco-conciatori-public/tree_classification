@@ -4,7 +4,6 @@ import random
 from pathlib import Path
 
 import global_constants
-from biodiversity_metrics import metric_utils
 from image_processing import resize
 from data_preprocessing import data_loading, custom_dataset, balancing_augmentation
 
@@ -17,6 +16,7 @@ def get_data(data_path: str,
              no_resizing: bool = False,
              standard_img_dim: int = None,
              custom_transforms: list = None,
+             use_only_classes: list = None,
              augmentation_proportion: int = 1,
              random_seed: int = None,
              verbose: int = 0,
@@ -30,16 +30,11 @@ def get_data(data_path: str,
     if verbose >= 1:
         print('Loading data...')
 
-    if data_path is None:
-        img_list, tag_list = data_loading.load_data(
-            data_path=global_constants.STEP_2_DATA_PATH,
-            verbose=verbose,
-        )
-    else:
-        img_list, tag_list = data_loading.load_data(
-            data_path=data_path,
-            verbose=verbose,
-        )
+    img_list, tag_list, class_list = data_loading.load_data(
+        data_path=data_path,
+        use_only_classes=use_only_classes,
+        verbose=verbose,
+    )
     if not no_resizing:
         # resize images
         img_list = resize.resize_img_list(
@@ -48,9 +43,17 @@ def get_data(data_path: str,
             verbose=verbose,
         )
 
-    class_list = metric_utils.get_number_of_species(tag_list=tag_list)
-
     img_original_pixel_size = resize.get_mean_pixel_size(img_list=img_list, verbose=verbose)
+
+    # select relevant class information
+    class_index = 0
+    class_information = {}
+    for class_name in class_list:
+        for tree_species in global_constants.CLASS_INFORMATION.values():
+            if tree_species[global_constants.SPECIES_LANGUAGE] == class_name:
+                class_information[class_index] = tree_species
+                class_index += 1
+                break
 
     # split dataset
     total_length = len(img_list)
@@ -172,4 +175,4 @@ def get_data(data_path: str,
     if verbose >= 1:
         print('Step 2 data generated and saved')
 
-    return train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_list
+    return train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_information

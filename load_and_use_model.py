@@ -25,11 +25,12 @@ def load_and_use_model_(**kwargs):
         meta_data_path=info_path,
         verbose=parameters['verbose'],
     )
+    class_information = meta_data['class_information']
 
-    img_list, tag_list = data_loading.load_data(
+    img_list, tag_list, class_list = data_loading.load_data(
         data_path=parameters['data_path'],
-        selected_names=parameters['img_name_list'],
         use_targets=parameters['use_targets'],
+        use_only_classes=parameters['use_only_classes'],
         verbose=parameters['verbose'],
     )
     print(f'img_list length: {len(img_list)}')
@@ -61,12 +62,12 @@ def load_and_use_model_(**kwargs):
 
             print('-------------------')
             if use_targets:
-                true_name = utils.get_tree_name(tag_list[img_index])
+                true_name = class_information[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
                 print(f'TRUE LABEL: {true_name.upper()}')
             print('NETWORK EVALUATION:')
             for tree_class in range(len(prediction)):
                 # if prediction[tree_class] >= config.TOLERANCE:
-                text = f' - {utils.get_tree_name(tree_class)}: ' \
+                text = f' - {class_information[tree_class][global_constants.SPECIES_LANGUAGE]}: ' \
                        f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}%'
                 if tree_class == top_class:
                     text = utils.to_bold_string(text)

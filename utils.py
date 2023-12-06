@@ -105,10 +105,6 @@ def to_bold_string(string: str):
     return f'\033[1m{string}\033[0m'
 
 
-def get_tree_name(species_id: int, name_type: str = global_constants.SPECIES_LANGUAGE):
-    return global_constants.CLASS_INFORMATION[species_id][name_type]
-
-
 def get_metric_results(metrics: dict, metrics_args: dict):
     evaluation = {}
     for metric_name in metrics:

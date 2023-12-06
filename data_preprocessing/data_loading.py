@@ -19,19 +19,20 @@ def get_img_path_list(data_path: str, verbose: int = 0) -> list:
     return img_path_list
 
 
-def load_data(data_path: str, selected_names: list = None, use_targets: bool = True, verbose: int = 0) -> (list, list):
+def load_data(data_path: str,
+              use_only_classes: list = None,
+              use_targets: bool = True,
+              verbose: int = 0,
+              ) -> (list, list, list):
     pure_path = Path(data_path)
     assert pure_path.exists(), f'Path "{data_path}" does not exist'
     assert pure_path.is_dir(), f'Path "{data_path}" is not a directory'
 
-    condition = selected_names is not None and len(selected_names) > 0
     img_list = []
     tag_list = []
+    classes_found = []
+    classes_used = []
     for img_path in pure_path.iterdir():
-        if condition:
-            if img_path.name not in selected_names:
-                continue
-
         try:
             img = cv2.imread(str(img_path))
             img_list.append(img)
@@ -42,8 +43,23 @@ def load_data(data_path: str, selected_names: list = None, use_targets: bool = T
             # get class of each image
             img_class = get_class.from_name(img_path.name)
             tag_list.append(img_class)
+            if img_class not in classes_found:
+                classes_found.append(img_class)
+            if use_only_classes is not None and len(use_only_classes) > 0:
+                if img_class not in use_only_classes:
+                    img_list.pop()
+                    tag_list.pop()
+
+                else:
+                    if img_class not in classes_used:
+                        classes_used.append(img_class)
 
     if verbose >= 2:
         print(f'Loaded {len(img_list)} images')
+        print(f'classes_found: {classes_found}')
+        print(f'classes_used: {classes_used}')
 
-    return img_list, tag_list
+    for img_class in use_only_classes:
+        assert img_class in classes_found, f'Class "{img_class}" not found in chosen data "{data_path}"'
+
+    return img_list, tag_list, classes_used

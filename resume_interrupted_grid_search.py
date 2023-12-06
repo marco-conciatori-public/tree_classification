@@ -25,7 +25,6 @@ def resume_interrupted_grid_search_():
     assert partial_content['interrupted'], 'This script is only for resuming interrupted grid search. ' \
                                            'The file provided is not for an interrupted grid search.'
 
-    num_classes = partial_content['num_classes']
     # number of tests for each configuration, to have a more accurate estimate of the performance
     num_tests_for_configuration: int = partial_content['num_tests_for_configuration']
     search_space = partial_content['search_space']
@@ -64,7 +63,7 @@ def resume_interrupted_grid_search_():
                     for data_augmentation_proportion in search_space['data_augmentation_proportion_list']:
                         print(f'\t\t\tdata_augmentation_proportion: {data_augmentation_proportion}')
                         start_time = datetime.datetime.now()
-                        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_list = get_ready_data.get_data(
+                        train_dl, val_dl, test_dl, img_shape, img_original_pixel_size, class_information = get_ready_data.get_data(
                             data_path=data_path,
                             batch_size=batch_size,
                             shuffle=partial_content['shuffle'],
@@ -113,7 +112,7 @@ def resume_interrupted_grid_search_():
                                             pretrained_model_parameters=pretrained_model_parameters,
                                             device=device,
                                             training=True,
-                                            num_classes=len(class_list),
+                                            num_classes=len(class_information),
                                             verbose=verbose,
                                         )
 
