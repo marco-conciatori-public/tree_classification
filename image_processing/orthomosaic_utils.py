@@ -86,30 +86,27 @@ def save_legend(save_path: str,
 
 def save_output(orthomosaic: torch.Tensor,
                 species_distribution: np.ndarray,
-                effective_max_x: int,
-                effective_max_y: int,
-                num_classes_plus_unknown: int,
-                unknown_class_id: int,
                 save_path: str,
                 info: dict,
                 ):
+
     save_class_layers(
-        num_classes_plus_unknown=num_classes_plus_unknown,
-        unknown_class_id=unknown_class_id,
+        num_classes_plus_unknown=info['num_classes_plus_unknown'],
+        unknown_class_id=info['unknown_class_id'],
         species_distribution=species_distribution,
         save_path=save_path,
         class_information=info['model_meta_data']['class_information'],
     )
     save_effective_orthomosaic(
         orthomosaic=orthomosaic,
-        effective_max_x=effective_max_x,
-        effective_max_y=effective_max_y,
+        effective_max_x=info['effective_max_x'],
+        effective_max_y=info['effective_max_y'],
         save_path=save_path,
     )
     save_legend(
         save_path=save_path,
-        num_classes_plus_unknown=num_classes_plus_unknown,
-        unknown_class_id=unknown_class_id,
+        num_classes_plus_unknown=info['num_classes_plus_unknown'],
+        unknown_class_id=info['unknown_class_id'],
         class_information=info['model_meta_data']['class_information'],
     )
     with open(f'{save_path}{global_constants.INFO_FILE_NAME}.json', 'w') as file:

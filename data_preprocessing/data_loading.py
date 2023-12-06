@@ -54,7 +54,7 @@ def load_data(data_path: str,
                     img_list.pop()
                     tag_list.pop()
 
-                else:
+                else:  # img_class in use_only_classes
                     if img_class not in classes_used:
                         classes_used.append(img_class)
 

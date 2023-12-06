@@ -190,12 +190,8 @@ def analyse_orthomosaic_(**kwargs):
         'unknown_class_id': unknown_class_id,
     }
     orthomosaic_utils.save_output(
-        num_classes_plus_unknown=num_classes_plus_unknown,
-        unknown_class_id=unknown_class_id,
         species_distribution=species_distribution,
         save_path=save_path,
-        effective_max_x=effective_max_x,
-        effective_max_y=effective_max_y,
         orthomosaic=orthomosaic,
         info=info,
     )
