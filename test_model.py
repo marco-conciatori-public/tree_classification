@@ -8,7 +8,7 @@ from visualization import visualization_utils
 from data_preprocessing import get_ready_data
 
 
-def load_and_test_model_(**kwargs):
+def test_model_(**kwargs):
     # import parameters
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 2
@@ -118,4 +118,4 @@ def load_and_test_model_(**kwargs):
 if __name__ == '__main__':
     partial_name = str(input('Insert name or part of the name of a model: '))
     model_id = int(input('Insert model id number: '))
-    load_and_test_model_(partial_name=partial_name, model_id=model_id)
+    test_model_(partial_name=partial_name, model_id=model_id)

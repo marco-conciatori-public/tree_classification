@@ -8,7 +8,7 @@ from models import model_utils
 from data_preprocessing import data_loading
 
 
-def load_and_use_model_(**kwargs):
+def use_model_(**kwargs):
     # import parameters
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     use_targets = parameters['use_targets']
@@ -86,4 +86,4 @@ def load_and_use_model_(**kwargs):
 if __name__ == '__main__':
     partial_name = str(input('Insert name or part of the name of a model: '))
     model_id = int(input('Insert model id number: '))
-    load_and_use_model_(partial_name=partial_name, model_id=model_id)
+    use_model_(partial_name=partial_name, model_id=model_id)
