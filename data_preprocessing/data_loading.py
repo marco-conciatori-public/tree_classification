@@ -69,6 +69,10 @@ def load_data(data_path: str,
         print(f'Loaded {len(img_list)} images')
         print(f'classes_found: {classes_found}')
         print(f'classes_used: {classes_used}')
+        print('classes names: ', end='')
+        for class_id in classes_used:
+            print(f'{global_constants.CLASS_INFORMATION[class_id][global_constants.SPECIES_LANGUAGE]}', end=', ')
+        print()
 
     # select relevant class information
     new_class_id = 0
