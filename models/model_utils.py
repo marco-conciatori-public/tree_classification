@@ -100,6 +100,9 @@ def load_model(model_path: str,
     if meta_data_path is not None:
         with open(meta_data_path, 'r') as json_file:
             meta_data = json.load(json_file)
+        # convert dict keys of metadata['class_information'] from str to int,
+        # they were int before being saved as json
+        meta_data['class_information'] = {int(k): v for k, v in meta_data['class_information'].items()}
 
     if verbose >= 1:
         print(f'model name: {model.name}')
