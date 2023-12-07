@@ -32,14 +32,14 @@ def save_class_layers(num_classes_plus_unknown: int,
     for class_index in range(num_classes_plus_unknown):
         temp_img = np.zeros((species_distribution.shape[0], species_distribution.shape[1], 4), dtype=np.uint8)
         temp_img[:, :, 3] = species_distribution[:, :, class_index] * 255
-        colors = (0, 0, 0)
+        color = (0, 0, 0)
         class_name = 'unknown'
         if class_index != unknown_class_id:
-            colors = class_information[class_index]['display_color_rgb']
+            color = class_information[class_index]['display_color_rgb']
             class_name = class_information[class_index][global_constants.SPECIES_LANGUAGE]
-        temp_img[:, :, 0] = colors[0]
-        temp_img[:, :, 1] = colors[1]
-        temp_img[:, :, 2] = colors[2]
+        temp_img[:, :, 0] = color[0]
+        temp_img[:, :, 1] = color[1]
+        temp_img[:, :, 2] = color[2]
 
         tifi.imwrite(f'{save_path}{class_name}.tif', data=temp_img)
 
