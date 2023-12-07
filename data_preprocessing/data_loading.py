@@ -1,8 +1,8 @@
 import cv2
 from pathlib import Path
 
-from data_preprocessing import get_class
 import global_constants
+from data_preprocessing import get_class
 
 
 def get_img_path_list(data_path: str, verbose: int = 0) -> list:
@@ -45,22 +45,22 @@ def load_data(data_path: str,
 
         if use_targets:
             # get class of each image
-            img_class = get_class.from_name(img_path.name)
-            tag_list.append(img_class)
-            if img_class not in classes_found:
-                classes_found.append(img_class)
+            class_id = get_class.from_name(img_path.name)
+            tag_list.append(class_id)
+            if class_id not in classes_found:
+                classes_found.append(class_id)
             if use_only_classes is not None and len(use_only_classes) > 0:
-                if img_class not in use_only_classes:
+                if class_id not in use_only_classes:
                     img_list.pop()
                     tag_list.pop()
 
-                else:  # img_class in use_only_classes
-                    if img_class not in classes_used:
-                        classes_used.append(img_class)
+                else:  # class_id in use_only_classes
+                    if class_id not in classes_used:
+                        classes_used.append(class_id)
 
     if use_only_classes is not None and len(use_only_classes) > 0:
-        for img_class in use_only_classes:
-            assert img_class in classes_found, f'Class "{img_class}" not found in chosen data "{data_path}"'
+        for class_id in use_only_classes:
+            assert class_id in classes_found, f'Class "{global_constants.CLASS_INFORMATION[class_id][global_constants.SPECIES_LANGUAGE]}" not found in chosen data "{data_path}"'
     else:
         classes_used = classes_found
     classes_used.sort()
