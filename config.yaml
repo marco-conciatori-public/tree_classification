@@ -1,6 +1,6 @@
 verbose: 2
 input_data_folder: step_1_paper_nhung/
-#input_data_folder: step_1_unique_5_species/
+#input_data_folder: step_1_test_5_species/
 # TODO: not fully implemented yet only some of the random operations use this seed
 random_seed: 42  # set to null for different results each time
 num_models_to_train: 5
@@ -71,7 +71,7 @@ train_val_test_proportions: [0.8, 0.1, 0.1]
 #train_val_test_proportions: [0.89, 0.1, 0.01]
 tolerance: 0.01
 # number of times the original dataset is duplicated with random variations
-data_augmentation_proportion: 15
+data_augmentation_proportion: 13
 #data_augmentation_proportion: 4
 balance_data: False
 # use only images with these classes. If empty, use all images
