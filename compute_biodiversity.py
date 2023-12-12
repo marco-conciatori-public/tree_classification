@@ -9,6 +9,7 @@ from biodiversity_metrics import gini_simpson_index, species_richness, shannon_w
 def compute_biodiversity_(**kwargs):
     # import parameters
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+    parameters['verbose'] = 2
     # use_targets = parameters['use_targets']
     use_targets = True
     use_network = True
@@ -34,10 +35,10 @@ def compute_biodiversity_(**kwargs):
 
         test_dl, _, _, _ = get_ready_data.get_data(
             data_path=parameters['data_path'],
-            shuffle=True,
+            shuffle=False,
             balance_data=False,
-            batch_size=parameters['batch_size'],
-            train_val_test_proportions=[0.01, 0.01, 0.98],
+            batch_size=1,
+            train_val_test_proportions=parameters['train_val_test_proportions'],
             single_dataloader=True,
             # standard_img_dim=config.IMG_DIM,
             no_resizing=True,
