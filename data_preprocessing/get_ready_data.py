@@ -17,6 +17,7 @@ def get_data(data_path: str,
              standard_img_dim: int = None,
              custom_transforms: list = None,
              use_only_classes: list = None,
+             model_class_information: dict = None,
              augmentation_proportion: int = 1,
              random_seed: int = None,
              verbose: int = 0,
@@ -33,6 +34,7 @@ def get_data(data_path: str,
     img_list, tag_list, class_information = data_loading.load_data(
         data_path=data_path,
         use_only_classes=use_only_classes,
+        model_class_information=model_class_information,
         verbose=verbose,
     )
     if not no_resizing:

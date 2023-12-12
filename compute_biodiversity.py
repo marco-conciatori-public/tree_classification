@@ -43,6 +43,7 @@ def compute_biodiversity_(**kwargs):
             custom_transforms=custom_transforms,
             use_only_classes=parameters['use_only_classes'],
             augmentation_proportion=1,
+            model_class_information=meta_data['class_information'],
             random_seed=parameters['random_seed'],
             verbose=parameters['verbose'],
         )
