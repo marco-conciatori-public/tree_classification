@@ -6,7 +6,7 @@ from data_preprocessing import data_loading, get_ready_data
 from biodiversity_metrics import gini_simpson_index, species_richness, shannon_wiener_index
 
 
-def load_and_use_model_(**kwargs):
+def compute_biodiversity_(**kwargs):
     # import parameters
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     # use_targets = parameters['use_targets']
@@ -84,4 +84,4 @@ def load_and_use_model_(**kwargs):
 
 
 if __name__ == '__main__':
-    load_and_use_model_()
+    compute_biodiversity_()
