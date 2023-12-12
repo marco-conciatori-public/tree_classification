@@ -32,6 +32,7 @@ def compute_biodiversity_(**kwargs):
             meta_data_path=info_path,
             verbose=parameters['verbose'],
         )
+        print(f'meta_data["class_information"]: {meta_data["class_information"]}')
 
         test_dl, _, _, _ = get_ready_data.get_data(
             data_path=parameters['data_path'],

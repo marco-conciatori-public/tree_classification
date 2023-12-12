@@ -186,11 +186,11 @@ def get_data(data_path: str,
     # print(f'img_shape: {img_shape}')
     complete_file_path = f'{augmentation_path}{global_constants.DL_FILE_NAME}{global_constants.PYTORCH_FILE_EXTENSION}'
     augmentation_path = Path(augmentation_path)
-    if not augmentation_path.exists():
-        augmentation_path.mkdir(parents=True)
-    torch.save(obj=(train_dl, val_dl, test_dl), f=complete_file_path)
+    # if not augmentation_path.exists():
+    #     augmentation_path.mkdir(parents=True)
+    # torch.save(obj=(train_dl, val_dl, test_dl), f=complete_file_path)
     if verbose >= 1:
-        print('Step 2 data generated and saved')
+        print('Step 2 data generated')
 
     if single_dataloader:
         return train_dl, img_shape, img_original_pixel_size, class_information
