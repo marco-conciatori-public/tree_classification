@@ -32,12 +32,13 @@ def compute_biodiversity_(**kwargs):
             verbose=parameters['verbose'],
         )
 
-        _, _, test_dl, _, _, _ = get_ready_data.get_data(
+        test_dl, _, _, _ = get_ready_data.get_data(
             data_path=parameters['data_path'],
             shuffle=True,
             balance_data=False,
             batch_size=parameters['batch_size'],
             train_val_test_proportions=[0.01, 0.01, 0.98],
+            single_dataloader=True,
             # standard_img_dim=config.IMG_DIM,
             no_resizing=True,
             custom_transforms=custom_transforms,
