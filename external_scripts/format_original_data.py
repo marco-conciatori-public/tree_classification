@@ -34,9 +34,9 @@ for site_path in pure_path.iterdir():
                 file_path.rename(new_file_path)
                 # print(f'file_path.suffix: {file_path.suffix}')
 
-                # if file is TIFF
-                if file_path.suffix == '.tif':
-                    species_counter[site_name][species_name] += 1
+            # count only TIFF files
+            if file_path.suffix.lower() == '.tif':
+                species_counter[species_name] += 1
 
 print(f'species_counter: {species_counter}')
 # select only .TIF files
@@ -49,20 +49,28 @@ print(f'total num patches: {len(tif_list)}')
 species_counter['total_num_patches'] = len(tif_list)
 
 # save images to the input data folder
-save_folder_path = Path(global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + output_folder)
-if not save_folder_path.exists():
-    save_folder_path.mkdir(parents=False)
-print(f'save_folder_path: {save_folder_path}')
+save_folder_str = global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + output_folder
+Path(save_folder_str).mkdir(parents=True, exist_ok=True)
+print(f'save_folder_str: {save_folder_str}')
 for tif_path in tif_list:
-    img_new_path = str(save_folder_path) + '/' + tif_path.name
+    img_new_path = str(save_folder_str) + '/' + tif_path.name
     # print(f'img_new_path: {save_path}')
     cv2.imwrite(img_new_path, cv2.imread(str(tif_path)))
 
 # save meta_data info to json file
+parts = output_folder.split('/')
+parts = parts[:-1]
 info_folder_str = global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + 'step_1_info/'
-info_folder_path = Path(info_folder_str)
-if not info_folder_path.exists():
-    info_folder_path.mkdir(parents=False)
-info_str = info_folder_str + output_folder[:-1] + '.json'
+print(f'info_folder_str: {info_folder_str}')
+print(f'parts: {parts}')
+info_file_name = parts[-1] + '.json'
+if len(parts) > 1:
+    for part in parts[:-1]:
+        info_folder_str += part + '/'
+print(f'info_folder_str: {info_folder_str}')
+
+Path(info_folder_str).mkdir(parents=True, exist_ok=True)
+info_str = info_folder_str + info_file_name
+print(f'info_str: {info_str}')
 with open(info_str, 'w') as info_file:
     json.dump(species_counter, info_file)
