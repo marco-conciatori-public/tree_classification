@@ -1,6 +1,6 @@
 verbose: 2
 input_data_folder: step_1_paper_nhung/
-#input_data_folder: step_1_test_5_species/
+#input_data_folder: step_1_unique_5_species/
 # TODO: not fully implemented yet only some of the random operations use this seed
 random_seed: 42  # set to null for different results each time
 num_models_to_train: 5
@@ -9,7 +9,7 @@ num_models_to_train: 5
 confidence_threshold: 0.9
 
 # DISPLAY OPTIONS
-display_confusion_matrix: False
+display_confusion_matrix: True
 worst_n_predictions: 10
 best_n_configurations: 15
 
@@ -103,9 +103,9 @@ metrics:
         average: weighted
 #        average: none
         as_percentage: True
-#    BiodiversityCollectiveMetric:
-#        biodiversity_metric_names: [gini_simpson_index, shannon_wiener_index, species_richness]
-#        as_percentage: False
+    BiodiversityCollectiveMetric:
+        biodiversity_metric_names: [gini_simpson_index, shannon_wiener_index, species_richness]
+        as_percentage: False
 
 # MODEL USAGE PARAMETERS
 jump: 1
