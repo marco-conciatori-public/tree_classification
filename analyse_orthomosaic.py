@@ -22,7 +22,7 @@ def analyse_orthomosaic_(**kwargs):
     patch_size = 103
     stride = patch_size // 3
     # confidence prediction probability above which the prediction is considered valid
-    confidence_threshold = 0.4
+    confidence_threshold = kwargs['confidence_threshold']
     img_name_no_extension = kwargs['img_name'].split('.')[0]
     print(f'Orthomosaic used: {img_name_no_extension}')
 
