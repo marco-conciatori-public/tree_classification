@@ -1,4 +1,6 @@
 import json
+# import torch
+# import torchmetrics
 
 import utils
 import global_constants
@@ -23,6 +25,14 @@ def show_confusion_matrix_():
     prediction_list = meta_data['test_confusion_matrix']['predictions']
     print(f'len tag_list: {len(tag_list)}')
     print(f'len prediction_list: {len(prediction_list)}')
+
+    # accuracy = torchmetrics.Accuracy(task='multiclass', average='none', num_classes=5)
+    # recall = torchmetrics.Recall(task='multiclass', average='none', num_classes=5)
+    # accuracy.update(torch.tensor(prediction_list), torch.tensor(tag_list))
+    # recall.update(torch.tensor(prediction_list), torch.tensor(tag_list))
+    # print(f'accuracy: {accuracy.compute()}')
+    # print(f'recall: {recall.compute()}')
+
     # Plot the confusion matrix
     visualization_utils.display_cm(
         true_values=tag_list,
