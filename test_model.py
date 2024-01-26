@@ -15,6 +15,8 @@ def test_model_(**kwargs):
     parameters['shuffle'] = False
 
     device = parameters['device']
+    if parameters['verbose'] >= 1:
+        print(f'data_path: {parameters["data_path"]}')
 
     model_path, info_path = utils.get_path_by_id(
         partial_name=kwargs['partial_name'],
