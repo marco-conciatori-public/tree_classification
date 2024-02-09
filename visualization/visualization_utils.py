@@ -80,6 +80,7 @@ def display_cm(true_values, predictions, class_information: dict, labels=None, s
     plt.xlabel('Predictions', fontsize=17)
     plt.ylabel('True values', fontsize=17)
     plt.title('Confusion Matrix', fontsize=17)
+    plt.tight_layout()
 
     if save_img:
         Path(global_constants.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)

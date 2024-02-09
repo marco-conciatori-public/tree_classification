@@ -4,64 +4,73 @@ import json
 
 import global_constants
 
-input_folder = 'original/'
-# input_folder = 'original_no_site_2/'
-# input_folder = 'original_only_site_2/'
-# input_folder = 'original_half_1_site_2/'
-# input_folder = 'original_half_2_site_2/'
-output_folder = 'step_1/'
-# output_folder = 'step_1_no_site_2/'
-# output_folder = 'step_1_only_site_2/'
-# output_folder = 'step_1_half_1_site_2/'
-# output_folder = 'step_1_half_2_site_2/'
+input_folder = 'original_paper_nhunh/testing_data/plot_1/'
+output_folder = 'biodiversity_paper_nhunh/plot_1/'
 
 original_data_path = global_constants.DATA_PATH + input_folder
 pure_path = Path(global_constants.ONE_LEVEL_UP + original_data_path)
 print(f'pure_path: {pure_path}')
 assert pure_path.exists(), f'Path {original_data_path} does not exist'
 tif_list = []
-# correct wrong 's1' to 's2' naming for Minekaede_s2 folder
-# also correct wrong '＿' to '_' in file names
-print('num patches by folder:')
-dict_info = {}
-dict_info['num_patches_by_folder'] = {}
-for dir_path in pure_path.iterdir():
-    # if dir_path.is_dir():
-    #     if 'Minekaede_s2' in str(dir_path):
-    #         for file_path in dir_path.iterdir():
-    #             if file_path.is_file():
-    #                 # print(f'file_path: {file_path}')
-    #                 new_file_name = str(file_path.name).replace('_s1＿', '_s2_')
-    #                 # print(f'new_file_name: {new_file_name}')
-    #                 new_file_path = f'{file_path.parent}\\{new_file_name}'
-    #                 # print(f'new_file_path: {new_file_path}')
-    #                 file_path.rename(new_file_path)
+species_counter = {}
+for site_path in pure_path.iterdir():
+    print(f'site_path: {site_path}')
+    site_name = site_path.name.lower()
+    if site_name not in species_counter:
+        species_counter[site_name] = {}
+    for species_path in site_path.iterdir():
+        print(f'species_path: {species_path}')
+        species_name = species_path.name.lower()
+        if species_name not in species_counter[site_name]:
+            species_counter[site_name][species_name] = 0
+        for file_path in species_path.iterdir():
+            if file_path.is_file():
+                # print(f'file_path: {file_path}')
+                new_file_name = file_path.name.lower()
+                # new_file_name = new_file_name.replace('-', '_')
+                # print(f'new_file_name: {new_file_name}')
+                new_file_path = f'{file_path.parent}\\{new_file_name}'
+                # print(f'new_file_path: {new_file_path}')
+                file_path.rename(new_file_path)
+                # print(f'file_path.suffix: {file_path.suffix}')
 
-    # select only .TIF files
-    if dir_path.is_dir():
-        folder_list = list(dir_path.glob('*.TIF'))
-        dict_info['num_patches_by_folder'][dir_path.name] = len(folder_list)
-        print(f'- {dir_path.name}: {len(folder_list)}')
-        tif_list.extend(folder_list)
+            # count only TIFF files
+            if file_path.suffix.lower() == '.tif':
+                species_counter[species_name] += 1
+
+print(f'species_counter: {species_counter}')
+# select only .TIF files
+folder_list = list(pure_path.glob('**/*.TIF'))
+tif_list.extend(folder_list)
+print(f'len(tif_list): {len(tif_list)}')
+print(f'tif_list[0]: {tif_list[0]}')
 
 print(f'total num patches: {len(tif_list)}')
-dict_info['total_num_patches'] = len(tif_list)
+species_counter['total_num_patches'] = len(tif_list)
 
 # save images to the input data folder
-save_folder_path = Path(global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + output_folder)
-if not save_folder_path.exists():
-    save_folder_path.mkdir(parents=False)
-# print(f'save_folder_path: {save_folder_path}')
+save_folder_str = global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + output_folder
+Path(save_folder_str).mkdir(parents=True, exist_ok=True)
+print(f'save_folder_str: {save_folder_str}')
 for tif_path in tif_list:
-    img_new_path = str(save_folder_path) + '/' + tif_path.name.lower()
+    img_new_path = str(save_folder_str) + '/' + tif_path.name
     # print(f'img_new_path: {save_path}')
     cv2.imwrite(img_new_path, cv2.imread(str(tif_path)))
 
+# save meta_data info to json file
+parts = output_folder.split('/')
+parts = parts[:-1]
 info_folder_str = global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + 'step_1_info/'
-info_folder_path = Path(info_folder_str)
-if not info_folder_path.exists():
-    info_folder_path.mkdir(parents=False)
+print(f'info_folder_str: {info_folder_str}')
+print(f'parts: {parts}')
+info_file_name = parts[-1] + '.json'
+if len(parts) > 1:
+    for part in parts[:-1]:
+        info_folder_str += part + '/'
+print(f'info_folder_str: {info_folder_str}')
 
-info_str = info_folder_str + output_folder[:-1] + '.json'
+Path(info_folder_str).mkdir(parents=True, exist_ok=True)
+info_str = info_folder_str + info_file_name
+print(f'info_str: {info_str}')
 with open(info_str, 'w') as info_file:
-    json.dump(dict_info, info_file)
+    json.dump(species_counter, info_file)

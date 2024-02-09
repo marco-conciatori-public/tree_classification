@@ -22,11 +22,12 @@ def analyse_orthomosaic_(**kwargs):
     patch_size = 103
     stride = patch_size // 3
     # confidence prediction probability above which the prediction is considered valid
-    confidence_threshold = 0.4
+    confidence_threshold = 0.9
     img_name_no_extension = kwargs['img_name'].split('.')[0]
     print(f'Orthomosaic used: {img_name_no_extension}')
 
     # load model
+    # best model for now: swin-2
     device = utils.get_available_device(verbose=kwargs['verbose'])
     model_path, info_path = utils.get_path_by_id(
         partial_name=kwargs['partial_name'],
@@ -56,9 +57,10 @@ def analyse_orthomosaic_(**kwargs):
     start_time = end_time
     orthomosaic_path = global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_name']
     orthomosaic = tifi.imread(orthomosaic_path)
-    # default orthomosaic dimensions: 43597 x 26482 pixels
-    # orthomosaic = orthomosaic[10000 : 10500, 10000 : 10500, :]
+    # default orthomosaic dimensions: 43597 (larghezza) x 26482 (altezza) pixels
+    orthomosaic = orthomosaic[11000 : 14500, 7600 : 17600, :]
     # orthomosaic = orthomosaic[ : 20000, : 15000, :]
+    # it is in the form (height, width, channels)
     print(f'orthomosaic.shape: {orthomosaic.shape}')
     # print(f'orthomosaic type: {type(orthomosaic)}')
     # print(f'orthomosaic[0, 0, 0] type: {type(orthomosaic[0, 0, 0])}')
@@ -202,8 +204,11 @@ def analyse_orthomosaic_(**kwargs):
 
 if __name__ == '__main__':
     verbose = 2
-    partial_name = str(input('Insert name or part of the name of a model: '))
-    model_id = int(input('Insert model id number: '))
+    # partial_name = str(input('Insert name or part of the name of a model: '))
+    partial_name = 'swin'
+    # model_id = int(input('Insert model id number: '))
+    model_id = 2
     # img_name = str(input('Insert name of the orthomosaic to analyse: '))
+    # img_name = 'subset_img.tif'
     img_name = 'Zao1_211005.tif'
     analyse_orthomosaic_(partial_name=partial_name, model_id=model_id, img_name=img_name, verbose=verbose)

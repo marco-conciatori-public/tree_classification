@@ -4,9 +4,12 @@ input_data_folder: step_1_paper_nhung/
 # TODO: not fully implemented yet only some of the random operations use this seed
 random_seed: 42  # set to null for different results each time
 num_models_to_train: 5
+# a prediction of the network is considered of the top class if its confidence is above this threshold
+# if the confidence is below this threshold, the prediction is considered as "unknown"
+confidence_threshold: 0.9
 
 # DISPLAY OPTIONS
-display_confusion_matrix: False
+display_confusion_matrix: True
 worst_n_predictions: 10
 best_n_configurations: 15
 
@@ -71,7 +74,7 @@ train_val_test_proportions: [0.8, 0.1, 0.1]
 #train_val_test_proportions: [0.89, 0.1, 0.01]
 tolerance: 0.01
 # number of times the original dataset is duplicated with random variations
-data_augmentation_proportion: 15
+data_augmentation_proportion: 13
 #data_augmentation_proportion: 4
 balance_data: False
 # use only images with these classes. If empty, use all images
@@ -82,8 +85,7 @@ use_only_classes: []
 metrics:
     Accuracy:
         task: multiclass
-        average: weighted
-#        average: none
+        average: micro
         as_percentage: True
     Precision:
         task: multiclass
@@ -100,9 +102,9 @@ metrics:
         average: weighted
 #        average: none
         as_percentage: True
-#    BiodiversityCollectiveMetric:
-#        biodiversity_metric_names: [gini_simpson_index, shannon_wiener_index, species_richness]
-#        as_percentage: False
+    BiodiversityCollectiveMetric:
+        biodiversity_metric_names: [gini_simpson_index, shannon_wiener_index, species_richness]
+        as_percentage: False
 
 # MODEL USAGE PARAMETERS
 jump: 1

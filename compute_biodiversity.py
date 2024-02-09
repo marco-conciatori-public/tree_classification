@@ -6,9 +6,10 @@ from data_preprocessing import data_loading, get_ready_data
 from biodiversity_metrics import gini_simpson_index, species_richness, shannon_wiener_index
 
 
-def load_and_use_model_(**kwargs):
+def compute_biodiversity_(**kwargs):
     # import parameters
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+    parameters['verbose'] = 2
     # use_targets = parameters['use_targets']
     use_targets = True
     use_network = True
@@ -31,18 +32,21 @@ def load_and_use_model_(**kwargs):
             meta_data_path=info_path,
             verbose=parameters['verbose'],
         )
+        print(f'meta_data["class_information"]: {meta_data["class_information"]}')
 
-        _, _, test_dl, _, _, _ = get_ready_data.get_data(
+        test_dl, _, _, _ = get_ready_data.get_data(
             data_path=parameters['data_path'],
-            shuffle=True,
+            shuffle=False,
             balance_data=False,
-            batch_size=parameters['batch_size'],
-            train_val_test_proportions=[0.01, 0.01, 0.98],
+            batch_size=1,
+            train_val_test_proportions=parameters['train_val_test_proportions'],
+            single_dataloader=True,
             # standard_img_dim=config.IMG_DIM,
             no_resizing=True,
             custom_transforms=custom_transforms,
             use_only_classes=parameters['use_only_classes'],
             augmentation_proportion=1,
+            model_class_information=meta_data['class_information'],
             random_seed=parameters['random_seed'],
             verbose=parameters['verbose'],
         )
@@ -84,4 +88,4 @@ def load_and_use_model_(**kwargs):
 
 
 if __name__ == '__main__':
-    load_and_use_model_()
+    compute_biodiversity_()

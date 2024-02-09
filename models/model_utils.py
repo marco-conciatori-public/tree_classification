@@ -105,7 +105,7 @@ def load_model(model_path: str,
         meta_data['class_information'] = {int(k): v for k, v in meta_data['class_information'].items()}
 
     if verbose >= 1:
-        print(f'model name: {model.name}')
+        print(f'model name: {model_path.name}')
     return model, custom_transforms, meta_data
 
 

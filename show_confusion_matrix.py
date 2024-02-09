@@ -1,4 +1,6 @@
 import json
+# import torch
+# import torchmetrics
 
 import utils
 import global_constants
@@ -23,6 +25,26 @@ def show_confusion_matrix_():
     prediction_list = meta_data['test_confusion_matrix']['predictions']
     print(f'len tag_list: {len(tag_list)}')
     print(f'len prediction_list: {len(prediction_list)}')
+
+    # accuracy_none = torchmetrics.Accuracy(task='multiclass', average='none', num_classes=5)
+    # accuracy_micro = torchmetrics.Accuracy(task='multiclass', average='micro', num_classes=5)
+    # accuracy_macro = torchmetrics.Accuracy(task='multiclass', average='macro', num_classes=5)
+    # recall_none = torchmetrics.Recall(task='multiclass', average='none', num_classes=5)
+    # recall_micro = torchmetrics.Recall(task='multiclass', average='micro', num_classes=5)
+    # recall_macro = torchmetrics.Recall(task='multiclass', average='macro', num_classes=5)
+    # accuracy_none.update(torch.tensor(prediction_list), torch.tensor(tag_list))
+    # accuracy_micro.update(torch.tensor(prediction_list), torch.tensor(tag_list))
+    # accuracy_macro.update(torch.tensor(prediction_list), torch.tensor(tag_list))
+    # recall_none.update(torch.tensor(prediction_list), torch.tensor(tag_list))
+    # recall_micro.update(torch.tensor(prediction_list), torch.tensor(tag_list))
+    # recall_macro.update(torch.tensor(prediction_list), torch.tensor(tag_list))
+    # print(f'accuracy_micro: {accuracy_micro.compute()}')
+    # print(f'accuracy_macro: {accuracy_macro.compute()}')
+    # print(f'accuracy_none: {accuracy_none.compute()}')
+    # print(f'recall_micro: {recall_micro.compute()}')
+    # print(f'recall_macro: {recall_macro.compute()}')
+    # print(f'recall_none: {recall_none.compute()}')
+
     # Plot the confusion matrix
     visualization_utils.display_cm(
         true_values=tag_list,

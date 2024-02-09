@@ -7,6 +7,10 @@ from models import training, evaluation, model_utils
 def finetune_pretrained_model_(**kwargs):
     # import parameters
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+    parameters['display_confusion_matrix'] = True
+    if parameters['num_models_to_train'] > 1:
+        parameters['display_confusion_matrix'] = False
+
     for model_num in range(parameters['num_models_to_train']):
         print(f'Model {model_num + 1} of {parameters["num_models_to_train"]}')
 
@@ -93,4 +97,19 @@ def finetune_pretrained_model_(**kwargs):
 
 
 if __name__ == '__main__':
+    # pretrained_model_parameters_0 = {
+    #     'model_architecture': 'regnet',
+    #     'model_version': 'regnet_y_1_6gf',
+    #     'weights_name': 'RegNet_Y_1_6GF_Weights.DEFAULT',
+    #     'freeze_layers': False,
+    # }
+    # pretrained_model_parameters_1 = {
+    #     'model_architecture': 'swin_transformer',
+    #     'model_version': 'swin_t',
+    #     'weights_name': 'Swin_T_Weights.DEFAULT',
+    #     'freeze_layers': False,
+    # }
+    # pretrained_model_parameters_list = [pretrained_model_parameters_0, pretrained_model_parameters_1]
+    # for i in range(2):
+    #     finetune_pretrained_model_(pretrained_model_parameters=pretrained_model_parameters_list[i])
     finetune_pretrained_model_()

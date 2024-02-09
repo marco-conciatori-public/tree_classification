@@ -13,9 +13,10 @@ def test_model_(**kwargs):
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 2
     parameters['shuffle'] = False
-    parameters['train_val_test_proportions'] = [0.01, 0.01, 0.98]
 
     device = parameters['device']
+    if parameters['verbose'] >= 1:
+        print(f'data_path: {parameters["data_path"]}')
 
     model_path, info_path = utils.get_path_by_id(
         partial_name=parameters['partial_name'],
@@ -31,14 +32,16 @@ def test_model_(**kwargs):
         verbose=parameters['verbose'],
     )
 
-    _, _, test_dl, _, _, _ = get_ready_data.get_data(
+    test_dl, _, _, _ = get_ready_data.get_data(
         data_path=parameters['data_path'],
         shuffle=parameters['shuffle'],
         balance_data=False,
         batch_size=1,
         train_val_test_proportions=parameters['train_val_test_proportions'],
         # standard_img_dim=config.IMG_DIM,
+        single_dataloader=True,
         use_only_classes=parameters['use_only_classes'],
+        model_class_information=meta_data['class_information'],
         custom_transforms=custom_transforms,
         augmentation_proportion=1,
         random_seed=parameters['random_seed'],
@@ -118,4 +121,17 @@ def test_model_(**kwargs):
 if __name__ == '__main__':
     partial_name = str(input('Insert name or part of the name of a model: '))
     model_id = int(input('Insert model id number: '))
+    # pair_input_list = [
+    #     ('regnet_y', 2),
+    #     ('regnet_y', 3),
+    #     ('regnet_y', 4),
+    #     ('regnet_y', 5),
+    #     ('regnet_y', 6),
+    #     ('swin_t', 0),
+    #     ('swin_t', 1),
+    #     ('swin_t', 2),
+    #     ('swin_t', 3),
+    #     ('swin_t', 4),
+    # ]
+    # for partial_name, model_id in pair_input_list:
     test_model_(partial_name=partial_name, model_id=model_id)
