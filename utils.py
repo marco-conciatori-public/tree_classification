@@ -130,3 +130,15 @@ def get_metric_results(metrics: dict, metrics_args: dict):
             evaluation[metric_name]['average'] = metrics_args[metric_name]['average']
             evaluation[metric_name]['as_percentage'] = metrics_args[metric_name]['as_percentage']
     return evaluation
+
+
+def get_species_id_by_name(species_name: str,
+                           class_information: dict,
+                           species_language: str = global_constants.SPECIES_LANGUAGE,
+                           ) -> int:
+    # returns the species_id of the species_name
+    # if the species_name is not found returns -1
+    for species_id in class_information:
+        if class_information[species_id][species_language] == species_name:
+            return species_id
+    return -1

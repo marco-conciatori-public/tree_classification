@@ -2,7 +2,6 @@ import torch
 import datetime
 import warnings
 import numpy as np
-import tifffile as tifi
 import torchvision.transforms.functional as tf
 
 import utils
@@ -55,10 +54,10 @@ def analyse_orthomosaic_(**kwargs):
 
     # load orthomosaic image
     start_time = end_time
-    orthomosaic_path = global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_folder'] + '/orthomosaic.tif'
-    orthomosaic = tifi.imread(orthomosaic_path)
+    orthomosaic_path = global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_folder'] + '/orthomosaic.jpg'
+    orthomosaic = orthomosaic_utils.load_img(orthomosaic_path)
     # default orthomosaic dimensions: 43597 (larghezza) x 26482 (altezza) pixels
-    orthomosaic = orthomosaic[11000 : 14500, 7600 : 17600, :]
+    # orthomosaic = orthomosaic[11000 : 14500, 7600 : 17600, :]
     # orthomosaic = orthomosaic[ : 20000, : 15000, :]
     # it is in the form (height, width, channels)
     print(f'orthomosaic.shape: {orthomosaic.shape}')
@@ -204,6 +203,7 @@ def analyse_orthomosaic_(**kwargs):
     start_time = end_time
     real_species_distribution = orthomosaic_utils.load_target(
         folder_path=global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_folder'],
+        info=info,
         # target_extension='.jpg',
         verbose=kwargs['verbose'],
     )

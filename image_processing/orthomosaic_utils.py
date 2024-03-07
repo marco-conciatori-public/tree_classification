@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
 import global_constants
+import utils
 
 
 def get_patch(img: torch.Tensor, size: int, top_left_coord: tuple):
@@ -114,27 +115,35 @@ def save_output(orthomosaic: torch.Tensor,
         json.dump(info, file, indent=4)
 
 
-def load_target(folder_path: str, target_extension: str = '', verbose: int = 0) -> np.array:
+def load_target(folder_path: str, info: dict, target_extension: str = '', verbose: int = 0) -> dict:
     # load all the target images in the folder
-    target_list = []
+    target_dict = {}
     shape = None
     for file in Path(folder_path).rglob('*' + target_extension):
         if verbose >= 2:
             print(f'loading target: {file}')
         if 'orthomosaic' in file.name:
             continue
-        target_list.append(np.array(Image.open(file)))
-        if shape is None:
-            shape = target_list[0].shape
+        species_name = file.name
+        print(f'species_name: {species_name}')
+        species_id = utils.get_species_id_by_name(species_name, info['model_meta_data']['class_information'])
+        img = load_img(file)
+        if species_id != -1:
+            target_dict[species_id] = img
+            if shape is None:
+                shape = img.shape
+            else:
+                if shape != img.shape:
+                    raise ValueError(f'targets have different shapes: {shape} and {target_dict[species_id].shape}')
         else:
-            if shape != target_list[-1].shape:
-                raise ValueError(f'targets have different shapes: {shape} and {target_list[-1].shape}')
+            if verbose >= 1:
+                print(f'skipping species {species_name}: it is not among the ones the model is trained to recognise')
     if verbose >= 1:
-        print(f'loaded {len(target_list)} targets')
-    return np.array(target_list)
+        print(f'loaded {len(target_dict)} targets')
+    return target_dict
 
 
-def evaluate_results(prediction: np.array, target: np.array, info: dict, verbose: int = 0):
+def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: int = 0):
     # targets are images with the same shape as the predictions
     # and are black where the class is present and white where it is not
     for species_index in range(info['num_classes_plus_unknown']):
@@ -142,6 +151,50 @@ def evaluate_results(prediction: np.array, target: np.array, info: dict, verbose
             continue
         if verbose >= 1:
             print(f'evaluating species: {info["model_meta_data"]["class_information"][species_index][global_constants.SPECIES_LANGUAGE]}')
-        species_target = target[:, :, species_index]
+
+        # targets and predictions are in different dimensions in the arrays
+        species_target = target[species_index, :, :]
         species_prediction = prediction[:, :, species_index]
+        print(f'species_target.shape: {species_target.shape}')
+        print(f'species_prediction.shape: {species_prediction.shape}')
+        print(f'species_target[2000]: {species_target[2000]}')
+        print(f'species_prediction[2000]: {species_prediction[2000]}')
+
+        # calculate the true positives, false positives, true negatives and false negatives
+        true_positives = np.sum(np.logical_and(species_target == 0, species_prediction == 0))
+        false_positives = np.sum(np.logical_and(species_target == 1, species_prediction == 0))
+        true_negatives = np.sum(np.logical_and(species_target == 1, species_prediction == 1))
+        false_negatives = np.sum(np.logical_and(species_target == 0, species_prediction == 1))
+        print(f'true_positives: {true_positives}')
+        print(f'false_positives: {false_positives}')
+        print(f'true_negatives: {true_negatives}')
+        print(f'false_negatives: {false_negatives}')
+
+        # calculate the precision, recall and f1 score
+        precision = true_positives / (true_positives + false_positives)
+        recall = true_positives / (true_positives + false_negatives)
+        f1_score = 2 * precision * recall / (precision + recall)
+        accuracy = (true_positives + true_negatives) / (true_positives + false_positives + true_negatives + false_negatives)
+        if verbose >= 1:
+            print(f'precision: {precision}')
+            print(f'recall: {recall}')
+            print(f'f1_score: {f1_score}')
+            print(f'accuracy: {accuracy}')
+        info['evaluation'][species_index] = {
+            'precision': precision,
+            'recall': recall,
+            'f1_score': f1_score,
+            'accuracy': accuracy,
+        }
     return None
+
+
+def load_img(orthomosaic_path) -> np.array:
+    try:
+        return tifi.imread(orthomosaic_path)
+    except Exception:
+        pass
+    try:
+        return np.array(Image.open(orthomosaic_path))
+    except Exception:
+        raise ValueError(f'could not load image: {orthomosaic_path}')
