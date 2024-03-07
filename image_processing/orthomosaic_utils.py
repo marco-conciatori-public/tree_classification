@@ -1,6 +1,7 @@
 import json
 import torch
 import numpy as np
+from PIL import Image
 import tifffile as tifi
 from pathlib import Path
 import matplotlib.pyplot as plt
@@ -111,3 +112,36 @@ def save_output(orthomosaic: torch.Tensor,
     )
     with open(f'{save_path}{global_constants.INFO_FILE_NAME}.json', 'w') as file:
         json.dump(info, file, indent=4)
+
+
+def load_target(folder_path: str, target_extension: str = '', verbose: int = 0) -> np.array:
+    # load all the target images in the folder
+    target_list = []
+    shape = None
+    for file in Path(folder_path).rglob('*' + target_extension):
+        if verbose >= 2:
+            print(f'loading target: {file}')
+        if 'orthomosaic' in file.name:
+            continue
+        target_list.append(np.array(Image.open(file)))
+        if shape is None:
+            shape = target_list[0].shape
+        else:
+            if shape != target_list[-1].shape:
+                raise ValueError(f'targets have different shapes: {shape} and {target_list[-1].shape}')
+    if verbose >= 1:
+        print(f'loaded {len(target_list)} targets')
+    return np.array(target_list)
+
+
+def evaluate_results(prediction: np.array, target: np.array, info: dict, verbose: int = 0):
+    # targets are images with the same shape as the predictions
+    # and are black where the class is present and white where it is not
+    for species_index in range(info['num_classes_plus_unknown']):
+        if species_index == info['unknown_class_id']:
+            continue
+        if verbose >= 1:
+            print(f'evaluating species: {info["model_meta_data"]["class_information"][species_index][global_constants.SPECIES_LANGUAGE]}')
+        species_target = target[:, :, species_index]
+        species_prediction = prediction[:, :, species_index]
+    return None

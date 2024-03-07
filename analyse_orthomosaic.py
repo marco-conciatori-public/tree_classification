@@ -199,6 +199,23 @@ def analyse_orthomosaic_(**kwargs):
     )
     end_time = datetime.datetime.now()
     print(f'species image creation and saving time: {utils.timedelta_format(start_time, end_time)}')
+
+    # evaluate the results
+    start_time = end_time
+    real_species_distribution = orthomosaic_utils.load_target(
+        folder_path=global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_folder'],
+        # target_extension='.jpg',
+        verbose=kwargs['verbose'],
+    )
+    # print(f'real_species_distribution.shape: {real_species_distribution.shape}')
+    orthomosaic_utils.evaluate_results(
+        prediction=species_distribution,
+        target=real_species_distribution,
+        info=info,
+        verbose=kwargs['verbose'],
+    )
+
+    end_time = datetime.datetime.now()
     print(f'TOTAL TIME: {utils.timedelta_format(global_start_time, end_time)}')
 
 
