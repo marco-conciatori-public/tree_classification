@@ -14,8 +14,8 @@ def use_model_(**kwargs):
     use_targets = parameters['use_targets']
 
     model_path, info_path = utils.get_path_by_id(
-        partial_name=kwargs['partial_name'],
-        model_id=kwargs['model_id'],
+        partial_name=parameters['partial_name'],
+        model_id=parameters['model_id'],
         folder_path=global_constants.MODEL_OUTPUT_DIR,
     )
     loaded_model, custom_transforms, meta_data = model_utils.load_model(
