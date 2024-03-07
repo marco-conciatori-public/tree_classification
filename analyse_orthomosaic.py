@@ -21,6 +21,7 @@ def analyse_orthomosaic_(**kwargs):
     # in pixels
     patch_size = 103
     stride = patch_size // 3
+    print(f'stride: {stride} pixels')
     # confidence prediction probability above which the prediction is considered valid
     confidence_threshold = 0.9
     img_name_no_extension = kwargs['img_name'].split('.')[0]

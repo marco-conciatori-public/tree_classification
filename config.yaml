@@ -85,7 +85,8 @@ use_only_classes: []
 metrics:
     Accuracy:
         task: multiclass
-        average: micro
+        average: weighted
+#        average: none
         as_percentage: True
     Precision:
         task: multiclass
