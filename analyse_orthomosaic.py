@@ -24,8 +24,7 @@ def analyse_orthomosaic_(**kwargs):
     print(f'stride: {stride} pixels')
     # confidence prediction probability above which the prediction is considered valid
     confidence_threshold = 0.9
-    img_name_no_extension = kwargs['img_name'].split('.')[0]
-    print(f'Orthomosaic used: {img_name_no_extension}')
+    print(f'Orthomosaic used: {kwargs["img_folder"]}')
 
     # load model
     # best model for now: swin-2
@@ -56,7 +55,7 @@ def analyse_orthomosaic_(**kwargs):
 
     # load orthomosaic image
     start_time = end_time
-    orthomosaic_path = global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_name']
+    orthomosaic_path = global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_folder'] + '/orthomosaic.tif'
     orthomosaic = tifi.imread(orthomosaic_path)
     # default orthomosaic dimensions: 43597 (larghezza) x 26482 (altezza) pixels
     orthomosaic = orthomosaic[11000 : 14500, 7600 : 17600, :]
@@ -174,11 +173,11 @@ def analyse_orthomosaic_(**kwargs):
     assert species_distribution.min() >= 0, f'species_distribution.min() < 0. (min = {species_distribution.min()})'
 
     folder_id = utils.get_available_id(
-        partial_name=img_name_no_extension,
+        partial_name=kwargs['img_folder'],
         folder_path=f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}',
     )
     save_path = f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}' \
-                f'{img_name_no_extension}_{folder_id}/'
+                f'{kwargs["img_folder"]}_{folder_id}/'
     info = {
         'model_path': str(model_path),
         'model_id': kwargs['model_id'],
@@ -209,7 +208,7 @@ if __name__ == '__main__':
     partial_name = 'swin'
     # model_id = int(input('Insert model id number: '))
     model_id = 2
-    # img_name = str(input('Insert name of the orthomosaic to analyse: '))
-    # img_name = 'subset_img.tif'
-    img_name = 'Zao1_211005.tif'
-    analyse_orthomosaic_(partial_name=partial_name, model_id=model_id, img_name=img_name, verbose=verbose)
+    # img_folder = str(input('Insert name of the orthomosaic to analyse: '))
+    img_folder = 'subsite_1'
+    # img_folder = 'zao_1_211005'
+    analyse_orthomosaic_(partial_name=partial_name, model_id=model_id, img_folder=img_folder, verbose=verbose)
