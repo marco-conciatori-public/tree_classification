@@ -49,7 +49,7 @@ def finetune_pretrained_model_(**kwargs):
         batched_img_tag = next(iter(train_dl))
         batched_img_shape = batched_img_tag[0].shape
         print(f'batched_img_shape: {batched_img_shape}')
-        print(f'batched Target shape: {batched_img_tag[1].shape}')
+        print(f'batched target shape: {batched_img_tag[1].shape}')
         # remove batch dimension
         img_shape = batched_img_shape[1:]
         print(f'img_shape: {img_shape}')
@@ -78,7 +78,6 @@ def finetune_pretrained_model_(**kwargs):
             custom_transforms=custom_transforms,
             extra_info_to_save=parameters_to_save,
         )
-        print(f'training_history:\n{training_history}')
 
         test_loss, metric_evaluations = evaluation.eval(
             model=model,
