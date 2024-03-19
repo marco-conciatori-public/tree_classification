@@ -123,6 +123,7 @@ def load_target(folder_path: str, info: dict, target_extension: str = '', verbos
         if verbose >= 2:
             print(f'loading target: {file}')
         if 'orthomosaic' in file.name:
+            print('\tskipping orthomosaic')
             continue
         # the name of the file is the species name, after removing file extension
         species_name = file.name.split('.')[0]
