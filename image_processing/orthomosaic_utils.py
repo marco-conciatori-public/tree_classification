@@ -154,7 +154,7 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
             print(f'evaluating species: {info["model_meta_data"]["class_information"][species_index][global_constants.SPECIES_LANGUAGE]}')
 
         # targets and predictions are in different dimensions in the arrays
-        species_target = target[species_index, :, :]
+        species_target = target[species_index]
         species_prediction = prediction[:, :, species_index]
         print(f'species_target.shape: {species_target.shape}')
         print(f'species_prediction.shape: {species_prediction.shape}')
