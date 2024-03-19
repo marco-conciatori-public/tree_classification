@@ -224,7 +224,7 @@ if __name__ == '__main__':
     # partial_name = str(input('Insert name or part of the name of a model: '))
     partial_name = 'swin'
     # model_id = int(input('Insert model id number: '))
-    model_id = 2
+    model_id = 4
     # img_folder = str(input('Insert name of the orthomosaic to analyse: '))
     img_folder = 'subsite_1'
     # img_folder = 'zao_1_211005'
