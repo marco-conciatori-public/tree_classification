@@ -130,6 +130,8 @@ def load_target(folder_path: str, info: dict, target_extension: str = '', verbos
         print(f'species_name: {species_name}')
         species_id = utils.get_species_id_by_name(species_name, info['model_meta_data']['class_information'])
         img = load_img(file)
+        # limit the size of the target to the effective size of the orthomosaic
+        img = img[: info['effective_max_x'], : info['effective_max_y'], :]
         if species_id != -1:
             target_dict[species_id] = img
             if shape is None:
