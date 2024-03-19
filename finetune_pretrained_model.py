@@ -62,7 +62,7 @@ def finetune_pretrained_model_(**kwargs):
         parameters_to_save['img_original_pixel_size'] = img_original_pixel_size
         parameters_to_save['img_shape'] = img_shape
         parameters_to_save['class_information'] = class_information
-        training_history = training.train(
+        training.train(
             model=model,
             training_data=train_dl,
             validation_data=val_dl,
