@@ -2,7 +2,7 @@ verbose: 2
 input_data_folder: step_1_paper_nhung/
 #input_data_folder: step_1_unique_5_species/
 # TODO: not fully implemented yet only some of the random operations use this seed
-random_seed: 42  # set to null for different results each time
+random_seed: null  # set to null for different results each time
 num_models_to_train: 5
 # a prediction of the network is considered of the top class if its confidence is above this threshold
 # if the confidence is below this threshold, the prediction is considered as "unknown"
