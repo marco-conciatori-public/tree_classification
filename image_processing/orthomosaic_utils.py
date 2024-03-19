@@ -125,6 +125,7 @@ def load_target(folder_path: str, info: dict, target_extension: str = '', verbos
         if 'orthomosaic' in file.name:
             continue
         species_name = file.name
+        # the name of the file is the species name, after removing file extension
         print(f'species_name: {species_name}')
         species_id = utils.get_species_id_by_name(species_name, info['model_meta_data']['class_information'])
         img = load_img(file)

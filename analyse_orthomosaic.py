@@ -143,7 +143,7 @@ def analyse_orthomosaic_(**kwargs):
             ] += 1
 
     end_time = datetime.datetime.now()
-    print(f'loop time: {utils.timedelta_format(start_time, end_time)}')
+    print(f'analyse orthomosaic time: {utils.timedelta_format(start_time, end_time)}')
 
     # create and save one image for each species
     start_time = end_time
