@@ -159,16 +159,25 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
         # targets and predictions are in different dimensions in the arrays
         species_target = target[species_index]
         species_prediction = prediction[:, :, species_index]
-        print(f'species_target.shape: {species_target.shape}')
-        print(f'species_prediction.shape: {species_prediction.shape}')
-        print(f'species_target[2000]: {species_target[2000]}')
-        print(f'species_prediction[2000]: {species_prediction[2000]}')
+        # print(f'species_prediction.shape: {species_prediction.shape}')
+        # print(f'species_target.shape: {species_target.shape}')
+        # print(f'species_target[2000][2000]: {species_target[2000][2000]}')
+        species_target = species_target.sum(axis=2)
+        species_target = species_target / (255 * 3)
+
+        # create auxiliary arrays to calculate the true positives, false positives, true negatives and false negatives
+        species_target_bool = np.equal(species_target, 0)
+        species_prediction_bool = np.equal(species_prediction, 0)
+        print(f'species_target_bool.shape: {species_target_bool.shape}')
+        print(f'species_prediction_bool.shape: {species_prediction_bool.shape}')
+        print(f'species_target_bool[2000][2000]: {species_target_bool[2000][2000]}')
+        print(f'species_prediction_bool[2000][2000]: {species_prediction_bool[2000][2000]}')
 
         # calculate the true positives, false positives, true negatives and false negatives
-        true_positives = np.sum(np.logical_and(species_target == 0, species_prediction == 0))
-        false_positives = np.sum(np.logical_and(species_target == 1, species_prediction == 0))
-        true_negatives = np.sum(np.logical_and(species_target == 1, species_prediction == 1))
-        false_negatives = np.sum(np.logical_and(species_target == 0, species_prediction == 1))
+        true_positives = np.sum(np.logical_and(species_target_bool, species_prediction_bool))
+        false_positives = np.sum(np.logical_and(not species_target_bool, species_prediction_bool))
+        true_negatives = np.sum(np.logical_and(not species_target_bool, not species_prediction_bool))
+        false_negatives = np.sum(np.logical_and(species_target_bool, not species_prediction_bool))
         print(f'true_positives: {true_positives}')
         print(f'false_positives: {false_positives}')
         print(f'true_negatives: {true_negatives}')
