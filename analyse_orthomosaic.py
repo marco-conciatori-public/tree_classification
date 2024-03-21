@@ -208,12 +208,14 @@ def analyse_orthomosaic_(**kwargs):
         verbose=kwargs['verbose'],
     )
     # print(f'real_species_distribution.shape: {real_species_distribution.shape}')
-    orthomosaic_utils.evaluate_results(
+    info['evaluation'] = orthomosaic_utils.evaluate_results(
         prediction=species_distribution,
         target=real_species_distribution,
         info=info,
         verbose=kwargs['verbose'],
     )
+    if verbose > 1:
+        utils.pretty_print_dict(info['evaluation'])
 
     end_time = datetime.datetime.now()
     print(f'TOTAL TIME: {utils.timedelta_format(global_start_time, end_time)}')

@@ -147,13 +147,20 @@ def load_target(folder_path: str, info: dict, target_extension: str = '', verbos
     return target_dict
 
 
-def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: int = 0):
+def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: int = 0) -> dict:
+    evaluation = {}
+    evaluation['total'] = {
+            'precision': 0,
+            'recall': 0,
+            'f1_score': 0,
+            'accuracy': 0,
+        }
     # targets are images with the same shape as the predictions
     # and are black where the class is present and white where it is not
     for species_index in range(info['num_classes_plus_unknown']):
         if species_index == info['unknown_class_id']:
             continue
-        if verbose >= 1:
+        if verbose >= 2:
             print(f'evaluating species: {info["model_meta_data"]["class_information"][species_index][global_constants.SPECIES_LANGUAGE]}')
 
         # targets and predictions are in different dimensions in the arrays
@@ -167,11 +174,20 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
 
         # create auxiliary arrays to calculate the true positives, false positives, true negatives and false negatives
         species_target_bool = np.equal(species_target, 0)
-        print(f'species_target_bool.shape: {species_target_bool.shape}')
-        print(f'species_prediction_bool.shape: {species_prediction_bool.shape}')
-        print(f'species_target_bool[2000][2000]: {species_target_bool[2000][2000]}')
-        print(f'species_prediction_bool[2000][2000]: {species_prediction_bool[2000][2000]}')
         species_prediction_bool = np.logical_not(np.equal(species_prediction, 0))
+        # print(f'species_target_bool.shape: {species_target_bool.shape}')
+        # print(f'species_prediction_bool.shape: {species_prediction_bool.shape}')
+        # print(f'species_target_bool[2000][2000]: {species_target_bool[2000][2000]}')
+        # print(f'species_prediction_bool[2000][2000]: {species_prediction_bool[2000][2000]}')
+        # temp_img = np.zeros((species_target_bool.shape[0], species_target_bool.shape[1], 4), dtype=np.uint8)
+        # temp_img[:, :, 3] = species_target_bool * 255
+        # color = info['model_meta_data']['class_information'][species_index]['display_color_rgb']
+        # temp_img[:, :, 0] = color[0]
+        # temp_img[:, :, 1] = color[1]
+        # temp_img[:, :, 2] = color[2]
+        # tifi.imwrite('species_target.tif', data=temp_img)
+        # temp_img[:, :, 3] = species_prediction_bool * 255
+        # tifi.imwrite('species_prediction.tif', data=temp_img)
 
         # calculate the true positives, false positives, true negatives and false negatives
         species_target_bool_negated = np.logical_not(species_target_bool)
@@ -186,22 +202,39 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
         print(f'false_negatives: {false_negatives}')
 
         # calculate the precision, recall and f1 score
-        precision = true_positives / (true_positives + false_positives)
-        recall = true_positives / (true_positives + false_negatives)
-        f1_score = 2 * precision * recall / (precision + recall)
-        accuracy = (true_positives + true_negatives) / (true_positives + false_positives + true_negatives + false_negatives)
-        if verbose >= 1:
-            print(f'precision: {precision}')
-            print(f'recall: {recall}')
-            print(f'f1_score: {f1_score}')
-            print(f'accuracy: {accuracy}')
-        info['evaluation'][species_index] = {
+        # ifs are to avoid division by zero
+        precision = 0
+        recall = 0
+        f1_score = 0
+        accuracy = 0
+        if true_positives > 0:
+            precision = true_positives / (true_positives + false_positives)
+            recall = true_positives / (true_positives + false_negatives)
+        if (precision > 0) and (recall > 0):
+            f1_score = 2 * precision * recall / (precision + recall)
+        if (true_positives + true_negatives) > 0:
+            accuracy = (true_positives + true_negatives) / (true_positives + false_positives + true_negatives + false_negatives)
+        if verbose >= 2:
+            print(f'\tprecision: {precision}')
+            print(f'\trecall: {recall}')
+            print(f'\tf1_score: {f1_score}')
+            print(f'\taccuracy: {accuracy}')
+        evaluation[info["model_meta_data"]["class_information"][species_index][global_constants.SPECIES_LANGUAGE]] = {
             'precision': precision,
             'recall': recall,
             'f1_score': f1_score,
             'accuracy': accuracy,
         }
-    return None
+        evaluation['total']['precision'] += precision
+        evaluation['total']['recall'] += recall
+        evaluation['total']['f1_score'] += f1_score
+        evaluation['total']['accuracy'] += accuracy
+    num_classes = info['model_meta_data']['num_classes']
+    evaluation['total']['precision'] /= num_classes
+    evaluation['total']['recall'] /= num_classes
+    evaluation['total']['f1_score'] /= num_classes
+    evaluation['total']['accuracy'] /= num_classes
+    return evaluation
 
 
 def load_img(orthomosaic_path) -> np.array:
