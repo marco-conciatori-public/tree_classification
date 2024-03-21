@@ -167,11 +167,11 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
 
         # create auxiliary arrays to calculate the true positives, false positives, true negatives and false negatives
         species_target_bool = np.equal(species_target, 0)
-        species_prediction_bool = np.equal(species_prediction, 0)
         print(f'species_target_bool.shape: {species_target_bool.shape}')
         print(f'species_prediction_bool.shape: {species_prediction_bool.shape}')
         print(f'species_target_bool[2000][2000]: {species_target_bool[2000][2000]}')
         print(f'species_prediction_bool[2000][2000]: {species_prediction_bool[2000][2000]}')
+        species_prediction_bool = np.logical_not(np.equal(species_prediction, 0))
 
         # calculate the true positives, false positives, true negatives and false negatives
         species_target_bool_negated = np.logical_not(species_target_bool)
