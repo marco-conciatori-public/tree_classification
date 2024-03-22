@@ -238,6 +238,7 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
 
 
 def load_img(orthomosaic_path) -> np.array:
+    Image.MAX_IMAGE_PIXELS = None
     try:
         return tifi.imread(orthomosaic_path)
     except Exception:
