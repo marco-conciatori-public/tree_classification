@@ -131,6 +131,8 @@ def load_target(folder_path: str, info: dict, target_extension: str = '', verbos
         species_id = utils.get_species_id_by_name(species_name, info['model_meta_data']['class_information'])
         img = load_img(file)
         # if target has third dimension, it will be converted to grayscale
+        if len(img.shape) == 3:
+            img = img.mean(axis=2)
         # print(f'img.shape: {img.shape}')
         # print(f'type img: {type(img)}')
         # print(f'info["effective_max_x"]: {info["effective_max_x"]}')
@@ -140,7 +142,7 @@ def load_target(folder_path: str, info: dict, target_extension: str = '', verbos
         # print(f'unique values in the image: {np.unique(img)}')
 
         # limit the size of the target to the effective size of the orthomosaic
-        img = img[: info['effective_max_x'], : info['effective_max_y'], :]
+        img = img[: info['effective_max_x'], : info['effective_max_y']]
         if species_id != -1:
             target_dict[species_id] = img
             if shape is None:
@@ -177,9 +179,8 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
         species_prediction = prediction[:, :, species_index]
         # print(f'species_prediction.shape: {species_prediction.shape}')
         # print(f'species_target.shape: {species_target.shape}')
-        species_target = species_target.sum(axis=2)
-        species_target = species_target / (255 * 3)
         # print(f'species_target[500][500]: {species_target[500][500]}')
+        species_target = species_target / 255
 
         # create auxiliary arrays to calculate the true positives, false positives, true negatives and false negatives
         species_target_bool = np.equal(species_target, 0)
