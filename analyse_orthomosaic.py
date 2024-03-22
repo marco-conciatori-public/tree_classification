@@ -228,6 +228,6 @@ if __name__ == '__main__':
     # model_id = int(input('Insert model id number: '))
     model_id = 4
     # img_folder = str(input('Insert name of the orthomosaic to analyse: '))
-    img_folder = 'subsite_1'
+    img_folder = 'zao_site_5'
     # img_folder = 'zao_1_211005'
     analyse_orthomosaic_(partial_name=partial_name, model_id=model_id, img_folder=img_folder, verbose=verbose)
