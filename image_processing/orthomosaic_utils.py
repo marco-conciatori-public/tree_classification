@@ -48,11 +48,11 @@ def save_class_layers(num_classes_plus_unknown: int,
 
 def save_effective_orthomosaic(orthomosaic: torch.Tensor, effective_max_x: int, effective_max_y: int, save_path: str):
     Path(save_path).mkdir(parents=True, exist_ok=True)
-    print(f'orthomosaic.shape: {orthomosaic.shape}')
+    # print(f'orthomosaic.shape: {orthomosaic.shape}')
     orthomosaic = orthomosaic.permute(1, 2, 0).numpy()
-    print(f'orthomosaic shape colors last: {orthomosaic.shape}')
+    # print(f'orthomosaic shape colors last: {orthomosaic.shape}')
     orthomosaic = orthomosaic[: effective_max_x, : effective_max_y, :]
-    print(f'orthomosaic effective shape: {orthomosaic.shape}')
+    # print(f'orthomosaic effective shape: {orthomosaic.shape}')
     tifi.imwrite(
         f'{save_path}subset_img.tif',
         data=orthomosaic,
@@ -127,9 +127,18 @@ def load_target(folder_path: str, info: dict, target_extension: str = '', verbos
             continue
         # the name of the file is the species name, after removing file extension
         species_name = file.name.split('.')[0]
-        print(f'species_name: {species_name}')
+        # print(f'species_name: {species_name}')
         species_id = utils.get_species_id_by_name(species_name, info['model_meta_data']['class_information'])
         img = load_img(file)
+        # if target has third dimension, it will be converted to grayscale
+        # print(f'img.shape: {img.shape}')
+        # print(f'type img: {type(img)}')
+        # print(f'info["effective_max_x"]: {info["effective_max_x"]}')
+        # print(f'info["effective_max_y"]: {info["effective_max_y"]}')
+        # print(f'img[0][0]: {img[0][0]}')
+        # print(f'type img[0][0]: {type(img[0][0])}')
+        # print(f'unique values in the image: {np.unique(img)}')
+
         # limit the size of the target to the effective size of the orthomosaic
         img = img[: info['effective_max_x'], : info['effective_max_y'], :]
         if species_id != -1:
@@ -141,7 +150,7 @@ def load_target(folder_path: str, info: dict, target_extension: str = '', verbos
                     raise ValueError(f'targets have different shapes: {shape} and {target_dict[species_id].shape}')
         else:
             if verbose >= 1:
-                print(f'skipping species {species_name}: it is not among the ones the model is trained to recognise')
+                print(f'\tskipping species {species_name}: it is not among the ones the model is trained to recognise')
     if verbose >= 1:
         print(f'loaded {len(target_dict)} targets')
     return target_dict
@@ -168,17 +177,17 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
         species_prediction = prediction[:, :, species_index]
         # print(f'species_prediction.shape: {species_prediction.shape}')
         # print(f'species_target.shape: {species_target.shape}')
-        # print(f'species_target[2000][2000]: {species_target[2000][2000]}')
         species_target = species_target.sum(axis=2)
         species_target = species_target / (255 * 3)
+        # print(f'species_target[500][500]: {species_target[500][500]}')
 
         # create auxiliary arrays to calculate the true positives, false positives, true negatives and false negatives
         species_target_bool = np.equal(species_target, 0)
         species_prediction_bool = np.logical_not(np.equal(species_prediction, 0))
         # print(f'species_target_bool.shape: {species_target_bool.shape}')
         # print(f'species_prediction_bool.shape: {species_prediction_bool.shape}')
-        # print(f'species_target_bool[2000][2000]: {species_target_bool[2000][2000]}')
-        # print(f'species_prediction_bool[2000][2000]: {species_prediction_bool[2000][2000]}')
+        # print(f'species_target_bool[500][500]: {species_target_bool[500][500]}')
+        # print(f'species_prediction_bool[500][500]: {species_prediction_bool[500][500]}')
         # temp_img = np.zeros((species_target_bool.shape[0], species_target_bool.shape[1], 4), dtype=np.uint8)
         # temp_img[:, :, 3] = species_target_bool * 255
         # color = info['model_meta_data']['class_information'][species_index]['display_color_rgb']
@@ -188,6 +197,7 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
         # tifi.imwrite('species_target.tif', data=temp_img)
         # temp_img[:, :, 3] = species_prediction_bool * 255
         # tifi.imwrite('species_prediction.tif', data=temp_img)
+        # exit()
 
         # calculate the true positives, false positives, true negatives and false negatives
         species_target_bool_negated = np.logical_not(species_target_bool)
@@ -196,10 +206,11 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
         false_positives = np.sum(np.logical_and(species_target_bool_negated, species_prediction_bool))
         true_negatives = np.sum(np.logical_and(species_target_bool_negated, species_prediction_bool_negated))
         false_negatives = np.sum(np.logical_and(species_target_bool, species_prediction_bool_negated))
-        print(f'true_positives: {true_positives}')
-        print(f'false_positives: {false_positives}')
-        print(f'true_negatives: {true_negatives}')
-        print(f'false_negatives: {false_negatives}')
+        if verbose >= 2:
+            print(f'\ttrue_positives: {true_positives}')
+            print(f'\tfalse_positives: {false_positives}')
+            print(f'\ttrue_negatives: {true_negatives}')
+            print(f'\tfalse_negatives: {false_negatives}')
 
         # calculate the precision, recall and f1 score
         # ifs are to avoid division by zero
