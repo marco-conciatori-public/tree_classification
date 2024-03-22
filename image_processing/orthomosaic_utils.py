@@ -241,8 +241,7 @@ def load_img(orthomosaic_path) -> np.array:
     try:
         return tifi.imread(orthomosaic_path)
     except Exception:
-        pass
-    try:
-        return np.array(Image.open(orthomosaic_path))
-    except Exception:
-        raise ValueError(f'could not load image: {orthomosaic_path}')
+        try:
+            return np.array(Image.open(orthomosaic_path))
+        except Exception:
+            raise ValueError(f'could not load image: {orthomosaic_path}')
