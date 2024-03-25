@@ -19,17 +19,19 @@ def analyse_orthomosaic_(**kwargs):
     # TODO: use probabilities instead of the top class
     # set patch_size to None to use the crop_size from the model. Only works for torchvision pretrained models
     # in pixels
-    patch_size = 103
-    stride = patch_size // 3
+    patch_size = kwargs['patch_size']
+    stride = kwargs['stride']
     print(f'stride: {stride} pixels')
     # confidence prediction probability above which the prediction is considered valid
-    confidence_threshold = 0.9
+    confidence_threshold = kwargs['confidence_threshold']
     print(f'Selected folder: {kwargs["img_folder"]}')
     # whether the target annotations are points or areas
     target_type = kwargs['target_type']
+    print(f'target_type: {target_type}')
     # how many pixels to shift from the first non-white pixel found to get to the center of the circle.
     # The first number is the x shift to the right, the second is the y shift to the bottom
-    shift_from_first_pixel = [2, 5]
+    shift_from_first_pixel = kwargs['shift_from_first_pixel']
+    print(f'shift_from_first_pixel: {shift_from_first_pixel}')
 
     # load model
     # best model for now: swin-2
@@ -257,10 +259,30 @@ if __name__ == '__main__':
     # img_folder = 'zao_1_211005'
     # target_type = 'area'
     target_type = 'point'
+    # whether the target annotations are points or areas
+    # how many pixels to shift from the first non-white pixel found to get to the center of the circle.
+    # The first number is the x shift to the right, the second is the y shift to the bottom
+    shift_from_first_pixel = [2, 5]
+
+    # dimension of the patches extracted from the orthomosaic and passed to the model
+    # set patch_size to None to use the crop_size from the model. Only works for torchvision pretrained models
+    # in pixels
+    patch_size = 103
+
+    # stride between patches, if it is lower than patch_size, there will be overlapping between patches
+    # in pixels
+    stride = patch_size // 3
+    # confidence prediction probability above which the prediction is considered valid
+    confidence_threshold = 0.9
+
     analyse_orthomosaic_(
         partial_name=partial_name,
         model_id=model_id,
         img_folder=img_folder,
         target_type=target_type,
+        shift_from_first_pixel=shift_from_first_pixel,
+        patch_size=patch_size,
+        stride=stride,
+        confidence_threshold=confidence_threshold,
         verbose=verbose,
     )
