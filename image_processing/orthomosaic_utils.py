@@ -158,7 +158,71 @@ def load_target(folder_path: str, info: dict, target_extension: str = '', verbos
     return target_dict
 
 
-def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: int = 0) -> dict:
+def evaluate_results_point(prediction: np.array,
+                           target: dict,
+                           info: dict,
+                           shift_from_first_pixel: list,
+                           verbose: int = 0,
+                           ) -> dict:
+    evaluation = {}
+    evaluation['total'] = {
+            'precision': 0,
+        }
+    square_edge_size = max(shift_from_first_pixel) * 2 + 2
+    # targets are images with the same shape as the predictions
+    # they contain small grayscale circles where one element of the class is present
+    for species_index in range(info['num_classes_plus_unknown']):
+        if species_index == info['unknown_class_id']:
+            continue
+        if verbose >= 2:
+            print(f'evaluating species: {info["model_meta_data"]["class_information"][species_index][global_constants.SPECIES_LANGUAGE]}')
+
+        # targets and predictions are in different dimensions in the arrays
+        species_target = target[species_index]
+        species_prediction = prediction[:, :, species_index]
+
+        # calculate the true positives, false positives, true negatives and false negatives
+        true_positives = 0
+        false_positives = 0
+        # extract the array of coordinates of the target centers in the target image
+        pixels_to_skip = []
+        for x in range(species_target.shape[0]):
+            for y in range(species_target.shape[1]):
+                if (x, y) in pixels_to_skip:
+                    continue
+                # if the pixel is not perfectly white, it is part of one target
+                if species_target[x][y] != 1:
+                    square_first_pixel = (x - shift_from_first_pixel[0] - 1, y - 1)
+                    for i in range(square_edge_size):
+                        for j in range(square_edge_size):
+                            pixels_to_skip.append((square_first_pixel[0] + i, square_first_pixel[1] + j))
+                            center = (x + shift_from_first_pixel[0], y + shift_from_first_pixel[1])
+
+                            if species_prediction[center[0]][center[1]] > 0:
+                                true_positives += 1
+                            else:
+                                false_positives += 1
+
+        if verbose >= 2:
+            print(f'\ttrue_positives: {true_positives}')
+            print(f'\tfalse_positives: {false_positives}')
+
+        # calculate the precision, recall and f1 score
+        # ifs are to avoid division by zero
+        precision = 0
+        if true_positives > 0:
+            precision = true_positives / (true_positives + false_positives)
+        if verbose >= 2:
+            print(f'\tprecision: {precision}')
+        evaluation[info["model_meta_data"]["class_information"][species_index][global_constants.SPECIES_LANGUAGE]] = {
+            'precision': precision,
+        }
+        evaluation['total']['precision'] += precision
+    evaluation['total']['precision'] /= info['model_meta_data']['num_classes']
+    return evaluation
+
+
+def evaluate_results_area(prediction: np.array, target: dict, info: dict, verbose: int = 0) -> dict:
     evaluation = {}
     evaluation['total'] = {
             'precision': 0,
