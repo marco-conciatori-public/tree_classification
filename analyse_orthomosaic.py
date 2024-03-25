@@ -97,7 +97,6 @@ def analyse_orthomosaic_(**kwargs):
     print(f'remove fourth/alpha channel orthomosaic.shape: {orthomosaic.shape}')
 
     # TODO: check if the model is trained with images with inverted colors (because this is with normal colors)
-
     # to tensor
     orthomosaic = tf.to_tensor(orthomosaic)
     print(f'to tensor orthomosaic.shape: {orthomosaic.shape}')
