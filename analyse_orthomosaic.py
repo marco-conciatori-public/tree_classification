@@ -2,6 +2,7 @@ import torch
 import datetime
 import warnings
 import numpy as np
+from pathlib import Path
 import torchvision.transforms.functional as tf
 
 import utils
@@ -59,7 +60,13 @@ def analyse_orthomosaic_(**kwargs):
 
     # load orthomosaic image
     start_time = end_time
-    orthomosaic_path = global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_folder'] + '/orthomosaic.jpg'
+    orthomosaic_folder_path = Path(global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_folder'])
+    matching_paths = orthomosaic_folder_path.glob('orthomosaic*')
+    matching_paths = list(matching_paths)
+    assert len(matching_paths) == 1, (f'there must be exactly 1 file named "orthomosaic" in the selected folder, but'
+                                      f' the search returned: {orthomosaic_folder_path}')
+    orthomosaic_path = matching_paths[0]
+    print(f'orthomosaic used: {orthomosaic_path}')
     orthomosaic = orthomosaic_utils.load_img(orthomosaic_path)
     # default orthomosaic dimensions: 43597 (larghezza) x 26482 (altezza) pixels
     # orthomosaic = orthomosaic[11000 : 14500, 7600 : 17600, :]
@@ -186,7 +193,7 @@ def analyse_orthomosaic_(**kwargs):
         'model_path': str(model_path),
         'model_id': kwargs['model_id'],
         'model_meta_data': meta_data,
-        'orthomosaic_path': orthomosaic_path,
+        'orthomosaic_path': str(orthomosaic_path),
         'confidence_threshold': confidence_threshold,
         'patch_size': patch_size,
         'stride': stride,
