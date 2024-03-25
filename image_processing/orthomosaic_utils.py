@@ -129,7 +129,11 @@ def load_target(folder_path: str, info: dict, target_extension: str = '', verbos
         species_name = file.name.split('.')[0]
         # print(f'species_name: {species_name}')
         species_id = utils.get_species_id_by_name(species_name, info['model_meta_data']['class_information'])
-        img = load_img(file)
+        try:
+            img = load_img(file)
+        except Exception:
+            print('skipping file')
+            continue
         # if target has third dimension, it will be converted to grayscale
         if len(img.shape) == 3:
             img = img.mean(axis=2)
