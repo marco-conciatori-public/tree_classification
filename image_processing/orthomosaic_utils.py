@@ -199,7 +199,8 @@ def evaluate_results_point(prediction: np.array,
                     continue
                 # if the pixel is not perfectly white, it is part of one target
                 if species_target[x][y] != 1:
-                    square_first_pixel = (x - shift_from_first_pixel[0] - 1, y - 1)
+                    # check that the top left pixel of the square is inside the image
+                    square_first_pixel = (max(x - shift_from_first_pixel[0] - 1, 0), max(y - 1, 0))
                     for i in range(square_edge_size):
                         for j in range(square_edge_size):
                             pixels_to_skip.append((square_first_pixel[0] + i, square_first_pixel[1] + j))
