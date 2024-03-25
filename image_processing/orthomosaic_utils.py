@@ -190,6 +190,8 @@ def evaluate_results_point(prediction: np.array,
         false_positives = 0
         # extract the array of coordinates of the target centers in the target image
         pixels_to_skip = []
+        max_x = species_target.shape[0]
+        max_y = species_target.shape[1]
         for x in range(species_target.shape[0]):
             for y in range(species_target.shape[1]):
                 if (x, y) in pixels_to_skip:
@@ -201,11 +203,11 @@ def evaluate_results_point(prediction: np.array,
                         for j in range(square_edge_size):
                             pixels_to_skip.append((square_first_pixel[0] + i, square_first_pixel[1] + j))
                             center = (x + shift_from_first_pixel[0], y + shift_from_first_pixel[1])
-
-                            if species_prediction[center[0]][center[1]] > 0:
-                                true_positives += 1
-                            else:
-                                false_positives += 1
+                            if (center[0] < max_x) and (center[1] < max_y):
+                                if species_prediction[center[0]][center[1]] > 0:
+                                    true_positives += 1
+                                else:
+                                    false_positives += 1
 
         if verbose >= 2:
             print(f'\ttrue_positives: {true_positives}')
