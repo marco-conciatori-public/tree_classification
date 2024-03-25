@@ -251,9 +251,9 @@ if __name__ == '__main__':
     # partial_name = str(input('Insert name or part of the name of a model: '))
     partial_name = 'swin'
     # model_id = int(input('Insert model id number: '))
-    model_id = 4
+    model_id = 3
     # img_folder = str(input('Insert name of the orthomosaic to analyse: '))
-    img_folder = 'zao_site_5'
+    img_folder = 'zao_site_5_autumn_subsite'
     # img_folder = 'zao_1_211005'
     # target_type = 'point'
     target_type = 'points'
