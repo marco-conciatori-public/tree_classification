@@ -255,8 +255,8 @@ if __name__ == '__main__':
     # img_folder = str(input('Insert name of the orthomosaic to analyse: '))
     img_folder = 'zao_site_5_autumn_subsite'
     # img_folder = 'zao_1_211005'
-    # target_type = 'point'
-    target_type = 'points'
+    # target_type = 'area'
+    target_type = 'point'
     analyse_orthomosaic_(
         partial_name=partial_name,
         model_id=model_id,
