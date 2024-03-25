@@ -263,18 +263,15 @@ if __name__ == '__main__':
     # how many pixels to shift from the first non-white pixel found to get to the center of the circle.
     # The first number is the x shift to the right, the second is the y shift to the bottom
     shift_from_first_pixel = [2, 5]
-
     # dimension of the patches extracted from the orthomosaic and passed to the model
     # set patch_size to None to use the crop_size from the model. Only works for torchvision pretrained models
     # in pixels
     patch_size = 103
-
     # stride between patches, if it is lower than patch_size, there will be overlapping between patches
     # in pixels
     stride = patch_size // 3
     # confidence prediction probability above which the prediction is considered valid
     confidence_threshold = 0.9
-
     analyse_orthomosaic_(
         partial_name=partial_name,
         model_id=model_id,
