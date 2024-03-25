@@ -125,18 +125,19 @@ def load_target(folder_path: str, info: dict, target_extension: str = '', verbos
         if 'orthomosaic' in file.name:
             print('\tskipping orthomosaic')
             continue
-        # the name of the file is the species name, after removing file extension
-        species_name = file.name.split('.')[0]
-        # print(f'species_name: {species_name}')
-        species_id = utils.get_species_id_by_name(species_name, info['model_meta_data']['class_information'])
         try:
             img = load_img(file)
         except Exception:
-            print('skipping file')
+            print('\tskipping unrecognized file')
             continue
         # if target has third dimension, it will be converted to grayscale
         if len(img.shape) == 3:
             img = img.mean(axis=2)
+        # the name of the file is the species name, after removing file extension
+        species_name = file.name.split('.')[0]
+        # print(f'species_name: {species_name}')
+        species_id = utils.get_species_id_by_name(species_name, info['model_meta_data']['class_information'])
+
         # print(f'img.shape: {img.shape}')
         # print(f'type img: {type(img)}')
         # print(f'info["effective_max_x"]: {info["effective_max_x"]}')
