@@ -206,11 +206,10 @@ def evaluate_results_point(prediction: np.array,
                             pixels_to_skip.append((square_first_pixel[0] + i, square_first_pixel[1] + j))
                     # check that the center is inside the image
                     center = (min(x + shift_from_first_pixel[0], max_x), min(y + shift_from_first_pixel[1], max_y))
-                    if (center[0] < max_x) and (center[1] < max_y):
-                        if species_prediction[center[0]][center[1]] > 0:
-                            true_positives += 1
-                        else:
-                            false_positives += 1
+                    if species_prediction[center[0]][center[1]] > 0:
+                        true_positives += 1
+                    else:
+                        false_positives += 1
 
         if verbose >= 2:
             print(f'\ttrue_positives: {true_positives}')
