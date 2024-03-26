@@ -187,6 +187,9 @@ def evaluate_results_point(prediction: np.array,
         # convert the target to [0, 1] range
         species_target = species_target / 255
         species_prediction = prediction[:, :, species_index]
+        # exchange the x and y axes
+        species_prediction = np.swapaxes(species_prediction, 0, 1)
+        species_target = np.swapaxes(species_target, 0, 1)
 
         # calculate the true positives, false positives, true negatives and false negatives
         true_positives = 0
