@@ -260,7 +260,11 @@ def evaluate_results_area(prediction: np.array, target: dict, info: dict, verbos
         species_target = species_target / 255
 
         # create auxiliary arrays to calculate the true positives, false positives, true negatives and false negatives
-        species_target_bool = np.equal(species_target, 0)
+        # for target 1 is white and means the species is not present, while any non-white color
+        # (only gray scale) means the species is present
+        # for prediction is the opposite: with 0 the species is not present and with any value greather than 0
+        # it is present
+        species_target_bool = np.logical_not(np.equal(species_target, 1))
         species_prediction_bool = np.logical_not(np.equal(species_prediction, 0))
         # print(f'species_target_bool.shape: {species_target_bool.shape}')
         # print(f'species_prediction_bool.shape: {species_prediction_bool.shape}')
