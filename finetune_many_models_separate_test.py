@@ -5,7 +5,7 @@ from data_preprocessing import get_ready_data
 from models import training, evaluation, model_utils
 
 
-def finetune_pretrained_model_(**kwargs):
+def finetune_many_models_separate_test_(**kwargs):
     # import parameters
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['display_confusion_matrix'] = True
@@ -65,7 +65,7 @@ def finetune_pretrained_model_(**kwargs):
         parameters_to_save['img_original_pixel_size'] = img_original_pixel_size
         parameters_to_save['img_shape'] = img_shape
         parameters_to_save['class_information'] = class_information
-        training_history = training.train(
+        _ = training.train(
             model=model,
             training_data=train_dl,
             validation_data=val_dl,
@@ -82,8 +82,15 @@ def finetune_pretrained_model_(**kwargs):
             extra_info_to_save=parameters_to_save,
         )
 
+        if isinstance(parameters['test_data_path'], list):
+            assert len(parameters['test_data_path']) == parameters['num_models_to_train'], \
+                'The number of test data paths must be equal to the number of models to train, if it is a list.'
+            test_data_path_ = parameters['test_data_path'][model_num]
+
+        else:
+            test_data_path_ = parameters['test_data_path']
         test_dl, _, _, class_information = get_ready_data.get_data(
-            data_path='data/step_1_test_5_species/',
+            data_path=test_data_path_,
             batch_size=parameters['batch_size'],
             shuffle=parameters['shuffle'],
             balance_data=parameters['balance_data'],
@@ -162,10 +169,11 @@ if __name__ == '__main__':
     #     print(f'new_train_val_test_proportions: {new_train_val_test_proportions}')
     #     finetune_pretrained_model_(train_val_test_proportions=new_train_val_test_proportions)
 
-    input_data_folder = 'step_1_less_data/balanced_'
-    for i in range(65, 0, -5):
-        new_input_data_folder = f'{input_data_folder}{i}/'
-        print(f'new_input_data_folder: {new_input_data_folder}')
-        finetune_pretrained_model_(input_data_folder=new_input_data_folder, verbose=1)
-
-    # finetune_pretrained_model_()
+    # input_data_folder = 'step_1_less_data/balanced_'
+    # for i in range(65, 0, -5):
+    #     new_input_data_folder = f'{input_data_folder}{i}/'
+    #     print(f'new_input_data_folder: {new_input_data_folder}')
+    #     finetune_pretrained_model_(input_data_folder=new_input_data_folder, verbose=1)
+    # either a single path for all the models or a list of paths, exactly one for model
+    test_data_path = 'data/step_1_test_5_species/'
+    finetune_many_models_separate_test_(test_data_path=test_data_path)
