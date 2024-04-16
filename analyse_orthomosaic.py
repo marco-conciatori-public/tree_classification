@@ -195,7 +195,6 @@ def analyse_orthomosaic_(**kwargs):
         'effective_max_y': effective_max_y,
         'num_classes_plus_unknown': num_classes_plus_unknown,
         'unknown_class_id': unknown_class_id,
-        'shift_from_first_pixel': shift_from_first_pixel,
     }
     orthomosaic_utils.save_output(
         species_distribution=species_distribution,
@@ -250,7 +249,6 @@ if __name__ == '__main__':
         partial_name=partial_name,
         model_id=model_id,
         img_folder=img_folder,
-        shift_from_first_pixel=shift_from_first_pixel,
         patch_size=patch_size,
         stride=stride,
         confidence_threshold=confidence_threshold,
