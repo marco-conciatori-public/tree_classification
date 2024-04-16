@@ -66,7 +66,7 @@ def analyse_orthomosaic_(**kwargs):
     matching_paths = orthomosaic_folder_path.glob('orthomosaic*')
     matching_paths = list(matching_paths)
     assert len(matching_paths) == 1, (f'there must be exactly 1 file named "orthomosaic" in the selected folder, but'
-                                      f' the search returned: {orthomosaic_folder_path}')
+                                      f' the search returned: {matching_paths}')
     orthomosaic_path = matching_paths[0]
     print(f'orthomosaic used: {orthomosaic_path}')
     orthomosaic = orthomosaic_utils.load_img(orthomosaic_path)
