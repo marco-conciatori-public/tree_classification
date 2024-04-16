@@ -25,13 +25,6 @@ def analyse_orthomosaic_(**kwargs):
     # confidence prediction probability above which the prediction is considered valid
     confidence_threshold = kwargs['confidence_threshold']
     print(f'Selected folder: {kwargs["img_folder"]}')
-    # whether the target annotations are points or areas
-    target_type = kwargs['target_type']
-    print(f'target_type: {target_type}')
-    # how many pixels to shift from the first non-white pixel found to get to the center of the circle.
-    # The first number is the x shift to the right, the second is the y shift to the bottom
-    shift_from_first_pixel = kwargs['shift_from_first_pixel']
-    print(f'shift_from_first_pixel: {shift_from_first_pixel}')
 
     # load model
     # best model for now: swin-2
@@ -202,7 +195,6 @@ def analyse_orthomosaic_(**kwargs):
         'effective_max_y': effective_max_y,
         'num_classes_plus_unknown': num_classes_plus_unknown,
         'unknown_class_id': unknown_class_id,
-        'target_type': target_type,
         'shift_from_first_pixel': shift_from_first_pixel,
     }
     orthomosaic_utils.save_output(
@@ -223,23 +215,12 @@ def analyse_orthomosaic_(**kwargs):
         verbose=kwargs['verbose'],
     )
     # print(f'real_species_distribution.shape: {real_species_distribution.shape}')
-    if target_type == 'area':
-        info['evaluation'] = orthomosaic_utils.evaluate_results_area(
-            prediction=species_distribution,
-            target=real_species_distribution,
-            info=info,
-            verbose=kwargs['verbose'],
-        )
-    elif target_type == 'point':
-        info['evaluation'] = orthomosaic_utils.evaluate_results_point(
-            prediction=species_distribution,
-            target=real_species_distribution,
-            shift_from_first_pixel=shift_from_first_pixel,
-            info=info,
-            verbose=kwargs['verbose'],
-        )
-    else:
-        raise ValueError(f'Invalid target type: {target_type}')
+    info['evaluation'] = orthomosaic_utils.evaluate_results(
+        prediction=species_distribution,
+        target=real_species_distribution,
+        info=info,
+        verbose=kwargs['verbose'],
+    )
     if verbose > 1:
         utils.pretty_print_dict(info['evaluation'])
 
@@ -256,11 +237,6 @@ if __name__ == '__main__':
     # img_folder = str(input('Insert name of the orthomosaic to analyse: '))
     img_folder = 'zao_site_5_autumn'
     # img_folder = 'zao_1_211005'
-    # whether the target annotations are points or areas
-    target_type = 'area'
-    # how many pixels to shift from the first non-white pixel found to get to the center of the circle.
-    # The first number is the x shift to the right, the second is the y shift to the bottom
-    shift_from_first_pixel = [2, 5]
     # dimension of the patches extracted from the orthomosaic and passed to the model
     # set patch_size to None to use the crop_size from the model. Only works for torchvision pretrained models
     # in pixels
@@ -274,7 +250,6 @@ if __name__ == '__main__':
         partial_name=partial_name,
         model_id=model_id,
         img_folder=img_folder,
-        target_type=target_type,
         shift_from_first_pixel=shift_from_first_pixel,
         patch_size=patch_size,
         stride=stride,
