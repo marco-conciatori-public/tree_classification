@@ -258,7 +258,6 @@ if __name__ == '__main__':
     # img_folder = 'zao_1_211005'
     # whether the target annotations are points or areas
     target_type = 'area'
-    # target_type = 'point'
     # how many pixels to shift from the first non-white pixel found to get to the center of the circle.
     # The first number is the x shift to the right, the second is the y shift to the bottom
     shift_from_first_pixel = [2, 5]
