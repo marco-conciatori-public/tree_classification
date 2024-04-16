@@ -61,7 +61,9 @@ also some script-specific parameters that can be modified directly inside some o
 The script analyse_orthomosaic.py automatically applies the model to a whole orthomosaic and creates a heatmap of the 
 species distribution. It uses a model trained on 100X100 pixels patches with the first script described, and it expects
 the orthomosaic to be in the folder "tree_classification/data/orthomosaic/{your_orthomosaic_folder}" with the name
-"orthomosaic". This is because it is possible to add in the same folder the expected output to evaluate the algorithm.
+"orthomosaic". The chosen folder must be specified to the script through the parameter
+"img_folder = {your_orthomosaic_folder}" (modify config.yaml or use command line argument). The extra folder layer is
+needed because it is possible to add in the same folder the expected output to evaluate the algorithm.
 The output of this script is an image file for each species with the same shape as the orthomosaic, where each pixel
 is colored only if the NN thinks there is that species in the corresponding position in the orthomosaic. If a pixel
 is colored, its degree of transparency represent the certainty with which the algorithm classified it. The output is
