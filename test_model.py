@@ -119,24 +119,25 @@ def test_model_(**kwargs):
 
 
 if __name__ == '__main__':
-    # partial_name = str(input('Insert name or part of the name of a model: '))
-    # model_id = int(input('Insert model id number: '))
-    pair_input_list = [
-        # ('convnext', 1),
-        # ('regnet_y', 0),
-        # ('resnet50', 0),
-        # ('swin_t', 0),
-        # ('swin_t', 1),
-        ('swin_t', 2),
-        # ('swin_t', 3),
-        # ('swin_t', 4),
-    ]
-    input_data_folder = 'step_1_test_5_species'
+    partial_name = str(input('Insert name or part of the name of a model: '))
+    model_id = int(input('Insert model id number: '))
+    # pair_input_list = [
+    #     ('convnext', 1),
+    #     ('regnet_y', 0),
+    #     ('resnet50', 0),
+    #     ('swin_t', 0),
+    #     ('swin_t', 1),
+    #     ('swin_t', 2),
+    #     ('swin_t', 3),
+    #     ('swin_t', 4),
+    # ]
+    # input_data_folder = 'step_1_test_5_species'
     display_confusion_matrix = True
-    for partial_name, model_id in pair_input_list:
-        test_model_(
-            partial_name=partial_name,
-            model_id=model_id,
-            input_data_folder=input_data_folder,
-            display_confusion_matrix=display_confusion_matrix,
-        )
+    # for partial_name, model_id in pair_input_list:
+    #     test_model_(
+    #         partial_name=partial_name,
+    #         model_id=model_id,
+    #         input_data_folder=input_data_folder,
+    #         display_confusion_matrix=display_confusion_matrix,
+    #     )
+    test_model_(partial_name=partial_name, model_id=model_id)
