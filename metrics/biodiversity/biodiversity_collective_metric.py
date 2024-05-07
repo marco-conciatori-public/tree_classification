@@ -37,39 +37,36 @@ class BiodiversityCollectiveMetric(torchmetrics.Metric):
         biodiversity_results = {}
         for metric_name in self.biodiversity_metric_names:
             biodiversity_results[metric_name] = {}
-            # metric = getattr(metrics.biodiversity, metric_name)
-            # biodiversity_results[metric_name]['true_result'] = metric.get_bio_diversity_index(self.tag_list)
-            # biodiversity_results[metric_name]['predicted_result'] = metric.get_bio_diversity_index(
-            #     self.prediction_list,
-            # )
 
-        # print(f'biodiversity_results: {biodiversity_results}')
-        # print(f'self.biodiversity_metric_names: {self.biodiversity_metric_names}')
+        if 'gini_simpson_index' in self.biodiversity_metric_names:
+            biodiversity_results['gini_simpson_index']['true_result'] = gini_simpson_index.get_bio_diversity_index(
+                tag_list=self.tag_list,
+                class_information=self.class_information,
+            )
+            biodiversity_results['gini_simpson_index']['predicted_result'] = gini_simpson_index.get_bio_diversity_index(
+                tag_list=self.prediction_list,
+                class_information=self.class_information,
+            )
 
-        biodiversity_results['gini_simpson_index']['true_result'] = gini_simpson_index.get_bio_diversity_index(
-            tag_list=self.tag_list,
-            class_information=self.class_information,
-        )
-        biodiversity_results['gini_simpson_index']['predicted_result'] = gini_simpson_index.get_bio_diversity_index(
-            tag_list=self.prediction_list,
-            class_information=self.class_information,
-        )
-        biodiversity_results['shannon_wiener_index']['true_result'] = shannon_wiener_index.get_bio_diversity_index(
-            tag_list=self.tag_list,
-            class_information=self.class_information,
-            log_base=self.log_base,
-        )
-        biodiversity_results['shannon_wiener_index']['predicted_result'] = shannon_wiener_index.get_bio_diversity_index(
-            tag_list=self.prediction_list,
-            class_information=self.class_information,
-            log_base=self.log_base,
-        )
-        biodiversity_results['species_richness']['true_result'] = species_richness.get_bio_diversity_index(
-            tag_list=self.tag_list
-        )
-        biodiversity_results['species_richness']['predicted_result'] = species_richness.get_bio_diversity_index(
-            tag_list=self.prediction_list
-        )
+        if 'shannon_wiener_index' in self.biodiversity_metric_names:
+            biodiversity_results['shannon_wiener_index']['true_result'] = shannon_wiener_index.get_bio_diversity_index(
+                tag_list=self.tag_list,
+                class_information=self.class_information,
+                log_base=self.log_base,
+            )
+            biodiversity_results['shannon_wiener_index']['predicted_result'] = shannon_wiener_index.get_bio_diversity_index(
+                tag_list=self.prediction_list,
+                class_information=self.class_information,
+                log_base=self.log_base,
+            )
+
+        if 'species_richness' in self.biodiversity_metric_names:
+            biodiversity_results['species_richness']['true_result'] = species_richness.get_bio_diversity_index(
+                tag_list=self.tag_list
+            )
+            biodiversity_results['species_richness']['predicted_result'] = species_richness.get_bio_diversity_index(
+                tag_list=self.prediction_list
+            )
 
         # biodiversity_results['species_count'] = {}
         # biodiversity_results['species_count']['true_result'] = metric_utils.get_num_trees_by_species(
