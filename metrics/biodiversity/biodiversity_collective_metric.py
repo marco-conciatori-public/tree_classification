@@ -37,7 +37,7 @@ class BiodiversityCollectiveMetric(torchmetrics.Metric):
         biodiversity_results = {}
         for metric_name in self.biodiversity_metric_names:
             biodiversity_results[metric_name] = {}
-            # metric = getattr(biodiversity_metrics, metric_name)
+            # metric = getattr(metrics.biodiversity, metric_name)
             # biodiversity_results[metric_name]['true_result'] = metric.get_bio_diversity_index(self.tag_list)
             # biodiversity_results[metric_name]['predicted_result'] = metric.get_bio_diversity_index(
             #     self.prediction_list,

@@ -3,7 +3,7 @@ import global_constants
 from import_args import args
 from models import evaluation, model_utils
 from data_preprocessing import data_loading, get_ready_data
-from biodiversity_metrics import gini_simpson_index, species_richness, shannon_wiener_index
+from metrics.biodiversity import gini_simpson_index, species_richness, shannon_wiener_index
 
 
 def compute_biodiversity_(**kwargs):
