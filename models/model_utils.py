@@ -21,7 +21,7 @@ def create_model(model_class_name: str,
                  name: str = None,
                  verbose: int = 0,
                  ) -> torch.nn.Module:
-    assert device is not None, f'ERROR: torch could not find suitable cpu or gpu to use (device: {device})'
+    assert device is not None, f'torch could not find suitable cpu or gpu to use (device: {device})'
 
     if name is None:
         name = model_class_name
@@ -65,7 +65,7 @@ def save_model_and_meta_data(model: torch.nn.Module,
     Path(save_path).mkdir(parents=True, exist_ok=True)
 
     file_name = f'{model.name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{model.id}'
-    assert file_name is not None, 'ERROR: unable to retrieve model information'
+    assert file_name is not None, 'unable to retrieve model information'
 
     model_path = save_path + file_name + global_constants.PYTORCH_FILE_EXTENSION
     torch.save(obj=(model, custom_transforms), f=model_path)
@@ -232,7 +232,7 @@ def save_test_results(cm_true_values: list,
         print(f'Updating meta data information with test results...')
 
     file_name = f'{model.name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{model.id}'
-    assert file_name is not None, 'ERROR: unable to retrieve model information'
+    assert file_name is not None, 'unable to retrieve model information'
     meta_data_path = f'{save_path}{file_name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}' \
                      f'{global_constants.INFO_FILE_NAME}.json'
     if verbose >= 2:

@@ -6,8 +6,7 @@ import torchvision.transforms.functional as tf
 
 class Dataset_from_obs_targets(Dataset):
     def __init__(self, obs_list: list, target_list: list, name: str = None):
-        assert len(obs_list) == len(target_list), 'ERROR: obs_list and' \
-                   ' target_list must have the same number of elements'
+        assert len(obs_list) == len(target_list), 'obs_list and target_list must have the same number of elements'
 
         self.obs_list = obs_list
         self.target_list = target_list
@@ -45,7 +44,7 @@ class Dataset_from_obs_targets(Dataset):
         )
 
     def random_split(self, lengths: list, generator=None) -> list:
-        assert sum(lengths) == len(self), f'ERROR: sum(lengths) ({sum(lengths)}) must equal len(self) ({len(self)})'
+        assert sum(lengths) == len(self), f'sum(lengths) ({sum(lengths)}) must equal len(self) ({len(self)})'
         ds_list = []
         if generator is not None:
             # TODO: implement generator
@@ -55,7 +54,7 @@ class Dataset_from_obs_targets(Dataset):
             np.random.shuffle(sequence)
             base = 0
             for length in lengths:
-                assert length > 0, 'ERROR: all elements of "lengths" must be greater than 0'
+                assert length > 0, 'all elements of "lengths" must be greater than 0'
                 temp_obs_list = []
                 temp_target_list = []
                 for i in range(base, base + length):

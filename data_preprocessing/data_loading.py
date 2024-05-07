@@ -62,7 +62,7 @@ def load_data(data_path: str,
 
     if use_only_classes is not None and len(use_only_classes) > 0:
         for class_id in use_only_classes:
-            assert class_id in classes_found, f'Class "{global_constants.CLASS_INFORMATION[class_id][global_constants.SPECIES_LANGUAGE]}" not found in chosen data "{data_path}"'
+            assert class_id in classes_found, f'class "{global_constants.CLASS_INFORMATION[class_id][global_constants.SPECIES_LANGUAGE]}" not found in chosen data "{data_path}"'
     else:
         classes_use_only = classes_found
     classes_use_only.sort()
