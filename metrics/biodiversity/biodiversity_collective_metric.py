@@ -68,14 +68,5 @@ class BiodiversityCollectiveMetric(torchmetrics.Metric):
                 tag_list=self.prediction_list
             )
 
-        # biodiversity_results['species_count'] = {}
-        # biodiversity_results['species_count']['true_result'] = metric_utils.get_num_trees_by_species(
-        #     tag_list=self.tag_list,
-        #     class_information=self.class_information,
-        # )
-        # biodiversity_results['species_count']['predicted_result'] = metric_utils.get_num_trees_by_species(
-        #     self.prediction_list,
-        #     class_information=self.class_information,
-        # )
 
         return biodiversity_results
