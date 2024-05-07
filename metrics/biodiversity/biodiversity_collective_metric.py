@@ -1,6 +1,6 @@
 import torchmetrics
 
-from metrics.biodiversity import gini_simpson_index, shannon_wiener_index, species_richness
+from metrics.biodiversity import gini_simpson_index, shannon_wiener_index, species_richness, multiclass_accuracy
 
 
 class BiodiversityCollectiveMetric(torchmetrics.Metric):
@@ -68,5 +68,14 @@ class BiodiversityCollectiveMetric(torchmetrics.Metric):
                 tag_list=self.prediction_list
             )
 
+        stat_scores = torchmetrics.functional.classification.stat_scores(
+            self.tag_list,
+            self.prediction_list,
+            num_classes=len(self.class_information),
+            average='none',
+        )
+        test_result = multiclass_accuracy.test_accuracy(stat_scores=stat_scores)
+        print(f'test_result: {test_result}')
+        exit()
 
         return biodiversity_results
