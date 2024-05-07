@@ -1,4 +1,4 @@
-from biodiversity_metrics import metric_utils
+from metrics.biodiversity import metric_utils
 
 
 def get_bio_diversity_index(tag_list: list, class_information: dict) -> float:

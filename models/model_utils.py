@@ -6,7 +6,7 @@ import torchmetrics
 from pathlib import Path
 import torchvision.transforms.functional as tf
 from torchvision import models as torchvision_models
-from biodiversity_metrics import biodiversity_collective_metric
+from metrics.biodiversity import biodiversity_collective_metric
 
 import utils
 import global_constants

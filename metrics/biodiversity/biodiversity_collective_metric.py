@@ -1,6 +1,6 @@
 import torchmetrics
 
-from biodiversity_metrics import metric_utils, gini_simpson_index, shannon_wiener_index, species_richness
+from metrics.biodiversity import gini_simpson_index, shannon_wiener_index, species_richness
 
 
 class BiodiversityCollectiveMetric(torchmetrics.Metric):
