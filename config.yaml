@@ -3,7 +3,7 @@ input_data_folder: paper_data/
 #input_data_folder: step_1_unique_5_species/
 # TODO: not fully implemented yet only some of the random operations use this seed
 random_seed: null  # set to null for different results each time
-num_models_to_train: 3
+num_models_to_train: 1
 # a prediction of the network is considered of the top class if its confidence is above this threshold
 # if the confidence is below this threshold, the prediction is considered as "unknown"
 confidence_threshold: 0.9
@@ -60,7 +60,7 @@ pretrained_model_parameters:
 # width and height of images
 batch_size: 16
 #img_dim: 95
-num_epochs: 20
+num_epochs: 12
 optimizer_parameters:
     optimizer_name: Adam
     weight_decay: 0.001
@@ -83,7 +83,8 @@ use_only_classes: []
 
 metric_names:
     classification: [accuracy, precision, recall, f1score]
-    biodiversity: [gini_simpson_index, shannon_wiener_index, species_richness]
+#    biodiversity: [gini_simpson_index, shannon_wiener_index, species_richness]
+    biodiversity: []
 
 # MODEL USAGE PARAMETERS
 jump: 1
