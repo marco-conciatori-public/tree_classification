@@ -97,4 +97,4 @@ class MetricManager(torchmetrics.Metric):
             'biodiversity': biodiversity_results,
             'classification': classification_results,
         }
-        return biodiversity_results, classification_results
+        return result
