@@ -110,17 +110,26 @@ def print_formatted_results(loss: float,
                             metrics: dict,
                             title: str = 'RESULTS',
                             ) -> None:
+    print(metrics)
     print(title)
-    print(f'- Loss: {loss}')
+    print(f'- loss: {loss}')
     for metric_type in metrics:
-        as_percentage = True
+        print(f'- {metric_type}:')
         if metric_type == 'biodiversity':
-            as_percentage = False
-        print(f'{metric_type}:')
-        for metric_name in metrics[metric_type]:
-            result = metrics[metric_type][metric_name]
-            formatted_result = format_value(value=result, as_percentage=as_percentage)
-            print(f'\t- {metric_name}: {formatted_result}')
+            for metric_name in metrics[metric_type]:
+                print(f'\t- {metric_name}:')
+                result_dict = metrics[metric_type][metric_name]
+                true_result = result_dict['true_result']
+                predicted_result = result_dict['predicted_result']
+                print(f'\t\t- ground truth: {format_value(value=true_result, as_percentage=False)}')
+                print(f'\t\t- prediction:   {format_value(value=predicted_result, as_percentage=False)}')
+        elif metric_type == 'classification':
+            for metric_name in metrics[metric_type]:
+                result = metrics[metric_type][metric_name]
+                formatted_result = format_value(value=result, as_percentage=True)
+                print(f'\t- {metric_name}: {formatted_result}')
+        else:
+            raise ValueError(f'unexpected metric type "{metric_type}"')
 
 
 def format_value(value,
