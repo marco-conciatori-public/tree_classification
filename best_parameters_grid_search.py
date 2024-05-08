@@ -1,6 +1,5 @@
 import json
 import datetime
-import warnings
 from pathlib import Path
 
 import utils
@@ -16,15 +15,9 @@ def best_parameters_grid_search_(**kwargs):
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 0
     parameters['random_seed'] = None
-    for metric in parameters['metrics'].values():
-        try:
-            if metric['average'] == 'none' or metric['average'] is None:
-                metric['average'] = 'weighted'
-                warnings.warn(f'Changed metric average to "weighted". By_class results are not useful for grid search.')
-        except KeyError:
-            continue
-    if 'BiodiversityCollectiveMetric' in parameters['metrics']:
-        del parameters['metrics']['BiodiversityCollectiveMetric']
+    if 'biodiversity' in parameters['metric_names']:
+        parameters['metric_names']['biodiversity'] = {}
+    classification_metric_names = parameters['metric_names']['classification']
     interrupted = False
     print('Initial date and time:')
     global_start_time = datetime.datetime.now()
@@ -103,7 +96,7 @@ def best_parameters_grid_search_(**kwargs):
 
                                     start_time = datetime.datetime.now()
                                     average_loss_test = 0
-                                    average_metrics_test = {metric_name: 0 for metric_name in parameters['metrics']}
+                                    average_metrics_test = {metric_name: 0 for metric_name in classification_metric_names}
                                     for i in range(num_tests_for_configuration):
                                         model = model_utils.get_torchvision_model(
                                             pretrained_model_parameters=pretrained_model_parameters,
@@ -135,7 +128,7 @@ def best_parameters_grid_search_(**kwargs):
                                             device=parameters['device'],
                                             class_information=class_information,
                                             display_confusion_matrix=False,
-                                            metrics=parameters['metrics'],
+                                            metrics=parameters['metric_names'],
                                             save_results=False,
                                             verbose=parameters['verbose'],
                                         )
@@ -144,7 +137,7 @@ def best_parameters_grid_search_(**kwargs):
                                             average_metrics_test[metric_name] += metric_evaluation['result'].item()
 
                                     average_loss_test = average_loss_test / num_tests_for_configuration
-                                    for metric_name in parameters['metrics']:
+                                    for metric_name in classification_metric_names:
                                         average_metrics_test[metric_name] = average_metrics_test[metric_name] / \
                                                                                 num_tests_for_configuration
 
@@ -202,7 +195,7 @@ def best_parameters_grid_search_(**kwargs):
         'train_val_test_proportions': parameters['train_val_test_proportions'],
         'tolerance': parameters['tolerance'],
         'random_seed': parameters['random_seed'],
-        'metrics': parameters['metrics'],
+        'metrics': parameters['metric_names'],
         'search_space': search_space,
         'results': results,
     }

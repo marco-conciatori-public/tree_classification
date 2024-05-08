@@ -58,7 +58,7 @@ def compute_biodiversity_(**kwargs):
             device=parameters['device'],
             class_information=meta_data['class_information'],
             display_confusion_matrix=parameters['display_confusion_matrix'],
-            metrics=parameters['metrics'],
+            metrics=parameters['metric_names'],
             save_results=parameters['save_model'],
             save_path=global_constants.MODEL_OUTPUT_DIR,
             verbose=parameters['verbose'],
