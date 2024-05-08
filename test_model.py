@@ -24,7 +24,6 @@ def test_model_(**kwargs):
         model_id=parameters['model_id'],
         folder_path=global_constants.MODEL_OUTPUT_DIR,
     )
-
     loaded_model, custom_transforms, meta_data = model_utils.load_model(
         model_path=model_path,
         device=device,
