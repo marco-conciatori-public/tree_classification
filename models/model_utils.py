@@ -110,7 +110,6 @@ def print_formatted_results(loss: float,
                             metrics: dict,
                             title: str = 'RESULTS',
                             ) -> None:
-    print(metrics)
     print(title)
     print(f'- loss: {loss}')
     for metric_type in metrics:
