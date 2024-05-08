@@ -4,6 +4,7 @@ import numpy as np
 
 import utils
 from models import model_utils
+from metrics.metric_manager import MetricManager
 
 
 def train(model: torch.nn.Module,
@@ -37,12 +38,14 @@ def train(model: torch.nn.Module,
     )
 
     num_classes = len(class_information)
-    training_metrics = model_utils.get_metrics(
-        metrics=metrics,
+    training_metric_manager = MetricManager(
+        biodiversity_metric_names=metrics['biodiversity'],
+        classification_metric_names=metrics['classification'],
         class_information=class_information,
     )
-    validation_metrics = model_utils.get_metrics(
-        metrics=metrics,
+    validation_metric_manager = MetricManager(
+        biodiversity_metric_names=metrics['biodiversity'],
+        classification_metric_names=metrics['classification'],
         class_information=class_information,
     )
 
@@ -87,8 +90,7 @@ def train(model: torch.nn.Module,
                 loss = loss_function(prediction_batch, target_batch)
 
                 # update metrics
-                for metric in training_metrics.values():
-                    metric.update(prediction_batch.cpu(), target_batch.cpu())
+                training_metric_manager.update(predicted_probabilities=prediction_batch, true_values=target_batch)
 
                 optimizer.zero_grad()
                 loss.backward()
@@ -121,8 +123,7 @@ def train(model: torch.nn.Module,
                     loss = loss_function(prediction_batch, target_batch)
 
                     # update metrics
-                    for metric in validation_metrics.values():
-                        metric.update(prediction_batch.cpu(), target_batch.cpu())
+                    validation_metric_manager.update(prediction_batch, target_batch)
 
                     validation_loss += loss.item()
                     batch_counter += 1
@@ -134,19 +135,15 @@ def train(model: torch.nn.Module,
                 print(f'Epoch {epoch + 1}')
 
                 # print metrics results for the current epoch
-                training_results = utils.get_metric_results(training_metrics, metrics)
-                validation_results = utils.get_metric_results(validation_metrics, metrics)
                 model_utils.print_formatted_results(
                     title='TRAINING RESULTS',
                     loss=training_loss,
-                    metrics=training_results,
-                    class_information=class_information,
+                    metrics=training_metric_manager.compute(),
                 )
                 model_utils.print_formatted_results(
                     title='VALIDATION RESULTS',
                     loss=validation_loss,
-                    metrics=validation_results,
-                    class_information=class_information,
+                    metrics=validation_metric_manager.compute(),
                 )
 
             history['loss']['train'].append(training_loss)
@@ -164,20 +161,18 @@ def train(model: torch.nn.Module,
         # reload the best model found
         model.load_state_dict(best_model_weights)
 
-        history['metrics']['train'] = utils.get_metric_results(training_metrics, metrics)
-        history['metrics']['validation'] = utils.get_metric_results(validation_metrics, metrics)
+        history['metrics']['train'] = training_metric_manager.compute()
+        history['metrics']['validation'] = validation_metric_manager.compute()
         if verbose >= 1:
             model_utils.print_formatted_results(
                 title='TRAINING RESULTS',
                 loss=history['loss']['train'][-1],
                 metrics=history['metrics']['train'],
-                class_information=class_information,
             )
             model_utils.print_formatted_results(
                 title='VALIDATION RESULTS',
                 loss=history['loss']['validation'][-1],
                 metrics=history['metrics']['validation'],
-                class_information=class_information,
             )
 
     # if training is interrupted, save the best model obtained so far

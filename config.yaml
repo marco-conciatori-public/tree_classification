@@ -81,31 +81,9 @@ balance_data: False
 # class must be indicated by their numerical id
 use_only_classes: []
 
-# "as_percentage" controls whether the metrics are displayed as percentages or not
-metrics:
-    Accuracy:
-        task: multiclass
-        average: weighted
-#        average: none
-        as_percentage: True
-    Precision:
-        task: multiclass
-        average: weighted
-#        average: none
-        as_percentage: True
-    Recall:
-        task: multiclass
-        average: weighted
-#        average: none
-        as_percentage: True
-    F1Score:
-        task: multiclass
-        average: weighted
-#        average: none
-        as_percentage: True
-#    BiodiversityCollectiveMetric:
-#        biodiversity_metric_names: [gini_simpson_index, shannon_wiener_index, species_richness]
-#        as_percentage: False
+metric_names:
+    classification: [Accuracy, Precision, Recall, F1Score]
+    biodiversity: [gini_simpson_index, shannon_wiener_index, species_richness]
 
 # MODEL USAGE PARAMETERS
 jump: 1

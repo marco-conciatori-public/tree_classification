@@ -105,33 +105,6 @@ def to_bold_string(string: str):
     return f'\033[1m{string}\033[0m'
 
 
-def get_metric_results(metrics: dict, metrics_args: dict):
-    evaluation = {}
-    for metric_name in metrics:
-        if metric_name == 'BiodiversityCollectiveMetric':
-            result_dict = metrics[metric_name].compute()
-            biodiversity_metrics_args = metrics_args[metric_name]
-            for biodiversity_metric_name in biodiversity_metrics_args['biodiversity_metric_names']:
-                composite_name = biodiversity_metric_name + '_true'
-                evaluation[composite_name] = {}
-                evaluation[composite_name]['result'] = result_dict[biodiversity_metric_name]['true_result']
-                evaluation[composite_name]['average'] = 'macro'
-                evaluation[composite_name]['as_percentage'] = biodiversity_metrics_args['as_percentage']
-
-                composite_name = biodiversity_metric_name + '_network'
-                evaluation[composite_name] = {}
-                evaluation[composite_name]['result'] = result_dict[biodiversity_metric_name]['predicted_result']
-                evaluation[composite_name]['average'] = 'macro'
-                evaluation[composite_name]['as_percentage'] = metrics_args[metric_name]['as_percentage']
-
-        else:
-            evaluation[metric_name] = {}
-            evaluation[metric_name]['result'] = metrics[metric_name].compute()
-            evaluation[metric_name]['average'] = metrics_args[metric_name]['average']
-            evaluation[metric_name]['as_percentage'] = metrics_args[metric_name]['as_percentage']
-    return evaluation
-
-
 def get_species_id_by_name(species_name: str,
                            class_information: dict,
                            species_language: str = global_constants.SPECIES_LANGUAGE,

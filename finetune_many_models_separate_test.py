@@ -77,7 +77,7 @@ def finetune_many_models_separate_test_(**kwargs):
             verbose=0,
             save_model=parameters['save_model'],
             save_path=global_constants.MODEL_OUTPUT_DIR,
-            metrics=parameters['metrics'],
+            metrics=parameters['metric_names'],
             custom_transforms=custom_transforms,
             extra_info_to_save=parameters_to_save,
         )
@@ -110,7 +110,7 @@ def finetune_many_models_separate_test_(**kwargs):
             loss_function_name=parameters['loss_function_name'],
             device=parameters['device'],
             display_confusion_matrix=parameters['display_confusion_matrix'],
-            metrics=parameters['metrics'],
+            metrics=parameters['metric_names'],
             class_information=class_information,
             save_results=parameters['save_model'],
             save_path=global_constants.MODEL_OUTPUT_DIR,

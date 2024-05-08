@@ -1,8 +1,8 @@
 import torch
 
-import utils
 from models import model_utils
 from visualization import visualization_utils
+from metrics.metric_manager import MetricManager
 
 
 def eval(model: torch.nn.Module,
@@ -22,8 +22,9 @@ def eval(model: torch.nn.Module,
 
     # get loss function from string name
     loss_function = getattr(torch.nn, loss_function_name)()
-    test_metrics = model_utils.get_metrics(
-        metrics=metrics,
+    test_metric_manager = MetricManager(
+        biodiversity_metric_names=metrics['biodiversity'],
+        classification_metric_names=metrics['classification'],
         class_information=class_information,
     )
 
@@ -54,8 +55,7 @@ def eval(model: torch.nn.Module,
             prediction_batch = prediction_batch.cpu()
             target_batch = target_batch.cpu()
             # update metrics
-            for metric in test_metrics.values():
-                metric.update(prediction_batch, target_batch)
+            test_metric_manager.update(predicted_probabilities=prediction_batch, true_values=target_batch)
 
             if display_confusion_matrix or save_results:
                 # calculations for confusion matrix
@@ -78,13 +78,12 @@ def eval(model: torch.nn.Module,
 
     test_loss = test_loss / len(test_data)
 
-    metric_evaluations = utils.get_metric_results(test_metrics, metrics)
+    metric_evaluations = test_metric_manager.get_results()
     if verbose >= 1:
         model_utils.print_formatted_results(
             title='TEST RESULTS',
             loss=test_loss,
             metrics=metric_evaluations,
-            class_information=class_information,
         )
 
     if save_results:

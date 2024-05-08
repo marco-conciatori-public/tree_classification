@@ -6,6 +6,7 @@ from import_args import args
 from models import model_utils
 from visualization import visualization_utils
 from data_preprocessing import get_ready_data
+from metrics.metric_manager import MetricManager
 
 
 def test_model_(**kwargs):
@@ -53,8 +54,9 @@ def test_model_(**kwargs):
     # get loss function from string name
     loss_function = getattr(torch.nn, parameters['loss_function_name'])()
 
-    test_metrics = model_utils.get_metrics(
-        metrics=parameters['metrics'],
+    test_metric_manager = MetricManager(
+        biodiversity_metric_names=parameters['metric_names']['biodiversity'],
+        classification_metric_names=parameters['metric_names']['classification'],
         class_information=meta_data['class_information'],
     )
 
@@ -78,8 +80,7 @@ def test_model_(**kwargs):
             target_batch = target_batch.cpu()
 
             # update metrics
-            for metric in test_metrics.values():
-                metric.update(prediction_batch, target_batch)
+            test_metric_manager.update(predicted_probabilities=prediction_batch, true_values=target_batch)
 
             test_loss += loss.item()
 
@@ -100,13 +101,11 @@ def test_model_(**kwargs):
 
     test_loss = test_loss / len(test_dl)
 
-    metric_evaluations = utils.get_metric_results(test_metrics, parameters['metrics'])
     if parameters['verbose'] >= 1:
         model_utils.print_formatted_results(
             title='TEST RESULTS',
             loss=test_loss,
-            metrics=metric_evaluations,
-            class_information=meta_data['class_information'],
+            metrics=test_metric_manager.compute(),
         )
 
     if parameters['display_confusion_matrix']:

@@ -66,7 +66,7 @@ def train_custom_model_(**kwargs):
             verbose=parameters['verbose'],
             save_model=parameters['save_model'],
             save_path=global_constants.MODEL_OUTPUT_DIR,
-            metrics=parameters['metrics'],
+            metrics=parameters['metric_names'],
             extra_info_to_save=parameters_to_save,
         )
         print(f'training_history:\n{training_history}')
@@ -78,7 +78,7 @@ def train_custom_model_(**kwargs):
             device=parameters['device'],
             display_confusion_matrix=parameters['display_confusion_matrix'],
             class_information=class_information,
-            metrics=parameters['metrics'],
+            metrics=parameters['metric_names'],
             save_results=parameters['save_model'],
             save_path=global_constants.MODEL_OUTPUT_DIR,
             verbose=parameters['verbose'],

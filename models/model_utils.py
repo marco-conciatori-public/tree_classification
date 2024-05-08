@@ -1,12 +1,9 @@
 import json
-import copy
 import torch
 import importlib
-import torchmetrics
 from pathlib import Path
 import torchvision.transforms.functional as tf
 from torchvision import models as torchvision_models
-from metrics.biodiversity import biodiversity_collective_metric
 
 import utils
 import global_constants
@@ -111,24 +108,19 @@ def load_model(model_path: str,
 
 def print_formatted_results(loss: float,
                             metrics: dict,
-                            class_information: dict,
                             title: str = 'RESULTS',
                             ) -> None:
     print(title)
     print(f'- Loss: {loss}')
-    for metric_name in metrics:
-        result = metrics[metric_name]['result']
-        average = metrics[metric_name]['average']
-        as_percentage = metrics[metric_name]['as_percentage']
-        if average is None or average == 'none':
-            print(f'- {metric_name}:')
-            for class_index in range(len(result)):
-                formatted_result = format_value(value=result[class_index], as_percentage=as_percentage)
-                print(f'  - {class_information[class_index][global_constants.SPECIES_LANGUAGE]}:'
-                      f' {formatted_result}')
-        else:
+    for metric_type in metrics:
+        as_percentage = True
+        if metric_type == 'biodiversity':
+            as_percentage = False
+        print(f'{metric_type}:')
+        for metric_name in metrics[metric_type]:
+            result = metrics[metric_type][metric_name]
             formatted_result = format_value(value=result, as_percentage=as_percentage)
-            print(f'- {metric_name}: {formatted_result}')
+            print(f'\t- {metric_name}: {formatted_result}')
 
 
 def format_value(value,
@@ -252,25 +244,3 @@ def save_test_results(cm_true_values: list,
         json.dump(meta_data, json_file, default=str)
     if verbose >= 1:
         print(f'Meta data updated successfully')
-
-
-def get_metrics(metrics: dict, class_information: dict):
-    metric_function_dict = {}
-    if metrics is None:
-        metrics = {}
-    for metric_name, metric_args in metrics.items():
-        try:
-            metric_class = getattr(torchmetrics, metric_name)
-            metric_args['num_classes'] = len(class_information)
-        except AttributeError:
-            try:
-                metric_class = getattr(biodiversity_collective_metric, metric_name)
-                metric_args['class_information'] = class_information
-            except AttributeError:
-                raise AttributeError(f'metric {metric_name} not found in torchmetrics or biodiversity_metrics')
-
-        temp_args = copy.deepcopy(metric_args)
-        del temp_args['as_percentage']
-        metric_function_dict[metric_name] = metric_class(**temp_args)
-
-    return metric_function_dict

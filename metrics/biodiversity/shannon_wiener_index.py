@@ -1,13 +1,13 @@
 import math
 
-from metrics.biodiversity import metric_utils
+from metrics.biodiversity import biodiversity_metric_utils
 
 
 def get_bio_diversity_index(tag_list: list, class_information: dict, log_base=2):
     # Shannon-Wiener index
     # https://en.wikipedia.org/wiki/Diversity_index#Shannon_index
 
-    proportion_of_trees_by_species = metric_utils.get_proportion_of_trees_by_species(
+    proportion_of_trees_by_species = biodiversity_metric_utils.get_proportion_of_trees_by_species(
         tag_list=tag_list,
         class_information=class_information,
     )
