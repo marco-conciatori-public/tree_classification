@@ -2,7 +2,6 @@ import copy
 import torch
 import numpy as np
 
-import utils
 from models import model_utils
 from metrics.metric_manager import MetricManager
 
