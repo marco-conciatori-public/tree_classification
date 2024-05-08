@@ -1,5 +1,5 @@
 verbose: 2
-input_data_folder: step_1_paper_nhung/
+input_data_folder: paper_data/
 #input_data_folder: step_1_unique_5_species/
 # TODO: not fully implemented yet only some of the random operations use this seed
 random_seed: null  # set to null for different results each time
