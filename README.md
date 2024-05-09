@@ -81,3 +81,14 @@ species, an extra image for unknown species/entities, a legend for the colors us
 . The copy is provided only in the case that a subset of the orthomosaic was used, and it is named "subset_img".
 If the input folder contains the expected output, the script also computes accuracy, precision, recall, and f1 score of
 the algorithm and shows it.
+
+### Colab implementation
+A Colab notebook is provided 
+(https://colab.research.google.com/drive/1Pe9zkwzts3JIi80xxRfrBa-2Pqe87FlK#scrollTo=rhiV2N2jqd78). The prepared steps
+will:
+- clone the repository from GitHub
+- install the required dependencies
+- download the data from dropbox
+- train and test a model
+- show the results
+- from the notebook, it is possible to run any of the other scripts described above
