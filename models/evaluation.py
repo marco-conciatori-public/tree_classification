@@ -1,6 +1,7 @@
 import torch
 
 from models import model_utils
+from metrics import metric_utils
 from visualization import visualization_utils
 from metrics.metric_manager import MetricManager
 
@@ -80,7 +81,7 @@ def eval(model: torch.nn.Module,
 
     metric_evaluations = test_metric_manager.compute()
     if verbose >= 1:
-        model_utils.print_formatted_results(
+        metric_utils.print_formatted_results(
             title='TEST RESULTS',
             loss=test_loss,
             metrics=metric_evaluations,

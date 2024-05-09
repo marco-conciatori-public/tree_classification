@@ -4,6 +4,7 @@ import utils
 import global_constants
 from import_args import args
 from models import model_utils
+from metrics import metric_utils
 from visualization import visualization_utils
 from data_preprocessing import get_ready_data
 from metrics.metric_manager import MetricManager
@@ -101,7 +102,7 @@ def test_model_(**kwargs):
     test_loss = test_loss / len(test_dl)
 
     if parameters['verbose'] >= 1:
-        model_utils.print_formatted_results(
+        metric_utils.print_formatted_results(
             title='TEST RESULTS',
             loss=test_loss,
             metrics=test_metric_manager.compute(),

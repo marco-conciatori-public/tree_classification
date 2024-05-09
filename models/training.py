@@ -3,6 +3,7 @@ import torch
 import numpy as np
 
 from models import model_utils
+from metrics import metric_utils
 from metrics.metric_manager import MetricManager
 
 
@@ -134,12 +135,12 @@ def train(model: torch.nn.Module,
                 print(f'Epoch {epoch + 1}')
 
                 # print metrics results for the current epoch
-                model_utils.print_formatted_results(
+                metric_utils.print_formatted_results(
                     title='TRAINING RESULTS',
                     loss=training_loss,
                     metrics=training_metric_manager.compute(),
                 )
-                model_utils.print_formatted_results(
+                metric_utils.print_formatted_results(
                     title='VALIDATION RESULTS',
                     loss=validation_loss,
                     metrics=validation_metric_manager.compute(),
@@ -163,12 +164,12 @@ def train(model: torch.nn.Module,
         history['metrics']['train'] = training_metric_manager.compute()
         history['metrics']['validation'] = validation_metric_manager.compute()
         if verbose >= 1:
-            model_utils.print_formatted_results(
+            metric_utils.print_formatted_results(
                 title='TRAINING RESULTS',
                 loss=history['loss']['train'][-1],
                 metrics=history['metrics']['train'],
             )
-            model_utils.print_formatted_results(
+            metric_utils.print_formatted_results(
                 title='VALIDATION RESULTS',
                 loss=history['loss']['validation'][-1],
                 metrics=history['metrics']['validation'],
