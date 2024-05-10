@@ -79,7 +79,7 @@ def finetune_pretrained_model_(**kwargs):
             extra_info_to_save=parameters_to_save,
         )
 
-        test_loss, metric_evaluations = evaluation.eval(
+        _, _ = evaluation.eval(
             model=model,
             test_data=test_dl,
             loss_function_name=parameters['loss_function_name'],
@@ -91,8 +91,6 @@ def finetune_pretrained_model_(**kwargs):
             save_path=global_constants.MODEL_OUTPUT_DIR,
             verbose=parameters['verbose'],
         )
-        print(f'test_loss: {test_loss}')
-        print(f'test_metric_evaluations: {metric_evaluations}')
 
 
 if __name__ == '__main__':

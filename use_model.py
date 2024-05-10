@@ -30,13 +30,13 @@ def use_model_(**kwargs):
 
     img_list, tag_list, class_information_from_data = data_loading.load_data(
         data_path=parameters['data_path'],
-        use_targets=parameters['use_targets'],
+        use_targets=use_targets,
         use_only_classes=parameters['use_only_classes'],
         verbose=parameters['verbose'],
     )
-    print(f'img_list length: {len(img_list)}')
-    img_list = img_list[::parameters['jump']]
-    print(f'img_list length: {len(img_list)}')
+    if parameters['jump'] > 1:
+        img_list = img_list[::parameters['jump']]
+        print(f'img_list length after "jump" selection: {len(img_list)}')
     if use_targets:
         tag_list = tag_list[::parameters['jump']]
 

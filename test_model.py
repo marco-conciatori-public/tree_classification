@@ -15,6 +15,8 @@ def test_model_(**kwargs):
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 2
     parameters['shuffle'] = False
+    if not parameters['display_confusion_matrix'] and parameters['verbose'] >= 1:
+        print('Display_confusion_matrix is False, set to True to visualize the confusion matrix at the end of the test')
 
     device = parameters['device']
     if parameters['verbose'] >= 1:
@@ -130,7 +132,6 @@ if __name__ == '__main__':
     #     ('swin_t', 4),
     # ]
     # input_data_folder = 'step_1_test_5_species'
-    display_confusion_matrix = True
     # for partial_name, model_id in pair_input_list:
     #     test_model_(
     #         partial_name=partial_name,
