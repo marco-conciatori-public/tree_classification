@@ -69,7 +69,7 @@ def load_data(data_path: str,
 
     if verbose >= 2:
         print(f'Loaded {len(img_list)} images')
-        print(f'classes_found: {classes_found}')
+        print(f'classes_found: {classes_found.sort()}')
         print(f'intersection with use_only_classes: {classes_use_only}')
 
     if model_class_information is not None:

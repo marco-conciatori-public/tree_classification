@@ -152,7 +152,7 @@ def get_torchvision_model(pretrained_model_parameters: dict,
     model.to(device=device)
 
     if verbose >= 1:
-        print(f'Readied model: {model_version}, with weights: {weights_name}')
+        print(f'Readied {model_architecture} model: {model_version}, with weights: {weights_name}')
     return model
 
 
@@ -174,9 +174,9 @@ def get_custom_transforms(weights_name: str | None,
         tf.to_tensor,
         preprocess,
     ]
-    if verbose >= 2:
-        print(f'resize_in_attributes: {resize_in_attributes}')
-        print(f'custom_transforms: {custom_transforms}')
+    # if verbose >= 2:
+    #     print(f'resize_in_attributes: {resize_in_attributes}')
+    #     print(f'custom_transforms: {custom_transforms}')
     return custom_transforms, resize_in_attributes
 
 
