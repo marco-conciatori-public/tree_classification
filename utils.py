@@ -50,6 +50,18 @@ def get_available_device(verbose: int = 0) -> torch.device:
     return device
 
 
+def identify_model(parameters: dict) -> (str, int):
+    if 'partial_name' not in parameters or parameters['partial_name'] is None:
+        partial_name = str(input('Insert name or part of the name of a model: '))
+    else:
+        partial_name = parameters['partial_name']
+    if 'model_id' not in parameters or parameters['model_id'] is None:
+        model_id = int(input('Insert model id number: '))
+    else:
+        model_id = parameters['model_id']
+    return partial_name, model_id
+
+
 def get_path_by_id(model_id: int, folder_path: str, partial_name: str = ''):
     pure_path = Path(folder_path)
     assert pure_path.exists(), f'the folder_path {folder_path} does not exists'

@@ -20,9 +20,10 @@ def test_model_(**kwargs):
     if parameters['verbose'] >= 1:
         print(f'data_path: {parameters["data_path"]}')
 
+    partial_name, model_id = utils.identify_model(parameters=parameters)
     model_path, info_path = utils.get_path_by_id(
-        partial_name=parameters['partial_name'],
-        model_id=parameters['model_id'],
+        partial_name=partial_name,
+        model_id=model_id,
         folder_path=global_constants.MODEL_OUTPUT_DIR,
     )
     loaded_model, custom_transforms, meta_data = model_utils.load_model(
@@ -118,8 +119,6 @@ def test_model_(**kwargs):
 
 
 if __name__ == '__main__':
-    partial_name = str(input('Insert name or part of the name of a model: '))
-    model_id = int(input('Insert model id number: '))
     # pair_input_list = [
     #     ('convnext', 1),
     #     ('regnet_y', 0),
@@ -139,4 +138,4 @@ if __name__ == '__main__':
     #         input_data_folder=input_data_folder,
     #         display_confusion_matrix=display_confusion_matrix,
     #     )
-    test_model_(partial_name=partial_name, model_id=model_id)
+    test_model_()

@@ -28,10 +28,11 @@ def analyse_orthomosaic_(**kwargs):
 
     # load model
     # best model for now: swin-2
+    partial_name, model_id = utils.identify_model(parameters=kwargs)
     device = utils.get_available_device(verbose=kwargs['verbose'])
     model_path, info_path = utils.get_path_by_id(
-        partial_name=kwargs['partial_name'],
-        model_id=kwargs['model_id'],
+        partial_name=partial_name,
+        model_id=model_id,
         folder_path=global_constants.MODEL_OUTPUT_DIR,
     )
     loaded_model, custom_transforms, meta_data = model_utils.load_model(
@@ -185,7 +186,7 @@ def analyse_orthomosaic_(**kwargs):
                 f'{kwargs["img_folder"]}_{folder_id}/'
     info = {
         'model_path': str(model_path),
-        'model_id': kwargs['model_id'],
+        'model_id': model_id,
         'model_meta_data': meta_data,
         'orthomosaic_path': str(orthomosaic_path),
         'confidence_threshold': confidence_threshold,
@@ -229,9 +230,7 @@ def analyse_orthomosaic_(**kwargs):
 
 if __name__ == '__main__':
     verbose = 2
-    # partial_name = str(input('Insert name or part of the name of a model: '))
     partial_name = 'swin'
-    # model_id = int(input('Insert model id number: '))
     model_id = 3
     # img_folder = str(input('Insert name of the orthomosaic to analyse: '))
     img_folder = 'zao_site_5_autumn'
