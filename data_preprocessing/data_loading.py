@@ -6,31 +6,40 @@ import global_constants
 from data_preprocessing import get_class
 
 
-def get_img_path_list(data_path: str, verbose: int = 0) -> list:
-    pure_path = Path(data_path)
-    assert pure_path.exists(), f'Path "{data_path}" does not exist'
-    assert pure_path.is_dir(), f'Path "{data_path}" is not a directory'
-
+def get_img_path_list(data_path: str | list, verbose: int = 0) -> list:
     img_path_list = []
-    for img_path in pure_path.iterdir():
-        if img_path.is_file():
-            img_path_list.append(img_path)
+    print(f'type(data_path): {type(data_path)}')
+    print(f'data_path: {data_path}')
+    if isinstance(data_path, str):
+        pure_path = Path(data_path)
+        assert pure_path.exists(), f'Path "{data_path}" does not exist'
+        assert pure_path.is_dir(), f'Path "{data_path}" is not a directory'
+
+        for img_path in pure_path.iterdir():
+            if img_path.is_file():
+                img_path_list.append(img_path)
+
+    elif isinstance(data_path, list):
+        for img_path in data_path:
+            pure_img_path = Path(img_path)
+            assert pure_img_path.exists(), f'Path "{img_path}" does not exist'
+            assert pure_img_path.is_file(), f'Path "{img_path}" is not a file'
+
+            img_path_list.append(pure_img_path)
 
     if verbose >= 2:
-        print(f'Loaded {len(img_path_list)} images from "{data_path}"')
-
+        print(f'Found {len(img_path_list)} images')
     return img_path_list
 
 
-def load_data(data_path: str,
+def load_data(data_path: str | list,
               use_only_classes: list = None,
               model_class_information: dict = None,
               use_targets: bool = True,
               verbose: int = 0,
               ) -> (list, list, list):
-    pure_path = Path(data_path)
-    assert pure_path.exists(), f'Path "{data_path}" does not exist'
-    assert pure_path.is_dir(), f'Path "{data_path}" is not a directory'
+
+    img_path_list = get_img_path_list(data_path, verbose=verbose)
     if use_only_classes is not None and len(use_only_classes) > 0:
         assert use_targets, '"use_targets" must be True if "use_only_classes" is not None'
 
@@ -38,7 +47,7 @@ def load_data(data_path: str,
     tag_list = []
     classes_found = []
     classes_use_only = []
-    for img_path in pure_path.iterdir():
+    for img_path in img_path_list:
         try:
             img = cv2.imread(str(img_path))
             img_list.append(img)

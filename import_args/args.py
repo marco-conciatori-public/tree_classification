@@ -30,6 +30,7 @@ def import_and_check(yaml_path, **kwargs) -> dict:
 
     device = utils.get_available_device(verbose=data_dict['verbose'])
     data_dict['device'] = device
-    data_dict['data_path'] = global_constants.DATA_PATH + data_dict['input_data_folder']
+    if 'data_path' not in data_dict or data_dict['data_path'] is None:
+        data_dict['data_path'] = global_constants.DATA_PATH + data_dict['input_data_folder']
 
     return data_dict
