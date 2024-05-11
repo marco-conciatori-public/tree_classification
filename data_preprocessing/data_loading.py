@@ -8,8 +8,6 @@ from data_preprocessing import get_class
 
 def get_img_path_list(data_path: str | list, verbose: int = 0) -> list:
     img_path_list = []
-    print(f'type(data_path): {type(data_path)}')
-    print(f'data_path: {data_path}')
     if isinstance(data_path, str):
         pure_path = Path(data_path)
         assert pure_path.exists(), f'Path "{data_path}" does not exist'
