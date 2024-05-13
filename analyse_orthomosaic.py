@@ -28,10 +28,10 @@ def analyse_orthomosaic_(**kwargs):
 
     # load model
     # best model for now: swin-2
-    partial_name, model_id = utils.identify_model(parameters=kwargs)
+    model_partial_name, model_id = utils.identify_model(parameters=kwargs)
     device = utils.get_available_device(verbose=kwargs['verbose'])
     model_path, info_path = utils.get_path_by_id(
-        partial_name=partial_name,
+        model_partial_name=model_partial_name,
         model_id=model_id,
         folder_path=global_constants.MODEL_OUTPUT_DIR,
     )
@@ -230,7 +230,7 @@ def analyse_orthomosaic_(**kwargs):
 
 if __name__ == '__main__':
     verbose = 2
-    partial_name = 'swin'
+    model_partial_name = 'swin'
     model_id = 3
     # img_folder = str(input('Insert name of the orthomosaic to analyse: '))
     img_folder = 'zao_site_5_autumn'
@@ -245,7 +245,7 @@ if __name__ == '__main__':
     # confidence prediction probability above which the prediction is considered valid
     confidence_threshold = 0.9
     analyse_orthomosaic_(
-        partial_name=partial_name,
+        model_partial_name=model_partial_name,
         model_id=model_id,
         img_folder=img_folder,
         patch_size=patch_size,

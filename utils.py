@@ -51,37 +51,37 @@ def get_available_device(verbose: int = 0) -> torch.device:
 
 
 def identify_model(parameters: dict) -> (str, int):
-    if 'partial_name' not in parameters or parameters['partial_name'] is None:
-        partial_name = str(input('Insert name or part of the name of a model: '))
+    if 'model_partial_name' not in parameters or parameters['model_partial_name'] is None:
+        model_partial_name = str(input('Insert name or part of the name of a model: '))
     else:
-        partial_name = parameters['partial_name']
+        model_partial_name = parameters['model_partial_name']
     if 'model_id' not in parameters or parameters['model_id'] is None:
         model_id = int(input('Insert model id number: '))
     else:
         model_id = parameters['model_id']
-    return partial_name, model_id
+    return model_partial_name, model_id
 
 
-def get_path_by_id(model_id: int, folder_path: str, partial_name: str = ''):
+def get_path_by_id(model_id: int, folder_path: str, model_partial_name: str = ''):
     pure_path = Path(folder_path)
     assert pure_path.exists(), f'the folder_path {folder_path} does not exists'
 
     # returns a GENERATOR that YELDS all the file paths matching the string
     search_string = f'*{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{model_id}*'
-    if partial_name != '':
-        search_string = f'*{partial_name}{search_string}'
+    if model_partial_name != '':
+        search_string = f'*{model_partial_name}{search_string}'
     matching_paths = pure_path.glob(search_string)
 
     # transform the generator into a string, it is not possible to use len() on a generator
     matching_paths = list(matching_paths)
     n_matches = len(matching_paths)
-    assert n_matches > 0, f'no matches found with partial_name "{partial_name}" ' \
+    assert n_matches > 0, f'no matches found with partial_name "{model_partial_name}" ' \
                           f'and model_id "{model_id}" in folder_path "{folder_path}"'
     if n_matches == 1:
-        warnings.warn(f'expected 2 matches with partial name "{partial_name}" and'
+        warnings.warn(f'expected 2 matches with partial name "{model_partial_name}" and'
                       f' model_id "{model_id}" in folder_path "{folder_path}". One for the'
                       f' model, the other for the meta data file')
-    assert n_matches < 3, f'more than 2 match found with partial_name "{partial_name}"' \
+    assert n_matches < 3, f'more than 2 match found with partial_name "{model_partial_name}"' \
                           f' and model_id "{model_id}" in folder_path "{folder_path}"'
 
     model_path = matching_paths[0]

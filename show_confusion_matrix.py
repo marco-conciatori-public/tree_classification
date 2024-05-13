@@ -9,11 +9,9 @@ from visualization import visualization_utils
 
 def show_confusion_matrix_():
     # parameters
-    partial_name = str(input('Insert name or part of the name of a model: '))
-    model_id = int(input('Insert model id number: '))
-
+    model_partial_name, model_id = utils.identify_model(parameters={})
     _, meta_data_path = utils.get_path_by_id(
-        partial_name=partial_name,
+        model_partial_name=model_partial_name,
         model_id=model_id,
         folder_path=global_constants.MODEL_OUTPUT_DIR,
     )

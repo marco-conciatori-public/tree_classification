@@ -17,11 +17,9 @@ def compute_biodiversity_(**kwargs):
     assert use_targets or use_network, 'At least one of the two parameters ("use_targets", "use_network") must be True'
 
     if use_network:
-        partial_name = str(
-            input('Insert name or part of the name of a model: '))
-        model_id = int(input('Insert model id number: '))
+        model_partial_name, model_id = utils.identify_model(parameters=parameters)
         model_path, info_path = utils.get_path_by_id(
-            partial_name=partial_name,
+            model_partial_name=model_partial_name,
             model_id=model_id,
             folder_path=global_constants.MODEL_OUTPUT_DIR,
         )

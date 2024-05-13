@@ -22,9 +22,9 @@ def test_model_(**kwargs):
     if parameters['verbose'] >= 1:
         print(f'data_path: {parameters["data_path"]}')
 
-    partial_name, model_id = utils.identify_model(parameters=parameters)
+    model_partial_name, model_id = utils.identify_model(parameters=parameters)
     model_path, info_path = utils.get_path_by_id(
-        partial_name=partial_name,
+        model_partial_name=model_partial_name,
         model_id=model_id,
         folder_path=global_constants.MODEL_OUTPUT_DIR,
     )
@@ -132,9 +132,9 @@ if __name__ == '__main__':
     #     ('swin_t', 4),
     # ]
     # input_data_folder = 'step_1_test_5_species'
-    # for partial_name, model_id in pair_input_list:
+    # for model_partial_name, model_id in pair_input_list:
     #     test_model_(
-    #         partial_name=partial_name,
+    #         model_partial_name=model_partial_name,
     #         model_id=model_id,
     #         input_data_folder=input_data_folder,
     #         display_confusion_matrix=display_confusion_matrix,
