@@ -15,13 +15,13 @@ def show_difficult_cases_(**kwargs):
 
     parameters['device'] = torch.device('cpu')
     parameters['shuffle'] = False
+    parameters['use_targets'] = True
     model_partial_name, model_id = utils.identify_model(parameters=parameters)
     model_path, info_path = utils.get_path_by_id(
         model_partial_name=model_partial_name,
         model_id=model_id,
         folder_path=global_constants.MODEL_OUTPUT_DIR,
     )
-
     loaded_model, custom_transforms, meta_data = model_utils.load_model(
         model_path=model_path,
         device=parameters['device'],
@@ -30,35 +30,12 @@ def show_difficult_cases_(**kwargs):
         verbose=parameters['verbose'],
     )
 
-    train_dl, val_dl, test_dl, _, _, class_information = get_ready_data.get_data(
+    img_list, tag_list, class_information_from_data = data_loading.load_data(
         data_path=parameters['data_path'],
-        shuffle=False,
-        batch_size=1,
-        balance_data=False,
-        train_val_test_proportions=parameters['train_val_test_proportions'],
-        # standard_img_dim=config.IMG_DIM,
+        use_targets=parameters['use_targets'],
         use_only_classes=parameters['use_only_classes'],
-        custom_transforms=custom_transforms,
-        augmentation_proportion=1,
-        random_seed=parameters['random_seed'],
         verbose=parameters['verbose'],
     )
-
-    print('Get all the predictions...')
-    img_list = []
-    tag_list = []
-    for batch in train_dl:
-        observation_batch, target_batch = batch
-        img_list.append(observation_batch)
-        tag_list.append(target_batch.squeeze(0).item())
-    for batch in val_dl:
-        observation_batch, target_batch = batch
-        img_list.append(observation_batch)
-        tag_list.append(target_batch.squeeze(0).item())
-    for batch in test_dl:
-        observation_batch, target_batch = batch
-        img_list.append(observation_batch)
-        tag_list.append(target_batch.squeeze(0).item())
 
     softmax = torch.nn.Softmax(dim=0)
     worst_predictions = []
@@ -66,6 +43,13 @@ def show_difficult_cases_(**kwargs):
         for img_index in range(len(img_list)):
             img = img_list[img_index]
 
+            # apply custom transforms
+            if custom_transforms is not None:
+                for transform in custom_transforms:
+                    img = transform(img)
+
+            # add batch dimension
+            img = img.unsqueeze(0)
             prediction = loaded_model(img)
             prediction = prediction.squeeze(0)
             prediction = softmax(prediction)
@@ -83,23 +67,22 @@ def show_difficult_cases_(**kwargs):
     # load images again because the transformed version is quite different from the original one.
     # The transformation is due to the "custom transforms" of torchvision models.
     # Since shuffling is disabled, the order of the reloaded images is the same
-    img_list, tag_list, _ = data_loading.load_data(
+    img_list, tag_list, class_information_from_data = data_loading.load_data(
         data_path=parameters['data_path'],
+        use_targets=parameters['use_targets'],
         use_only_classes=parameters['use_only_classes'],
-        verbose=0,
+        verbose=parameters['verbose'],
     )
     for i in range(parameters['worst_n_predictions']):
-        if i > parameters['worst_n_predictions']:
-            break
         prediction_of_true_class, img_index, prediction = worst_predictions[i]
 
         print('-------------------')
         print(f'TRUE LABEL: '
-              f'{class_information[tag_list[img_index]][global_constants.SPECIES_LANGUAGE].upper()}')
+              f'{class_information_from_data[tag_list[img_index]][global_constants.SPECIES_LANGUAGE].upper()}')
         print('NETWORK EVALUATION:')
         for tree_class in range(len(prediction)):
             if prediction[tree_class] >= parameters['tolerance']:
-                print(f' - {class_information[tree_class][global_constants.SPECIES_LANGUAGE]}: '
+                print(f' - {class_information_from_data[tree_class][global_constants.SPECIES_LANGUAGE]}: '
                       f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
 
         # show image
