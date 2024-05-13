@@ -77,13 +77,15 @@ def show_difficult_cases_(**kwargs):
         prediction_of_true_class, img_index, prediction = worst_predictions[i]
 
         print('-------------------')
-        print(f'TRUE LABEL: '
-              f'{class_information_from_data[tag_list[img_index]][global_constants.SPECIES_LANGUAGE].upper()}')
+        true_name = class_information_from_data[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
+        print(f'TRUE LABEL: {true_name}')
         print('NETWORK EVALUATION:')
         for tree_class in range(len(prediction)):
-            if prediction[tree_class] >= parameters['tolerance']:
-                print(f' - {class_information_from_data[tree_class][global_constants.SPECIES_LANGUAGE]}: '
-                      f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}')
+            for tree_class in range(len(prediction)):
+                # if prediction[tree_class] >= config.TOLERANCE:
+                text = f' - {class_information_from_data[tree_class][global_constants.SPECIES_LANGUAGE]}: ' \
+                       f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}%'
+                print(text)
 
         # show image
         img = img_list[img_index]

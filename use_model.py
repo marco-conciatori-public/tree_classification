@@ -64,7 +64,7 @@ def use_model_(**kwargs):
             print('-------------------')
             if use_targets:
                 true_name = class_information[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
-                print(f'TRUE LABEL: {true_name.upper()}')
+                print(f'TRUE LABEL: {true_name}')
             print('NETWORK EVALUATION:')
             for tree_class in range(len(prediction)):
                 # if prediction[tree_class] >= config.TOLERANCE:
