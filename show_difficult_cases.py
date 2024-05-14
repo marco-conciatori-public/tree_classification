@@ -92,18 +92,16 @@ def show_difficult_cases_(**kwargs):
         img = img_list[img_index]
         # convert from BGR to RGB
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        plt.figure(figsize=(1.5, 1.5))
+        # window_name = f'patch {img_index}'
+        fig = plt.figure(figsize=(1, 1))
+        fig.figimage(img)
+        # fig.set_frameon(False)
         plt.axis('off')
-        plt.tight_layout()
-        plt.imshow(img)
-        plt.show()
+        fig.tight_layout()
+        # plt.imshow(img)
+        fig.show()
+        fig.waitforbuttonpress(-1)
         plt.close()
-        # cv2.imshow(
-        #     winname=utils.get_tree_name(tag_list[img_index]).upper(),
-        #     mat=img,
-        # )
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':

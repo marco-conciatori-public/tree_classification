@@ -1,5 +1,6 @@
 import cv2
 import torch
+import matplotlib.pyplot as plt
 
 import utils
 import global_constants
@@ -74,15 +75,20 @@ def use_model_(**kwargs):
                     text = utils.to_bold_string(text)
                 print(text)
 
-            img = img_list[img_index]
-            window_name = f'patch {img_index}'
-            if use_targets:
-                window_name = true_name
             # show image
-            cv2.imshow(winname=window_name, mat=img)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
-
+            img = img_list[img_index]
+            # convert from BGR to RGB
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            # window_name = f'patch {img_index}'
+            fig = plt.figure(figsize=(1, 1))
+            fig.figimage(img)
+            # fig.set_frameon(False)
+            plt.axis('off')
+            fig.tight_layout()
+            # plt.imshow(img)
+            fig.show()
+            fig.waitforbuttonpress(-1)
+            plt.close()
 
 if __name__ == '__main__':
     use_model_()
