@@ -90,5 +90,6 @@ def use_model_(**kwargs):
             fig.waitforbuttonpress(-1)
             plt.close()
 
+
 if __name__ == '__main__':
     use_model_()
