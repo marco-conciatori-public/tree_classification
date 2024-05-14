@@ -1,12 +1,11 @@
-import cv2
 import torch
-import matplotlib.pyplot as plt
 
 import utils
 import global_constants
 from import_args import args
 from models import model_utils
 from data_preprocessing import data_loading
+from visualization import visualization_utils
 
 
 def use_model_(**kwargs):
@@ -76,19 +75,7 @@ def use_model_(**kwargs):
                 print(text)
 
             # show image
-            img = img_list[img_index]
-            # convert from BGR to RGB
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            # window_name = f'patch {img_index}'
-            fig = plt.figure(figsize=(1, 1))
-            fig.figimage(img)
-            # fig.set_frameon(False)
-            plt.axis('off')
-            fig.tight_layout()
-            # plt.imshow(img)
-            fig.show()
-            fig.waitforbuttonpress(-1)
-            plt.close()
+            visualization_utils.display_img(img=img_list[img_index])
 
 
 if __name__ == '__main__':

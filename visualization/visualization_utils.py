@@ -1,4 +1,5 @@
 import os
+import cv2
 import json
 import numpy as np
 from pathlib import Path
@@ -89,3 +90,19 @@ def display_cm(true_values, predictions, class_information: dict, labels=None, s
     else:
         plt.show()
     plt.close()
+
+
+def display_img(img, title: str = 'Image'):
+    # convert from BGR to RGB
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    # plt.figure(figsize=(1.5, 1.5))
+    # plt.title(label=title, fontsize=17)
+    # plt.tight_layout()
+    fig, ax = plt.subplots(figsize=(1.5, 1.5))
+    ax.imshow(img)
+    ax.axis('off')
+    # plt.axis('off')
+    # plt.imshow(img)
+    plt.waitforbuttonpress(-1)
+    plt.close()
+
