@@ -73,7 +73,9 @@ def show_difficult_cases_(**kwargs):
         use_only_classes=parameters['use_only_classes'],
         verbose=parameters['verbose'],
     )
-    for i in range(parameters['worst_n_predictions']):
+    for i in range(len(worst_predictions)):
+        if i >= parameters['worst_n_predictions']:
+            break
         prediction_of_true_class, img_index, prediction = worst_predictions[i]
 
         print('-------------------')
