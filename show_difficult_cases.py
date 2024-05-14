@@ -81,11 +81,10 @@ def show_difficult_cases_(**kwargs):
         print(f'TRUE LABEL: {true_name}')
         print('NETWORK EVALUATION:')
         for tree_class in range(len(prediction)):
-            for tree_class in range(len(prediction)):
-                # if prediction[tree_class] >= config.TOLERANCE:
-                text = f' - {class_information_from_data[tree_class][global_constants.SPECIES_LANGUAGE]}: ' \
-                       f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}%'
-                print(text)
+            # if prediction[tree_class] >= config.TOLERANCE:
+            text = f' - {class_information_from_data[tree_class][global_constants.SPECIES_LANGUAGE]}: ' \
+                   f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}%'
+            print(text)
 
         # show image
         img = img_list[img_index]
