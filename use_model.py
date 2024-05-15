@@ -4,6 +4,7 @@ import utils
 import global_constants
 from import_args import args
 from models import model_utils
+from metrics import metric_utils
 from data_preprocessing import data_loading
 from visualization import visualization_utils
 
@@ -39,7 +40,11 @@ def use_model_(**kwargs):
         print(f'img_list length after "jump" selection: {len(img_list)}')
     if use_targets:
         tag_list = tag_list[::parameters['jump']]
+    if 'launched_from_notebook' in kwargs and kwargs['launched_from_notebook']:
+        if parameters['verbose'] >= 2:
+            print('Execution in notebook mode. Returning output instead of printing.')
 
+    notebook_output = []
     softmax = torch.nn.Softmax(dim=0)
     with torch.set_grad_enabled(False):
         for img_index in range(len(img_list)):
@@ -61,21 +66,39 @@ def use_model_(**kwargs):
             prediction = prediction.detach().cpu().numpy()
             top_class = prediction.argmax()
 
-            print('-------------------')
-            if use_targets:
-                true_name = class_information[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
-                print(f'TRUE LABEL: {true_name}')
-            print('NETWORK EVALUATION:')
-            for tree_class in range(len(prediction)):
-                # if prediction[tree_class] >= config.TOLERANCE:
-                text = f' - {class_information[tree_class][global_constants.SPECIES_LANGUAGE]}: ' \
-                       f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}%'
-                if tree_class == top_class:
-                    text = utils.to_bold_string(text)
-                print(text)
+            if 'launched_from_notebook' in kwargs and kwargs['launched_from_notebook']:
+                element_info = {}
+                if use_targets:
+                    true_name = class_information[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
+                    element_info['true_label'] = true_name
+                element_info['prediction'] = {}
+                for tree_class in range(len(prediction)):
+                    # if prediction[tree_class] >= config.TOLERANCE:
+                    element_info['prediction'][class_information[tree_class][global_constants.SPECIES_LANGUAGE]
+                    ] = metric_utils.format_value(value=prediction[tree_class], as_percentage=True)
+                element_info['img'] = img_list[img_index]
+                element_info['tag'] = tag_list[img_index]
+                notebook_output.append(element_info)
 
-            # show image
-            visualization_utils.display_img(img=img_list[img_index])
+            else:
+                print('-------------------')
+                if use_targets:
+                    true_name = class_information[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
+                    print(f'TRUE LABEL: {true_name}')
+                print('NETWORK EVALUATION:')
+                for tree_class in range(len(prediction)):
+                    # if prediction[tree_class] >= config.TOLERANCE:
+                    text = f' - {class_information[tree_class][global_constants.SPECIES_LANGUAGE]}: ' \
+                           f'{metric_utils.format_value(value=prediction[tree_class], as_percentage=True)}'
+                    if tree_class == top_class:
+                        text = utils.to_bold_string(text)
+                    print(text)
+
+                # show image
+                visualization_utils.display_img(img=img_list[img_index])
+
+    if 'launched_from_notebook' in kwargs and kwargs['launched_from_notebook']:
+        return notebook_output
 
 
 if __name__ == '__main__':
