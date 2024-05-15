@@ -33,6 +33,7 @@ def show_difficult_cases_(**kwargs):
     img_list, tag_list, class_information_from_data = data_loading.load_data(
         data_path=parameters['data_path'],
         use_targets=parameters['use_targets'],
+        model_class_information=meta_data['class_information'],
         use_only_classes=parameters['use_only_classes'],
         verbose=parameters['verbose'],
     )
@@ -73,6 +74,7 @@ def show_difficult_cases_(**kwargs):
     img_list, tag_list, class_information_from_data = data_loading.load_data(
         data_path=parameters['data_path'],
         use_targets=parameters['use_targets'],
+        model_class_information=meta_data['class_information'],
         use_only_classes=parameters['use_only_classes'],
         verbose=parameters['verbose'],
     )
