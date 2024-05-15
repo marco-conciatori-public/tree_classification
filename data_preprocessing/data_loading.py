@@ -72,11 +72,12 @@ def load_data(data_path: str | list,
             assert class_id in classes_found, f'class "{global_constants.CLASS_INFORMATION[class_id][global_constants.SPECIES_LANGUAGE]}" not found in chosen data "{data_path}"'
     else:
         classes_use_only = classes_found
+    classes_found.sort()
     classes_use_only.sort()
 
     if verbose >= 2:
         print(f'Loaded {len(img_list)} images')
-        print(f'classes_found: {classes_found.sort()}')
+        print(f'classes_found: {classes_found}')
         print(f'intersection with use_only_classes: {classes_use_only}')
 
     if model_class_information is not None:
