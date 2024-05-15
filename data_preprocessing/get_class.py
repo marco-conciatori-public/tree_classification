@@ -13,3 +13,15 @@ def from_name(name: str) -> int:
             return key
 
     raise ValueError(f'No tree found with image name "{name}"')
+
+
+def convert_class_id_from_different_sets(class_id: int,
+                                         class_information_source: dict,
+                                         class_information_destination: dict,
+                                         ) -> int:
+    class_name = class_information_source[class_id][gc.SPECIES_LANGUAGE]
+    for key, value in class_information_destination.items():
+        if value[gc.SPECIES_LANGUAGE] == class_name:
+            return key
+
+    return -1

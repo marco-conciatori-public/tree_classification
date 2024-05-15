@@ -5,8 +5,8 @@ import global_constants as gc
 from import_args import args
 from models import model_utils
 from metrics import metric_utils
-from data_preprocessing import data_loading
 from visualization import visualization_utils
+from data_preprocessing import data_loading, get_class
 
 
 def show_difficult_cases_(**kwargs):
@@ -63,7 +63,16 @@ def show_difficult_cases_(**kwargs):
             prediction = softmax(prediction)
             prediction = prediction.numpy()
 
-            worst_predictions.append((img_index, prediction))
+            true_class_id_from_data = tag_list[img_index]
+            true_class_id_from_model = get_class.convert_class_id_from_different_sets(
+                class_id=true_class_id_from_data,
+                class_information_source=class_information_from_data,
+                class_information_destination=class_information_from_model,
+            )
+            prediction_of_true_class = 0
+            if true_class_id_from_model != -1:
+                prediction_of_true_class = prediction[true_class_id_from_model]
+            worst_predictions.append((prediction_of_true_class, img_index, prediction))
 
     print('Finding the worst predictions...')
     # sort worst_predictions
@@ -83,8 +92,8 @@ def show_difficult_cases_(**kwargs):
     for i in range(len(worst_predictions)):
         if i >= parameters['worst_n_predictions']:
             break
-        img_index, prediction = worst_predictions[i]
-        true_name = class_information_from_data[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
+        _, img_index, prediction = worst_predictions[i]
+        true_name = class_information_from_data[tag_list[img_index]][gc.SPECIES_LANGUAGE]
 
         if 'launched_from_notebook' in kwargs and kwargs['launched_from_notebook']:
             element_info = {}
