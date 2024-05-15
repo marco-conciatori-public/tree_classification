@@ -62,11 +62,8 @@ def show_difficult_cases_(**kwargs):
             prediction = prediction.squeeze(0)
             prediction = softmax(prediction)
             prediction = prediction.numpy()
-            # top_class = prediction.argmax()
 
-            true_class = tag_list[img_index]
-            prediction_of_true_class = prediction[true_class]
-            worst_predictions.append((prediction_of_true_class, img_index, prediction))
+            worst_predictions.append((img_index, prediction))
 
     print('Finding the worst predictions...')
     # sort worst_predictions
@@ -86,7 +83,7 @@ def show_difficult_cases_(**kwargs):
     for i in range(len(worst_predictions)):
         if i >= parameters['worst_n_predictions']:
             break
-        prediction_of_true_class, img_index, prediction = worst_predictions[i]
+        img_index, prediction = worst_predictions[i]
         true_name = class_information_from_data[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
 
         if 'launched_from_notebook' in kwargs and kwargs['launched_from_notebook']:
