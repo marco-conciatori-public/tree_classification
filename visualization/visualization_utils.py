@@ -6,15 +6,15 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 
-import global_constants
+import global_constants as gc
 
 
 def load_evaluation(file_number: int) -> dict:
     max_iterations = 5
     level_up = 0
     hp_evaluation = None
-    file_path = f'{global_constants.PARAMETER_SEARCH_OUTPUT_DIR}' \
-                f'{global_constants.PARAMETER_SEARCH_FILE_NAME}_{file_number}.json'
+    file_path = f'{gc.PARAMETER_SEARCH_OUTPUT_DIR}' \
+                f'{gc.PARAMETER_SEARCH_FILE_NAME}_{file_number}.json'
     while hp_evaluation is None:
         try:
             with open(file_path, 'r') as json_file:
@@ -55,7 +55,7 @@ def display_cm(true_values, predictions, class_information: dict, labels=None, s
     if labels is None:
         labels = []
         for el in class_information.values():
-            labels.append(el[global_constants.SPECIES_LANGUAGE])
+            labels.append(el[gc.SPECIES_LANGUAGE])
 
     num_classes = len(class_information)
     true_values = np.array(true_values)
@@ -84,9 +84,9 @@ def display_cm(true_values, predictions, class_information: dict, labels=None, s
     plt.tight_layout()
 
     if save_img:
-        Path(global_constants.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
-        plt.savefig(f'{global_constants.IMG_OUTPUT_DIR}confusion_matrix.png')
-        print(f'Image "confusion_matrix.png" saved in "{global_constants.IMG_OUTPUT_DIR}"')
+        Path(gc.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+        plt.savefig(f'{gc.IMG_OUTPUT_DIR}confusion_matrix.png')
+        print(f'Image "confusion_matrix.png" saved in "{gc.IMG_OUTPUT_DIR}"')
     else:
         plt.show()
     plt.close()

@@ -3,7 +3,7 @@ import shutil
 import random
 from pathlib import Path
 
-import global_constants
+import global_constants as gc
 from image_processing import resize
 from data_preprocessing import data_loading, custom_dataset, balancing_augmentation
 
@@ -26,8 +26,8 @@ def get_data(data_path: str,
     # TODO: this is a temporary solution. each time delete the step 2 data and compute them again. To load them,
     #  step 2 data must be divided in folders based on the custom_transforms applied, batch_size, shuffle, and so
     #  on. This is not implemented yet.
-    augmentation_path = f'{global_constants.STEP_2_DATA_PATH}augmentation_{augmentation_proportion}/'
-    shutil.rmtree(path=global_constants.STEP_2_DATA_PATH, ignore_errors=True)
+    augmentation_path = f'{gc.STEP_2_DATA_PATH}augmentation_{augmentation_proportion}/'
+    shutil.rmtree(path=gc.STEP_2_DATA_PATH, ignore_errors=True)
 
     if verbose >= 1:
         print('Loading data...')
@@ -184,7 +184,7 @@ def get_data(data_path: str,
     # remove batch dimension
     img_shape = batched_img_shape[1:]
     # print(f'img_shape: {img_shape}')
-    complete_file_path = f'{augmentation_path}{global_constants.DL_FILE_NAME}{global_constants.PYTORCH_FILE_EXTENSION}'
+    complete_file_path = f'{augmentation_path}{gc.DL_FILE_NAME}{gc.PYTORCH_FILE_EXTENSION}'
     augmentation_path = Path(augmentation_path)
     # if not augmentation_path.exists():
     #     augmentation_path.mkdir(parents=True)

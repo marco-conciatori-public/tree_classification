@@ -3,8 +3,8 @@ import datetime
 from pathlib import Path
 
 import utils
-import global_constants
 from import_args import args
+import global_constants as gc
 from data_preprocessing import get_ready_data
 from models import training, evaluation, model_utils
 
@@ -12,7 +12,7 @@ from models import training, evaluation, model_utils
 def best_parameters_grid_search_(**kwargs):
     # for fine-tuning pretrained models, not for training new custom models
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+    parameters = args.import_and_check(gc.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 0
     parameters['random_seed'] = None
     if 'biodiversity' in parameters['metric_names']:
@@ -201,14 +201,14 @@ def best_parameters_grid_search_(**kwargs):
     }
 
     # save results
-    Path(global_constants.PARAMETER_SEARCH_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+    Path(gc.PARAMETER_SEARCH_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
     # find first free index
     i = 0
-    while Path(f'{global_constants.PARAMETER_SEARCH_OUTPUT_DIR}{global_constants.PARAMETER_SEARCH_FILE_NAME}'
-               f'{global_constants.INTERNAL_PARAMETER_SEPARATOR}{i}.json').exists():
+    while Path(f'{gc.PARAMETER_SEARCH_OUTPUT_DIR}{gc.PARAMETER_SEARCH_FILE_NAME}'
+               f'{gc.INTERNAL_PARAMETER_SEPARATOR}{i}.json').exists():
         i += 1
-    with open(f'{global_constants.PARAMETER_SEARCH_OUTPUT_DIR}{global_constants.PARAMETER_SEARCH_FILE_NAME}'
-              f'{global_constants.INTERNAL_PARAMETER_SEPARATOR}{i}.json', 'w') as json_file:
+    with open(f'{gc.PARAMETER_SEARCH_OUTPUT_DIR}{gc.PARAMETER_SEARCH_FILE_NAME}'
+              f'{gc.INTERNAL_PARAMETER_SEPARATOR}{i}.json', 'w') as json_file:
         json.dump(content, json_file)
 
     print('Final date and time:')

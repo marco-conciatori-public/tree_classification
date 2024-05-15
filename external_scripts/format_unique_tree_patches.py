@@ -1,13 +1,13 @@
 import cv2
 from pathlib import Path
 
-import global_constants
+import global_constants as gc
 
 input_folder = 'original_unique_tree_patches/'
 output_folder = 'step_1_unique_tree_patches/'
 
-original_data_path = global_constants.DATA_PATH + input_folder
-pure_path = Path(global_constants.ONE_LEVEL_UP + original_data_path)
+original_data_path = gc.DATA_PATH + input_folder
+pure_path = Path(gc.ONE_LEVEL_UP + original_data_path)
 print(f'pure_path: {pure_path}')
 assert pure_path.exists(), f'Path {original_data_path} does not exist'
 tif_list = []
@@ -34,7 +34,7 @@ print(f'len(tif_list): {len(tif_list)}')
 print(f'tif_list[0]: {tif_list[0]}')
 
 # save images to the input data folder
-save_folder_path = Path(global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + output_folder)
+save_folder_path = Path(gc.ONE_LEVEL_UP + gc.DATA_PATH + output_folder)
 if not save_folder_path.exists():
     save_folder_path.mkdir(parents=False)
 # print(f'save_folder_path: {save_folder_path}')

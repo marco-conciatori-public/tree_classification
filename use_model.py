@@ -1,8 +1,8 @@
 import torch
 
 import utils
-import global_constants
 from import_args import args
+import global_constants as gc
 from models import model_utils
 from metrics import metric_utils
 from data_preprocessing import data_loading
@@ -11,7 +11,7 @@ from visualization import visualization_utils
 
 def use_model_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+    parameters = args.import_and_check(gc.CONFIG_PARAMETER_PATH, **kwargs)
     use_targets = parameters['use_targets']
 
     # load model
@@ -19,7 +19,7 @@ def use_model_(**kwargs):
     model_path, info_path = utils.get_path_by_id(
         model_partial_name=model_partial_name,
         model_id=model_id,
-        folder_path=global_constants.MODEL_OUTPUT_DIR,
+        folder_path=gc.MODEL_OUTPUT_DIR,
     )
     loaded_model, custom_transforms, meta_data = model_utils.load_model(
         model_path=model_path,
@@ -76,16 +76,16 @@ def use_model_(**kwargs):
                 if use_targets:
                     # print(f'img_index: {img_index}')
                     # print(f'tag: {tag_list[img_index]}')
-                    true_name = class_information_from_data[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
+                    true_name = class_information_from_data[tag_list[img_index]][gc.SPECIES_LANGUAGE]
                     element_info['true_label'] = true_name
                     # print(f'TRUE LABEL: {true_name}')
                 element_info['prediction'] = {}
                 for tree_class_local_index in range(len(prediction)):
                     # print(f'tree_class_local_index: {tree_class_local_index}')
-                    # print(f'tree class name: {class_information_from_model[tree_class_local_index][global_constants.SPECIES_LANGUAGE]}')
+                    # print(f'tree class name: {class_information_from_model[tree_class_local_index][gc.SPECIES_LANGUAGE]}')
                     # if prediction[tree_class_local_index] >= config.TOLERANCE:
                     element_info['prediction'][class_information_from_model[tree_class_local_index]
-                    [global_constants.SPECIES_LANGUAGE]] = metric_utils.format_value(
+                    [gc.SPECIES_LANGUAGE]] = metric_utils.format_value(
                         value=prediction[tree_class_local_index],
                         as_percentage=True,
                     )
@@ -96,12 +96,12 @@ def use_model_(**kwargs):
             else:
                 print('-------------------')
                 if use_targets:
-                    true_name = class_information_from_data[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
+                    true_name = class_information_from_data[tag_list[img_index]][gc.SPECIES_LANGUAGE]
                     print(f'TRUE LABEL: {true_name}')
                 print('NETWORK EVALUATION:')
                 for tree_class_local_index in range(len(prediction)):
                     # if prediction[tree_class_local_index] >= config.TOLERANCE:
-                    text = f' - {class_information_from_data[tree_class_local_index][global_constants.SPECIES_LANGUAGE]}: ' \
+                    text = f' - {class_information_from_data[tree_class_local_index][gc.SPECIES_LANGUAGE]}: ' \
                            f'{metric_utils.format_value(value=prediction[tree_class_local_index], as_percentage=True)}'
                     if tree_class_local_index == top_class:
                         text = utils.to_bold_string(text)

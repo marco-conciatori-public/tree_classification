@@ -6,7 +6,7 @@ from pathlib import Path
 import torchvision.transforms.functional as tf
 
 import utils
-import global_constants
+import global_constants as gc
 from models import model_utils
 from image_processing import orthomosaic_utils
 
@@ -33,7 +33,7 @@ def analyse_orthomosaic_(**kwargs):
     model_path, info_path = utils.get_path_by_id(
         model_partial_name=model_partial_name,
         model_id=model_id,
-        folder_path=global_constants.MODEL_OUTPUT_DIR,
+        folder_path=gc.MODEL_OUTPUT_DIR,
     )
     loaded_model, custom_transforms, meta_data = model_utils.load_model(
         model_path=model_path,
@@ -56,7 +56,7 @@ def analyse_orthomosaic_(**kwargs):
 
     # load orthomosaic image
     start_time = end_time
-    orthomosaic_folder_path = Path(global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_folder'])
+    orthomosaic_folder_path = Path(gc.ORTHOMOSAIC_DATA_PATH + kwargs['img_folder'])
     matching_paths = orthomosaic_folder_path.glob('orthomosaic*')
     matching_paths = list(matching_paths)
     assert len(matching_paths) == 1, (f'there must be exactly 1 file named "orthomosaic" in the selected folder, but'
@@ -172,7 +172,7 @@ def analyse_orthomosaic_(**kwargs):
     species_distribution = temp_species_distribution
     # print('Unique values count')
     # for species_index in range(num_classes_plus_unknown):
-    #     print(f'- {global_constants.TREE_INFORMATION[species_index][global_constants.SPECIES_LANGUAGE]}:'
+    #     print(f'- {gc.TREE_INFORMATION[species_index][gc.SPECIES_LANGUAGE]}:'
     #           f' {np.unique(species_distribution[ : , : , species_index], return_counts=True)}')
 
     assert species_distribution.max() <= 1, f'species_distribution.max() > 1. (max = {species_distribution.max()})'
@@ -180,9 +180,9 @@ def analyse_orthomosaic_(**kwargs):
 
     folder_id = utils.get_available_id(
         partial_name=kwargs['img_folder'],
-        folder_path=f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}',
+        folder_path=f'{gc.OUTPUT_DIR}{gc.ORTHOMOSAIC_FOLDER_NAME}',
     )
-    save_path = f'{global_constants.OUTPUT_DIR}{global_constants.ORTHOMOSAIC_FOLDER_NAME}' \
+    save_path = f'{gc.OUTPUT_DIR}{gc.ORTHOMOSAIC_FOLDER_NAME}' \
                 f'{kwargs["img_folder"]}_{folder_id}/'
     info = {
         'model_path': str(model_path),
@@ -209,7 +209,7 @@ def analyse_orthomosaic_(**kwargs):
     # evaluate the results
     start_time = end_time
     real_species_distribution = orthomosaic_utils.load_target(
-        folder_path=global_constants.ORTHOMOSAIC_DATA_PATH + kwargs['img_folder'],
+        folder_path=gc.ORTHOMOSAIC_DATA_PATH + kwargs['img_folder'],
         info=info,
         # target_extension='.jpg',
         verbose=kwargs['verbose'],

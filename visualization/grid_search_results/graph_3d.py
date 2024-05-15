@@ -2,7 +2,7 @@ import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
 
-import global_constants
+import global_constants as gc
 
 
 def plot_parameters(hp_to_plot: list,
@@ -121,9 +121,9 @@ def plot_parameters(hp_to_plot: list,
                horizontalalignment='right')
     plt.tight_layout()
     if save_img:
-        Path(global_constants.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
-        plt.savefig(f'{global_constants.IMG_OUTPUT_DIR}param_3d_plot.png')
-        print(f'Image "param_3d_plot.png" saved in "{global_constants.IMG_OUTPUT_DIR}"')
+        Path(gc.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+        plt.savefig(f'{gc.IMG_OUTPUT_DIR}param_3d_plot.png')
+        print(f'Image "param_3d_plot.png" saved in "{gc.IMG_OUTPUT_DIR}"')
     else:
         plt.show()
     plt.close()

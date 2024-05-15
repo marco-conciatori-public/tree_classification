@@ -1,4 +1,4 @@
-import global_constants
+import global_constants as gc
 from import_args import args
 from data_preprocessing import get_ready_data
 from models import training, evaluation, model_utils
@@ -6,7 +6,7 @@ from models import training, evaluation, model_utils
 
 def finetune_pretrained_model_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+    parameters = args.import_and_check(gc.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['display_confusion_matrix'] = True
     if parameters['num_models_to_train'] > 1:
         parameters['display_confusion_matrix'] = False
@@ -73,7 +73,7 @@ def finetune_pretrained_model_(**kwargs):
             class_information=class_information,
             verbose=parameters['verbose'],
             save_model=parameters['save_model'],
-            save_path=global_constants.MODEL_OUTPUT_DIR,
+            save_path=gc.MODEL_OUTPUT_DIR,
             metrics=parameters['metric_names'],
             custom_transforms=custom_transforms,
             extra_info_to_save=parameters_to_save,
@@ -88,7 +88,7 @@ def finetune_pretrained_model_(**kwargs):
             metrics=parameters['metric_names'],
             class_information=class_information,
             save_results=parameters['save_model'],
-            save_path=global_constants.MODEL_OUTPUT_DIR,
+            save_path=gc.MODEL_OUTPUT_DIR,
             verbose=parameters['verbose'],
         )
 

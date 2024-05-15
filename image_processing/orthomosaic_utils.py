@@ -7,8 +7,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
-import global_constants
 import utils
+import global_constants as gc
 
 
 def get_patch(img: torch.Tensor, size: int, top_left_coord: tuple):
@@ -38,7 +38,7 @@ def save_class_layers(num_classes_plus_unknown: int,
         class_name = 'unknown'
         if class_index != unknown_class_id:
             color = class_information[class_index]['display_color_rgb']
-            class_name = class_information[class_index][global_constants.SPECIES_LANGUAGE]
+            class_name = class_information[class_index][gc.SPECIES_LANGUAGE]
         temp_img[:, :, 0] = color[0]
         temp_img[:, :, 1] = color[1]
         temp_img[:, :, 2] = color[2]
@@ -71,7 +71,7 @@ def save_legend(save_path: str,
         color = [0, 0, 0]
         name = 'unknown'
         if class_id != unknown_class_id:
-            name = class_information[class_id][global_constants.SPECIES_LANGUAGE]
+            name = class_information[class_id][gc.SPECIES_LANGUAGE]
             color = list(class_information[class_id]['display_color_rgb'])
             for rgb_index in range(3):
                 color[rgb_index] = color[rgb_index] / 255
@@ -111,7 +111,7 @@ def save_output(orthomosaic: torch.Tensor,
         unknown_class_id=info['unknown_class_id'],
         class_information=info['model_meta_data']['class_information'],
     )
-    with open(f'{save_path}{global_constants.INFO_FILE_NAME}.json', 'w') as file:
+    with open(f'{save_path}{gc.INFO_FILE_NAME}.json', 'w') as file:
         json.dump(info, file, indent=4)
 
 
@@ -177,7 +177,7 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
         if species_index == info['unknown_class_id']:
             continue
         if verbose >= 2:
-            print(f'evaluating species: {info["model_meta_data"]["class_information"][species_index][global_constants.SPECIES_LANGUAGE]}')
+            print(f'evaluating species: {info["model_meta_data"]["class_information"][species_index][gc.SPECIES_LANGUAGE]}')
 
         # targets and predictions are in different dimensions in the arrays
         species_target = target[species_index]
@@ -240,7 +240,7 @@ def evaluate_results(prediction: np.array, target: dict, info: dict, verbose: in
             print(f'\trecall: {recall}')
             print(f'\tf1_score: {f1_score}')
             print(f'\taccuracy: {accuracy}')
-        evaluation[info["model_meta_data"]["class_information"][species_index][global_constants.SPECIES_LANGUAGE]] = {
+        evaluation[info["model_meta_data"]["class_information"][species_index][gc.SPECIES_LANGUAGE]] = {
             'precision': precision,
             'recall': recall,
             'f1_score': f1_score,

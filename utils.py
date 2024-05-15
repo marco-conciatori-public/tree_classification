@@ -3,7 +3,7 @@ import warnings
 import datetime
 from pathlib import Path
 
-import global_constants
+import global_constants as gc
 
 
 def get_available_id(partial_name: str, folder_path: str) -> int:
@@ -67,7 +67,7 @@ def get_path_by_id(model_id: int, folder_path: str, model_partial_name: str = ''
     assert pure_path.exists(), f'the folder_path {folder_path} does not exists'
 
     # returns a GENERATOR that YELDS all the file paths matching the string
-    search_string = f'*{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{model_id}*'
+    search_string = f'*{gc.EXTERNAL_PARAMETER_SEPARATOR}{model_id}*'
     if model_partial_name != '':
         search_string = f'*{model_partial_name}{search_string}'
     matching_paths = pure_path.glob(search_string)
@@ -86,7 +86,7 @@ def get_path_by_id(model_id: int, folder_path: str, model_partial_name: str = ''
 
     model_path = matching_paths[0]
     meta_data_path = matching_paths[1]
-    if matching_paths[0].name.find(global_constants.INFO_FILE_NAME) != -1:
+    if matching_paths[0].name.find(gc.INFO_FILE_NAME) != -1:
         model_path = matching_paths[1]
         meta_data_path = matching_paths[0]
     return model_path, meta_data_path
@@ -119,7 +119,7 @@ def to_bold_string(string: str):
 
 def get_species_id_by_name(species_name: str,
                            class_information: dict,
-                           species_language: str = global_constants.SPECIES_LANGUAGE,
+                           species_language: str = gc.SPECIES_LANGUAGE,
                            ) -> int:
     # returns the species_id of the species_name
     # if the species_name is not found returns -1

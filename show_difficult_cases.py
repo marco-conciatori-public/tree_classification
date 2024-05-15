@@ -1,7 +1,7 @@
 import torch
 
 import utils
-import global_constants
+import global_constants as gc
 from import_args import args
 from models import model_utils
 from metrics import metric_utils
@@ -11,7 +11,7 @@ from visualization import visualization_utils
 
 def show_difficult_cases_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(yaml_path=global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+    parameters = args.import_and_check(yaml_path=gc.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['device'] = torch.device('cpu')
     parameters['shuffle'] = False
     parameters['use_targets'] = True
@@ -21,7 +21,7 @@ def show_difficult_cases_(**kwargs):
     model_path, info_path = utils.get_path_by_id(
         model_partial_name=model_partial_name,
         model_id=model_id,
-        folder_path=global_constants.MODEL_OUTPUT_DIR,
+        folder_path=gc.MODEL_OUTPUT_DIR,
     )
     loaded_model, custom_transforms, meta_data = model_utils.load_model(
         model_path=model_path,
@@ -92,7 +92,7 @@ def show_difficult_cases_(**kwargs):
             element_info['prediction'] = {}
             for tree_class_local_index in range(len(prediction)):
                 # if prediction[tree_class_local_index] >= config.TOLERANCE:
-                element_info['prediction'][class_information_from_model[tree_class_local_index][global_constants.SPECIES_LANGUAGE]
+                element_info['prediction'][class_information_from_model[tree_class_local_index][gc.SPECIES_LANGUAGE]
                 ] = metric_utils.format_value(value=prediction[tree_class_local_index], as_percentage=True)
             element_info['img'] = img_list[img_index]
             element_info['tag'] = tag_list[img_index]
@@ -104,7 +104,7 @@ def show_difficult_cases_(**kwargs):
             print('NETWORK EVALUATION:')
             for tree_class_local_index in range(len(prediction)):
                 # if prediction[tree_class_local_index] >= config.TOLERANCE:
-                text = f' - {class_information_from_model[tree_class_local_index][global_constants.SPECIES_LANGUAGE]}: ' \
+                text = f' - {class_information_from_model[tree_class_local_index][gc.SPECIES_LANGUAGE]}: ' \
                        f'{metric_utils.format_value(value=prediction[tree_class_local_index], as_percentage=True)}'
                 print(text)
 

@@ -1,9 +1,9 @@
-import global_constants
+import global_constants as gc
 
 
 def from_name(name: str) -> int:
     name_lower = name.lower()
-    for key, value in global_constants.CLASS_INFORMATION.items():
+    for key, value in gc.CLASS_INFORMATION.items():
         if 'abbreviated_japanese_romaji' in value:
             abbreviated_japanese_romaji = value['abbreviated_japanese_romaji']
             if abbreviated_japanese_romaji is not None:

@@ -1,7 +1,7 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
 
-import global_constants
+import global_constants as gc
 
 
 def bar_plot(average_loss: dict, save_img: bool = False):
@@ -38,9 +38,9 @@ def bar_plot(average_loss: dict, save_img: bool = False):
     # plt.ylim((0.3, 0.5))
     plt.tight_layout()
     if save_img:
-        Path(global_constants.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
-        plt.savefig(f'{global_constants.IMG_OUTPUT_DIR}loss_per_parameter.png')
-        print(f'Image "loss_per_parameter.png" saved in "{global_constants.IMG_OUTPUT_DIR}"')
+        Path(gc.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+        plt.savefig(f'{gc.IMG_OUTPUT_DIR}loss_per_parameter.png')
+        print(f'Image "loss_per_parameter.png" saved in "{gc.IMG_OUTPUT_DIR}"')
     else:
         plt.show()
     plt.close()

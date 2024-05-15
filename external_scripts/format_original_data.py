@@ -1,14 +1,14 @@
 import cv2
-from pathlib import Path
 import json
+from pathlib import Path
 
-import global_constants
+import global_constants as gc
 
 input_folder = 'original_paper_nhunh/testing_data/plot_1/'
 output_folder = 'biodiversity_paper_nhunh/plot_1/'
 
-original_data_path = global_constants.DATA_PATH + input_folder
-pure_path = Path(global_constants.ONE_LEVEL_UP + original_data_path)
+original_data_path = gc.DATA_PATH + input_folder
+pure_path = Path(gc.ONE_LEVEL_UP + original_data_path)
 print(f'pure_path: {pure_path}')
 assert pure_path.exists(), f'Path {original_data_path} does not exist'
 tif_list = []
@@ -49,7 +49,7 @@ print(f'total num patches: {len(tif_list)}')
 species_counter['total_num_patches'] = len(tif_list)
 
 # save images to the input data folder
-save_folder_str = global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + output_folder
+save_folder_str = gc.ONE_LEVEL_UP + gc.DATA_PATH + output_folder
 Path(save_folder_str).mkdir(parents=True, exist_ok=True)
 print(f'save_folder_str: {save_folder_str}')
 for tif_path in tif_list:
@@ -60,7 +60,7 @@ for tif_path in tif_list:
 # save meta_data info to json file
 parts = output_folder.split('/')
 parts = parts[:-1]
-info_folder_str = global_constants.ONE_LEVEL_UP + global_constants.DATA_PATH + 'step_1_info/'
+info_folder_str = gc.ONE_LEVEL_UP + gc.DATA_PATH + 'step_1_info/'
 print(f'info_folder_str: {info_folder_str}')
 print(f'parts: {parts}')
 info_file_name = parts[-1] + '.json'

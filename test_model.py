@@ -1,8 +1,8 @@
 import torch
 
 import utils
-import global_constants
 from import_args import args
+import global_constants as gc
 from models import model_utils
 from metrics import metric_utils
 from visualization import visualization_utils
@@ -12,7 +12,7 @@ from metrics.metric_manager import MetricManager
 
 def test_model_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+    parameters = args.import_and_check(gc.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 2
     parameters['shuffle'] = False
     if not parameters['display_confusion_matrix'] and parameters['verbose'] >= 1:
@@ -26,7 +26,7 @@ def test_model_(**kwargs):
     model_path, info_path = utils.get_path_by_id(
         model_partial_name=model_partial_name,
         model_id=model_id,
-        folder_path=global_constants.MODEL_OUTPUT_DIR,
+        folder_path=gc.MODEL_OUTPUT_DIR,
     )
     loaded_model, custom_transforms, meta_data = model_utils.load_model(
         model_path=model_path,

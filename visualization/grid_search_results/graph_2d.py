@@ -1,7 +1,7 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
 
-import global_constants
+import global_constants as gc
 
 
 def plot_parameters(hp_to_plot: list,
@@ -28,7 +28,7 @@ def plot_parameters(hp_to_plot: list,
     plt.xlabel(hp_to_plot)
     x_ticks_labels = []
     for el in hp_evaluation['search_space'][hp_to_plot]:
-        x_ticks_labels.append(round(el, global_constants.MAX_DECIMAL_PLACES))
+        x_ticks_labels.append(round(el, gc.MAX_DECIMAL_PLACES))
     plt.ylabel('Loss Value')
     plt.title(title)
     if not rotate_x_labels:
@@ -45,9 +45,9 @@ def plot_parameters(hp_to_plot: list,
         )
     plt.tight_layout()
     if save_img:
-        Path(global_constants.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
-        plt.savefig(f'{global_constants.IMG_OUTPUT_DIR}param_2d_plot.png')
-        print(f'Image "param_2d_plot.png" saved in "{global_constants.IMG_OUTPUT_DIR}"')
+        Path(gc.IMG_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+        plt.savefig(f'{gc.IMG_OUTPUT_DIR}param_2d_plot.png')
+        print(f'Image "param_2d_plot.png" saved in "{gc.IMG_OUTPUT_DIR}"')
     else:
         plt.show()
     plt.close()

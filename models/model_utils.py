@@ -6,7 +6,7 @@ import torchvision.transforms.functional as tf
 from torchvision import models as torchvision_models
 
 import utils
-import global_constants
+import global_constants as gc
 from models import conv_2d
 
 
@@ -23,7 +23,7 @@ def create_model(model_class_name: str,
     if name is None:
         name = model_class_name
 
-    model_id = utils.get_available_id(partial_name=name, folder_path=global_constants.MODEL_OUTPUT_DIR)
+    model_id = utils.get_available_id(partial_name=name, folder_path=gc.MODEL_OUTPUT_DIR)
     # WARNING: parallel or concurrent model instances it is possible that some of them get assigned the same id.
     # The error or involuntary overwriting happens only when saving those models.
 
@@ -61,17 +61,17 @@ def save_model_and_meta_data(model: torch.nn.Module,
         print('Saving model...')
     Path(save_path).mkdir(parents=True, exist_ok=True)
 
-    file_name = f'{model.name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{model.id}'
+    file_name = f'{model.name}{gc.EXTERNAL_PARAMETER_SEPARATOR}{model.id}'
     assert file_name is not None, 'unable to retrieve model information'
 
-    model_path = save_path + file_name + global_constants.PYTORCH_FILE_EXTENSION
+    model_path = save_path + file_name + gc.PYTORCH_FILE_EXTENSION
     torch.save(obj=(model, custom_transforms), f=model_path)
     if verbose >= 1:
         print(f'Model saved successfully ({model_path})')
 
     if meta_data is not None:
-        meta_data_path = f'{save_path}{file_name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}' \
-                         f'{global_constants.INFO_FILE_NAME}.json'
+        meta_data_path = f'{save_path}{file_name}{gc.EXTERNAL_PARAMETER_SEPARATOR}' \
+                         f'{gc.INFO_FILE_NAME}.json'
         with open(file=meta_data_path, mode='w') as json_file:
             json.dump(meta_data, json_file, default=str)
         if verbose >= 1:
@@ -120,9 +120,9 @@ def get_torchvision_model(pretrained_model_parameters: dict,
     if freeze_layers and weights_name is None:
         raise ValueError('weights_name must be specified when freeze_layers = True')
 
-    model_full_name = f'{model_version}{global_constants.INTERNAL_PARAMETER_SEPARATOR}Weights' \
-                      f'{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{weights_name}'
-    model_id = utils.get_available_id(partial_name=model_full_name, folder_path=global_constants.MODEL_OUTPUT_DIR)
+    model_full_name = f'{model_version}{gc.INTERNAL_PARAMETER_SEPARATOR}Weights' \
+                      f'{gc.EXTERNAL_PARAMETER_SEPARATOR}{weights_name}'
+    model_id = utils.get_available_id(partial_name=model_full_name, folder_path=gc.MODEL_OUTPUT_DIR)
 
     # Initialize model with the given weights
     model = torchvision_models.get_model(name=model_version.lower(), weights=weights_name)
@@ -191,10 +191,10 @@ def save_test_results(cm_true_values: list,
     if verbose >= 1:
         print(f'Updating meta data information with test results...')
 
-    file_name = f'{model.name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}{model.id}'
+    file_name = f'{model.name}{gc.EXTERNAL_PARAMETER_SEPARATOR}{model.id}'
     assert file_name is not None, 'unable to retrieve model information'
-    meta_data_path = f'{save_path}{file_name}{global_constants.EXTERNAL_PARAMETER_SEPARATOR}' \
-                     f'{global_constants.INFO_FILE_NAME}.json'
+    meta_data_path = f'{save_path}{file_name}{gc.EXTERNAL_PARAMETER_SEPARATOR}' \
+                     f'{gc.INFO_FILE_NAME}.json'
     if verbose >= 2:
         print(f'meta data path: "{meta_data_path}"')
 

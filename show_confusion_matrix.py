@@ -1,7 +1,7 @@
 import json
 
 import utils
-import global_constants
+import global_constants as gc
 from visualization import visualization_utils
 
 
@@ -11,7 +11,7 @@ def show_confusion_matrix_():
     _, meta_data_path = utils.get_path_by_id(
         model_partial_name=model_partial_name,
         model_id=model_id,
-        folder_path=global_constants.MODEL_OUTPUT_DIR,
+        folder_path=gc.MODEL_OUTPUT_DIR,
     )
 
     with open(meta_data_path, 'r') as json_file:

@@ -5,7 +5,7 @@ import datetime
 from pathlib import Path
 
 import utils
-import global_constants
+import global_constants as gc
 from data_preprocessing import get_ready_data
 from models import training, evaluation, model_utils
 
@@ -18,7 +18,7 @@ def resume_interrupted_grid_search_():
     global_start_time = datetime.datetime.now()
     print(global_start_time.strftime('%Y-%m-%d-%H:%M:%S'))
     resume_from_file = 'configuration_and_results_0.json'
-    partial_results_path = global_constants.PARAMETER_SEARCH_OUTPUT_DIR + resume_from_file
+    partial_results_path = gc.PARAMETER_SEARCH_OUTPUT_DIR + resume_from_file
     with open(partial_results_path, 'r') as json_file:
         partial_content = json.load(json_file)
 
@@ -195,14 +195,14 @@ def resume_interrupted_grid_search_():
     content['results'] = results
 
     # save results
-    Path(global_constants.PARAMETER_SEARCH_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+    Path(gc.PARAMETER_SEARCH_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
     # find first free index
     i = 0
-    while Path(f'{global_constants.PARAMETER_SEARCH_OUTPUT_DIR}{global_constants.PARAMETER_SEARCH_FILE_NAME}'
-               f'{global_constants.INTERNAL_PARAMETER_SEPARATOR}{i}.json').exists():
+    while Path(f'{gc.PARAMETER_SEARCH_OUTPUT_DIR}{gc.PARAMETER_SEARCH_FILE_NAME}'
+               f'{gc.INTERNAL_PARAMETER_SEPARATOR}{i}.json').exists():
         i += 1
-    with open(f'{global_constants.PARAMETER_SEARCH_OUTPUT_DIR}{global_constants.PARAMETER_SEARCH_FILE_NAME}'
-              f'{global_constants.INTERNAL_PARAMETER_SEPARATOR}{i}.json', 'w') as json_file:
+    with open(f'{gc.PARAMETER_SEARCH_OUTPUT_DIR}{gc.PARAMETER_SEARCH_FILE_NAME}'
+              f'{gc.INTERNAL_PARAMETER_SEPARATOR}{i}.json', 'w') as json_file:
         json.dump(content, json_file)
 
     print('Final date and time:')

@@ -1,7 +1,7 @@
 import os
 
 import utils
-import global_constants
+import global_constants as gc
 from import_args import from_yaml, from_command_line, from_function_arguments
 
 
@@ -31,6 +31,6 @@ def import_and_check(yaml_path, **kwargs) -> dict:
     device = utils.get_available_device(verbose=data_dict['verbose'])
     data_dict['device'] = device
     if 'data_path' not in data_dict or data_dict['data_path'] is None:
-        data_dict['data_path'] = global_constants.DATA_PATH + data_dict['input_data_folder']
+        data_dict['data_path'] = gc.DATA_PATH + data_dict['input_data_folder']
 
     return data_dict

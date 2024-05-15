@@ -1,13 +1,13 @@
 import utils
-import global_constants
 from import_args import args
+import global_constants as gc
 from data_preprocessing import get_ready_data
 from models import training, evaluation, model_utils
 
 
 def finetune_many_models_separate_test_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+    parameters = args.import_and_check(gc.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['display_confusion_matrix'] = True
     if parameters['num_models_to_train'] > 1:
         parameters['display_confusion_matrix'] = False
@@ -76,7 +76,7 @@ def finetune_many_models_separate_test_(**kwargs):
             class_information=class_information,
             verbose=0,
             save_model=parameters['save_model'],
-            save_path=global_constants.MODEL_OUTPUT_DIR,
+            save_path=gc.MODEL_OUTPUT_DIR,
             metrics=parameters['metric_names'],
             custom_transforms=custom_transforms,
             extra_info_to_save=parameters_to_save,
@@ -113,7 +113,7 @@ def finetune_many_models_separate_test_(**kwargs):
             metrics=parameters['metric_names'],
             class_information=class_information,
             save_results=parameters['save_model'],
-            save_path=global_constants.MODEL_OUTPUT_DIR,
+            save_path=gc.MODEL_OUTPUT_DIR,
             verbose=parameters['verbose'],
         )
         # print(f'test_loss: {test_loss}')
@@ -121,7 +121,7 @@ def finetune_many_models_separate_test_(**kwargs):
             if metric not in average_by_metric:
                 average_by_metric[metric] = {}
             for species_id in range(num_classes_test):
-                species_name = class_information[species_id][global_constants.SPECIES_LANGUAGE]
+                species_name = class_information[species_id][gc.SPECIES_LANGUAGE]
                 if species_name not in average_by_metric[metric]:
                     average_by_metric[metric][species_name] = 0
                 average_by_metric[metric][species_name] += metric_evaluations[metric]['result'][species_id]

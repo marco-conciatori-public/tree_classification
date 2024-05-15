@@ -1,6 +1,6 @@
 import utils
-import global_constants
 from import_args import args
+import global_constants as gc
 from models import evaluation, model_utils
 from data_preprocessing import data_loading, get_ready_data
 from metrics.biodiversity import gini_simpson_index, species_richness, shannon_wiener_index
@@ -8,7 +8,7 @@ from metrics.biodiversity import gini_simpson_index, species_richness, shannon_w
 
 def compute_biodiversity_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+    parameters = args.import_and_check(gc.CONFIG_PARAMETER_PATH, **kwargs)
     parameters['verbose'] = 2
     # use_targets = parameters['use_targets']
     use_targets = True
@@ -21,7 +21,7 @@ def compute_biodiversity_(**kwargs):
         model_path, info_path = utils.get_path_by_id(
             model_partial_name=model_partial_name,
             model_id=model_id,
-            folder_path=global_constants.MODEL_OUTPUT_DIR,
+            folder_path=gc.MODEL_OUTPUT_DIR,
         )
         loaded_model, custom_transforms, meta_data = model_utils.load_model(
             model_path=model_path,
@@ -58,7 +58,7 @@ def compute_biodiversity_(**kwargs):
             display_confusion_matrix=parameters['display_confusion_matrix'],
             metrics=parameters['metric_names'],
             save_results=parameters['save_model'],
-            save_path=global_constants.MODEL_OUTPUT_DIR,
+            save_path=gc.MODEL_OUTPUT_DIR,
             verbose=parameters['verbose'],
         )
 

@@ -1,13 +1,13 @@
 import cv2
 from pathlib import Path
 
-import global_constants
+import global_constants as gc
 
 # folder = 'paper_nhung/'
 folder = 'test/'
 
-data_path = global_constants.DATA_PATH + folder
-pure_path = Path(global_constants.ONE_LEVEL_UP + data_path)
+data_path = gc.DATA_PATH + folder
+pure_path = Path(gc.ONE_LEVEL_UP + data_path)
 print(f'pure_path: {pure_path}')
 assert pure_path.exists(), f'Path {data_path} does not exist'
 tif_list = []

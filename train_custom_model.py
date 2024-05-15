@@ -1,12 +1,12 @@
-import global_constants
 from import_args import args
+import global_constants as gc
 from data_preprocessing import get_ready_data
 from models import model_utils, training, evaluation
 
 
 def train_custom_model_(**kwargs):
     # import parameters
-    parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
+    parameters = args.import_and_check(gc.CONFIG_PARAMETER_PATH, **kwargs)
     for model_num in range(parameters['num_models_to_train']):
         print(f'Model {model_num + 1} of {parameters["num_models_to_train"]}')
 
@@ -65,7 +65,7 @@ def train_custom_model_(**kwargs):
             device=parameters['device'],
             verbose=parameters['verbose'],
             save_model=parameters['save_model'],
-            save_path=global_constants.MODEL_OUTPUT_DIR,
+            save_path=gc.MODEL_OUTPUT_DIR,
             metrics=parameters['metric_names'],
             extra_info_to_save=parameters_to_save,
         )
@@ -80,7 +80,7 @@ def train_custom_model_(**kwargs):
             class_information=class_information,
             metrics=parameters['metric_names'],
             save_results=parameters['save_model'],
-            save_path=global_constants.MODEL_OUTPUT_DIR,
+            save_path=gc.MODEL_OUTPUT_DIR,
             verbose=parameters['verbose'],
         )
         print(f'test_loss: {test_loss}')

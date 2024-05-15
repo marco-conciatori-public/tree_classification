@@ -1,6 +1,6 @@
 import torch
 
-import global_constants
+import global_constants as gc
 
 
 def print_formatted_results(loss: float,
@@ -35,9 +35,9 @@ def format_value(value,
                  ) -> str:
     if torch.is_tensor(value):
         value = value.item()
-    max_decimal_places = global_constants.MAX_DECIMAL_PLACES
+    max_decimal_places = gc.MAX_DECIMAL_PLACES
     if as_percentage:
-        max_decimal_places = max(global_constants.MAX_DECIMAL_PLACES - 2, 0)
+        max_decimal_places = max(gc.MAX_DECIMAL_PLACES - 2, 0)
         value = value * 100
     value = round(value, max_decimal_places)
     if as_percentage:
