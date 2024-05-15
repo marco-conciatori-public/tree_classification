@@ -28,12 +28,13 @@ def use_model_(**kwargs):
         meta_data_path=info_path,
         verbose=parameters['verbose'],
     )
+    class_information_from_model = meta_data['class_information']
 
     # load data
     img_list, tag_list, class_information_from_data = data_loading.load_data(
         data_path=parameters['data_path'],
         use_targets=use_targets,
-        model_class_information=meta_data['class_information'],
+        model_class_information=class_information_from_model,
         use_only_classes=parameters['use_only_classes'],
         verbose=parameters['verbose'],
     )
@@ -77,7 +78,7 @@ def use_model_(**kwargs):
                 element_info['prediction'] = {}
                 for tree_class in range(len(prediction)):
                     # if prediction[tree_class] >= config.TOLERANCE:
-                    element_info['prediction'][class_information_from_data[tree_class]
+                    element_info['prediction'][class_information_from_model[tree_class]
                     [global_constants.SPECIES_LANGUAGE]] = metric_utils.format_value(
                         value=prediction[tree_class],
                         as_percentage=True,
