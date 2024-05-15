@@ -12,11 +12,12 @@ from visualization import visualization_utils
 def show_difficult_cases_(**kwargs):
     # import parameters
     parameters = args.import_and_check(yaml_path=global_constants.CONFIG_PARAMETER_PATH, **kwargs)
-
     parameters['device'] = torch.device('cpu')
     parameters['shuffle'] = False
     parameters['use_targets'] = True
     model_partial_name, model_id = utils.identify_model(parameters=parameters)
+
+    # load model
     model_path, info_path = utils.get_path_by_id(
         model_partial_name=model_partial_name,
         model_id=model_id,
@@ -30,6 +31,7 @@ def show_difficult_cases_(**kwargs):
         verbose=parameters['verbose'],
     )
 
+    # load data
     img_list, tag_list, class_information_from_data = data_loading.load_data(
         data_path=parameters['data_path'],
         use_targets=parameters['use_targets'],
@@ -41,6 +43,7 @@ def show_difficult_cases_(**kwargs):
         if parameters['verbose'] >= 2:
             print('Execution in notebook mode. Returning output instead of printing.')
 
+    # use model
     softmax = torch.nn.Softmax(dim=0)
     worst_predictions = []
     with torch.set_grad_enabled(False):

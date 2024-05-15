@@ -14,6 +14,7 @@ def use_model_(**kwargs):
     parameters = args.import_and_check(global_constants.CONFIG_PARAMETER_PATH, **kwargs)
     use_targets = parameters['use_targets']
 
+    # load model
     model_partial_name, model_id = utils.identify_model(parameters=parameters)
     model_path, info_path = utils.get_path_by_id(
         model_partial_name=model_partial_name,
@@ -28,6 +29,7 @@ def use_model_(**kwargs):
         verbose=parameters['verbose'],
     )
 
+    # load data
     img_list, tag_list, class_information_from_data = data_loading.load_data(
         data_path=parameters['data_path'],
         use_targets=use_targets,
@@ -44,6 +46,7 @@ def use_model_(**kwargs):
         if parameters['verbose'] >= 2:
             print('Execution in notebook mode. Returning output instead of printing.')
 
+    # use model
     notebook_output = []
     softmax = torch.nn.Softmax(dim=0)
     with torch.set_grad_enabled(False):
