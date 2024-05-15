@@ -72,15 +72,21 @@ def use_model_(**kwargs):
 
             if 'launched_from_notebook' in kwargs and kwargs['launched_from_notebook']:
                 element_info = {}
+                print('-------------------')
                 if use_targets:
+                    print(f'img_index: {img_index}')
+                    print(f'tag: {tag_list[img_index]}')
                     true_name = class_information_from_data[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
                     element_info['true_label'] = true_name
+                    print(f'TRUE LABEL: {true_name}')
                 element_info['prediction'] = {}
-                for tree_class in range(len(prediction)):
-                    # if prediction[tree_class] >= config.TOLERANCE:
-                    element_info['prediction'][class_information_from_model[tree_class]
+                for tree_class_local_index in range(len(prediction)):
+                    print(f'tree_class_local_index: {tree_class_local_index}')
+                    print(f'tree class name: {class_information_from_model[tree_class_local_index][global_constants.SPECIES_LANGUAGE]}')
+                    # if prediction[tree_class_local_index] >= config.TOLERANCE:
+                    element_info['prediction'][class_information_from_model[tree_class_local_index]
                     [global_constants.SPECIES_LANGUAGE]] = metric_utils.format_value(
-                        value=prediction[tree_class],
+                        value=prediction[tree_class_local_index],
                         as_percentage=True,
                     )
                 element_info['img'] = img_list[img_index]
@@ -93,17 +99,17 @@ def use_model_(**kwargs):
                     true_name = class_information_from_data[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
                     print(f'TRUE LABEL: {true_name}')
                 print('NETWORK EVALUATION:')
-                for tree_class in range(len(prediction)):
-                    # if prediction[tree_class] >= config.TOLERANCE:
-                    text = f' - {class_information_from_data[tree_class][global_constants.SPECIES_LANGUAGE]}: ' \
-                           f'{metric_utils.format_value(value=prediction[tree_class], as_percentage=True)}'
-                    if tree_class == top_class:
+                for tree_class_local_index in range(len(prediction)):
+                    # if prediction[tree_class_local_index] >= config.TOLERANCE:
+                    text = f' - {class_information_from_data[tree_class_local_index][global_constants.SPECIES_LANGUAGE]}: ' \
+                           f'{metric_utils.format_value(value=prediction[tree_class_local_index], as_percentage=True)}'
+                    if tree_class_local_index == top_class:
                         text = utils.to_bold_string(text)
                     print(text)
 
                 # show image
                 visualization_utils.display_img(img=img_list[img_index])
-
+    exit()
     if 'launched_from_notebook' in kwargs and kwargs['launched_from_notebook']:
         return notebook_output
 

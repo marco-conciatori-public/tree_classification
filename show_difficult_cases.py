@@ -93,10 +93,10 @@ def show_difficult_cases_(**kwargs):
             element_info = {}
             element_info['true_label'] = true_name
             element_info['prediction'] = {}
-            for tree_class in range(len(prediction)):
-                # if prediction[tree_class] >= config.TOLERANCE:
-                element_info['prediction'][class_information_from_model[tree_class][global_constants.SPECIES_LANGUAGE]
-                ] = metric_utils.format_value(value=prediction[tree_class], as_percentage=True)
+            for tree_class_local_index in range(len(prediction)):
+                # if prediction[tree_class_local_index] >= config.TOLERANCE:
+                element_info['prediction'][class_information_from_model[tree_class_local_index][global_constants.SPECIES_LANGUAGE]
+                ] = metric_utils.format_value(value=prediction[tree_class_local_index], as_percentage=True)
             element_info['img'] = img_list[img_index]
             element_info['tag'] = tag_list[img_index]
             notebook_output.append(element_info)
@@ -105,10 +105,10 @@ def show_difficult_cases_(**kwargs):
             print('-------------------')
             print(f'TRUE LABEL: {true_name}')
             print('NETWORK EVALUATION:')
-            for tree_class in range(len(prediction)):
-                # if prediction[tree_class] >= config.TOLERANCE:
-                text = f' - {class_information_from_model[tree_class][global_constants.SPECIES_LANGUAGE]}: ' \
-                       f'{metric_utils.format_value(value=prediction[tree_class], as_percentage=True)}'
+            for tree_class_local_index in range(len(prediction)):
+                # if prediction[tree_class_local_index] >= config.TOLERANCE:
+                text = f' - {class_information_from_model[tree_class_local_index][global_constants.SPECIES_LANGUAGE]}: ' \
+                       f'{metric_utils.format_value(value=prediction[tree_class_local_index], as_percentage=True)}'
                 print(text)
 
             # show image
