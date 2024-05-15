@@ -12,6 +12,7 @@ confidence_threshold: 0.9
 display_confusion_matrix: True
 worst_n_predictions: 10
 best_n_configurations: 15
+launched_from_notebook: False
 
 # CUSTOM MODEL CONFIGURATION
 custom_model_parameters:
