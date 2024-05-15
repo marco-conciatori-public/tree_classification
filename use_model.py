@@ -27,7 +27,6 @@ def use_model_(**kwargs):
         meta_data_path=info_path,
         verbose=parameters['verbose'],
     )
-    class_information = meta_data['class_information']
 
     img_list, tag_list, class_information_from_data = data_loading.load_data(
         data_path=parameters['data_path'],

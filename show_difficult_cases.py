@@ -76,7 +76,7 @@ def show_difficult_cases_(**kwargs):
         use_targets=parameters['use_targets'],
         model_class_information=meta_data['class_information'],
         use_only_classes=parameters['use_only_classes'],
-        verbose=parameters['verbose'],
+        verbose=0,
     )
     notebook_output = []
     for i in range(len(worst_predictions)):
