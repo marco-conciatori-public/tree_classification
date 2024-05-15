@@ -4,6 +4,7 @@ import utils
 import global_constants
 from import_args import args
 from models import model_utils
+from metrics import metric_utils
 from data_preprocessing import data_loading
 from visualization import visualization_utils
 
@@ -35,6 +36,9 @@ def show_difficult_cases_(**kwargs):
         use_only_classes=parameters['use_only_classes'],
         verbose=parameters['verbose'],
     )
+    if 'launched_from_notebook' in kwargs and kwargs['launched_from_notebook']:
+        if parameters['verbose'] >= 2:
+            print('Execution in notebook mode. Returning output instead of printing.')
 
     softmax = torch.nn.Softmax(dim=0)
     worst_predictions = []
@@ -59,7 +63,7 @@ def show_difficult_cases_(**kwargs):
             prediction_of_true_class = prediction[true_class]
             worst_predictions.append((prediction_of_true_class, img_index, prediction))
 
-    print('Find the worst predictions...')
+    print('Finding the worst predictions...')
     # sort worst_predictions
     worst_predictions.sort(key=lambda x: x[0])
 
@@ -72,23 +76,40 @@ def show_difficult_cases_(**kwargs):
         use_only_classes=parameters['use_only_classes'],
         verbose=parameters['verbose'],
     )
+    notebook_output = []
     for i in range(len(worst_predictions)):
         if i >= parameters['worst_n_predictions']:
             break
         prediction_of_true_class, img_index, prediction = worst_predictions[i]
-
-        print('-------------------')
         true_name = class_information_from_data[tag_list[img_index]][global_constants.SPECIES_LANGUAGE]
-        print(f'TRUE LABEL: {true_name}')
-        print('NETWORK EVALUATION:')
-        for tree_class in range(len(prediction)):
-            # if prediction[tree_class] >= config.TOLERANCE:
-            text = f' - {class_information_from_data[tree_class][global_constants.SPECIES_LANGUAGE]}: ' \
-                   f'{round(prediction[tree_class] * 100, max(global_constants.MAX_DECIMAL_PLACES - 2, 0))}%'
-            print(text)
 
-        # show image
-        visualization_utils.display_img(img=img_list[img_index])
+        if 'launched_from_notebook' in kwargs and kwargs['launched_from_notebook']:
+            element_info = {}
+            element_info['true_label'] = true_name
+            element_info['prediction'] = {}
+            for tree_class in range(len(prediction)):
+                # if prediction[tree_class] >= config.TOLERANCE:
+                element_info['prediction'][class_information_from_data[tree_class][global_constants.SPECIES_LANGUAGE]
+                ] = metric_utils.format_value(value=prediction[tree_class], as_percentage=True)
+            element_info['img'] = img_list[img_index]
+            element_info['tag'] = tag_list[img_index]
+            notebook_output.append(element_info)
+
+        else:
+            print('-------------------')
+            print(f'TRUE LABEL: {true_name}')
+            print('NETWORK EVALUATION:')
+            for tree_class in range(len(prediction)):
+                # if prediction[tree_class] >= config.TOLERANCE:
+                text = f' - {class_information_from_data[tree_class][global_constants.SPECIES_LANGUAGE]}: ' \
+                       f'{metric_utils.format_value(value=prediction[tree_class], as_percentage=True)}'
+                print(text)
+
+            # show image
+            visualization_utils.display_img(img=img_list[img_index])
+
+    if 'launched_from_notebook' in kwargs and kwargs['launched_from_notebook']:
+        return notebook_output
 
 
 if __name__ == '__main__':
