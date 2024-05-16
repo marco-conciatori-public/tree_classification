@@ -15,6 +15,8 @@ def compute_biodiversity_(**kwargs):
     use_network = True
     assert use_targets, 'use_targets must be True for now'
     assert use_targets or use_network, 'At least one of the two parameters ("use_targets", "use_network") must be True'
+    parameters['metric_names']['classification'] = []
+    parameters['metric_names']['biodiversity'] = ['gini_simpson_index', 'shannon_wiener_index', 'species_richness']
 
     if use_network:
         model_partial_name, model_id = utils.identify_model(parameters=parameters)
