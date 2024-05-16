@@ -4,8 +4,8 @@ from pathlib import Path
 
 import global_constants as gc
 
-input_folder = 'original_paper_nhunh/testing_data/plot_1/'
-output_folder = 'biodiversity_paper_nhunh/plot_1/'
+input_folder = 'paper_original_data/testing_data/plot_1/'
+output_folder = 'paper_biodiversity_data/plot_1/'
 
 original_data_path = gc.DATA_PATH + input_folder
 pure_path = Path(gc.ONE_LEVEL_UP + original_data_path)
