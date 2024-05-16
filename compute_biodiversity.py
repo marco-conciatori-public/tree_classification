@@ -9,7 +9,7 @@ from metrics.biodiversity import gini_simpson_index, species_richness, shannon_w
 def compute_biodiversity_(**kwargs):
     # import parameters
     parameters = args.import_and_check(gc.CONFIG_PARAMETER_PATH, **kwargs)
-    parameters['verbose'] = 2
+    # parameters['verbose'] = 2
     # use_targets = parameters['use_targets']
     use_targets = True
     use_network = True
@@ -32,7 +32,8 @@ def compute_biodiversity_(**kwargs):
             meta_data_path=info_path,
             verbose=parameters['verbose'],
         )
-        print(f'meta_data["class_information"]: {meta_data["class_information"]}')
+        if parameters['verbose'] >= 2:
+            print(f'model class_information: {meta_data["class_information"]}')
 
         test_dl, _, _, _ = get_ready_data.get_data(
             data_path=parameters['data_path'],
