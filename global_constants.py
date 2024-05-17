@@ -96,10 +96,10 @@ CLASS_INFORMATION = {
     },
     9: {
         # 'japanese_romaji': 'momi',
-        'japanese_romaji': 'fir',
+        'japanese_romaji': 'Aomoritodomatsu',
         'english': 'fir',
         'latin': 'abies mariesii',
-        'japanese': 'モミ',
+        'japanese': 'アオモリトドマツ',
         'type': EVERGREEN,
         'display_color_rgb': (0, 0, 255),
     },
