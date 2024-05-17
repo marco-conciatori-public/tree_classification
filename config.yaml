@@ -81,6 +81,7 @@ balance_data: False
 # use only images with these classes. If empty, use all images
 # class must be indicated by their numerical id
 use_only_classes: []
+#use_only_classes: [1, 4, 8]
 
 metric_names:
     classification: [accuracy, precision, recall, f1score]
