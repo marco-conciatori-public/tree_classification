@@ -91,4 +91,6 @@ will:
 - download the data from dropbox
 - train and test a model
 - show the results
+- use the trained model on a set of images
+- see the worst-predicted cases of a set of images
 - from the notebook, it is possible to run any of the other scripts described above
