@@ -98,7 +98,7 @@ CLASS_INFORMATION = {
         # 'japanese_romaji': 'momi',
         'japanese_romaji': 'fir',
         'english': 'fir',
-        'latin': 'abies ?',
+        'latin': 'abies mariesii',
         'japanese': 'モミ',
         'type': EVERGREEN,
         'display_color_rgb': (0, 0, 255),
