@@ -68,6 +68,7 @@ def get_path_by_id(model_id: int, folder_path: str, model_partial_name: str = ''
 
     # returns a GENERATOR that YELDS all the file paths matching the string
     # '[.-]' is necessary because otherwise for example id 1 would also match id 10, 11 etc...
+    # '[.-]' matches a single character that is either a '.' or a '-'
     search_string = f'*{gc.EXTERNAL_PARAMETER_SEPARATOR}{model_id}[.-]*'
     if model_partial_name != '':
         search_string = f'*{model_partial_name}{search_string}'
