@@ -67,7 +67,9 @@ def get_path_by_id(model_id: int, folder_path: str, model_partial_name: str = ''
     assert pure_path.exists(), f'the folder_path {folder_path} does not exists'
 
     # returns a GENERATOR that YELDS all the file paths matching the string
-    search_string = f'*{gc.EXTERNAL_PARAMETER_SEPARATOR}{model_id}*'
+    # '[.-]' is necessary because otherwise for example id 1 would also match id 10, 11 etc...
+    # '[.-]' matches a single character that is either a '.' or a '-'
+    search_string = f'*{gc.EXTERNAL_PARAMETER_SEPARATOR}{model_id}[.-]*'
     if model_partial_name != '':
         search_string = f'*{model_partial_name}{search_string}'
     matching_paths = pure_path.glob(search_string)
@@ -86,6 +88,7 @@ def get_path_by_id(model_id: int, folder_path: str, model_partial_name: str = ''
 
     model_path = matching_paths[0]
     meta_data_path = matching_paths[1]
+    # distinguish between model and meta data file
     if matching_paths[0].name.find(gc.INFO_FILE_NAME) != -1:
         model_path = matching_paths[1]
         meta_data_path = matching_paths[0]

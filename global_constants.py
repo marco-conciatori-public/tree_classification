@@ -95,7 +95,8 @@ CLASS_INFORMATION = {
         'display_color_rgb': (255, 0, 0),
     },
     9: {
-        'japanese_romaji': 'Aomoritodomatsu',
+        'japanese_romaji': 'fir',
+        # 'japanese_romaji': 'Aomoritodomatsu',
         'english': 'fir',
         'latin': 'abies mariesii',
         'japanese': 'アオモリトドマツ',
