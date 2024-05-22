@@ -7,7 +7,6 @@ from models import training, evaluation, model_utils
 def finetune_pretrained_model_(**kwargs):
     # import parameters
     parameters = args.import_and_check(gc.CONFIG_PARAMETER_PATH, **kwargs)
-    parameters['display_confusion_matrix'] = True
     if parameters['num_models_to_train'] > 1:
         parameters['display_confusion_matrix'] = False
 
