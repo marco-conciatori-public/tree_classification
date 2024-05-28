@@ -2,7 +2,7 @@ import torch
 import torchmetrics
 
 from metrics.biodiversity import gini_simpson_index, shannon_wiener_index, species_richness
-from metrics.classification import multiclass_accuracy, multiclass_precision, multiclass_recall, multiclass_f1score
+from metrics.classification import multiclass_precision, multiclass_recall, multiclass_f1score
 
 
 class MetricManager(torchmetrics.Metric):
@@ -21,6 +21,7 @@ class MetricManager(torchmetrics.Metric):
         self.biodiversity_metric_names = biodiversity_metric_names
         self.classification_metric_names = classification_metric_names
         self.class_information = class_information
+        self.num_classes = len(class_information)
         self.log_base = 2
         if 'log_base' in kwargs:
             self.log_base = kwargs['log_base']
@@ -81,11 +82,18 @@ class MetricManager(torchmetrics.Metric):
                 preds=torch.tensor(self.prediction_list),
                 target=torch.tensor(self.tag_list),
                 task='multiclass',
-                num_classes=len(self.class_information),
+                num_classes=self.num_classes,
                 average='none',
             )
+            # accuracy is different from the other metrics because it is a global metric, not a per-class metric
+            # it is computed with the torchmetrics implementation
             if 'accuracy' in self.classification_metric_names:
-                classification_results['accuracy'] = multiclass_accuracy.compute(stat_scores=stat_scores)
+                classification_results['accuracy'] = torchmetrics.functional.accuracy(
+                    preds=torch.tensor(self.prediction_list),
+                    target=torch.tensor(self.tag_list),
+                    num_classes=self.num_classes,
+                    average='micro',
+                )
             if 'precision' in self.classification_metric_names:
                 classification_results['precision'] = multiclass_precision.compute(stat_scores=stat_scores)
             if 'recall' in self.classification_metric_names:
