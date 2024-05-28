@@ -91,6 +91,7 @@ class MetricManager(torchmetrics.Metric):
                 classification_results['accuracy'] = torchmetrics.functional.accuracy(
                     preds=torch.tensor(self.prediction_list),
                     target=torch.tensor(self.tag_list),
+                    task='multiclass',
                     num_classes=self.num_classes,
                     average='micro',
                 )
