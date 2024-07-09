@@ -97,6 +97,7 @@ def finetune_many_models_separate_test_(**kwargs):
             custom_transforms=custom_transforms,
             train_val_test_proportions=parameters['train_val_test_proportions'],
             no_resizing=resize_in_attributes,
+            model_class_information=class_information,
             use_only_classes=parameters['use_only_classes'],
             augmentation_proportion=1,
             single_dataloader=True,
