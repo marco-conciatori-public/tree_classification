@@ -1,3 +1,6 @@
+import datetime
+
+import utils
 import global_constants as gc
 from import_args import args
 from data_preprocessing import get_ready_data
@@ -5,6 +8,10 @@ from models import training, evaluation, model_utils
 
 
 def finetune_pretrained_model_(**kwargs):
+    global_start_time = datetime.datetime.now()
+    start_time = global_start_time
+    print('Initial date and time: ' + global_start_time.strftime('%Y-%m-%d-%H:%M:%S'))
+
     # import parameters
     parameters = args.import_and_check(gc.CONFIG_PARAMETER_PATH, **kwargs)
     if parameters['num_models_to_train'] > 1:
@@ -31,6 +38,9 @@ def finetune_pretrained_model_(**kwargs):
             random_seed=parameters['random_seed'],
             verbose=parameters['verbose'],
         )
+        end_time = datetime.datetime.now()
+        print(f'Data processing/loading time: {utils.timedelta_format(start_time, end_time)}')
+        start_time = end_time
 
         # load model
         model = model_utils.get_torchvision_model(
@@ -44,6 +54,9 @@ def finetune_pretrained_model_(**kwargs):
 
         # check image shape
         print(f'img_shape: {img_shape}')
+        end_time = datetime.datetime.now()
+        print(f'model loading or downloading time: {utils.timedelta_format(start_time, end_time)}')
+        start_time = end_time
 
         batched_img_tag = next(iter(train_dl))
         batched_img_shape = batched_img_tag[0].shape
@@ -77,6 +90,9 @@ def finetune_pretrained_model_(**kwargs):
             custom_transforms=custom_transforms,
             extra_info_to_save=parameters_to_save,
         )
+        end_time = datetime.datetime.now()
+        print(f'training and validation time: {utils.timedelta_format(start_time, end_time)}')
+        start_time = end_time
 
         _, _ = evaluation.eval(
             model=model,
@@ -90,6 +106,9 @@ def finetune_pretrained_model_(**kwargs):
             save_path=gc.MODEL_OUTPUT_DIR,
             verbose=parameters['verbose'],
         )
+        end_time = datetime.datetime.now()
+        print(f'evaluation time: {utils.timedelta_format(start_time, end_time)}')
+        print(f'Total time: {utils.timedelta_format(global_start_time, end_time)}')
 
 
 if __name__ == '__main__':
