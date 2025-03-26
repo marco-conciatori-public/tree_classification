@@ -55,7 +55,7 @@ def display_cm(true_values, predictions, class_information: dict, labels=None, s
     if labels is None:
         labels = []
         for el in class_information.values():
-            labels.append(el[gc.SPECIES_LANGUAGE])
+            labels.append(el[gc.SPECIES_LANGUAGE].capitalize())
 
     num_classes = len(class_information)
     true_values = np.array(true_values)
